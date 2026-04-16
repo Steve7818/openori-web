@@ -1,26 +1,59 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* Origeno Design System v1.0 · Colors */
+  --color-ink: #1A1A1A;
+  --color-warm-gray: #6B6558;
+  --color-light-gray: #9C9689;
+  --color-rust: #C65D3A;
+  --color-rust-hover: #A84A2B;
+  --color-cream: #F5EFE0;
+  --color-cream-subtle: #EDE6D3;
+  --color-divider: #E5DDC8;
+
+  /* Typography · 倍率系统(base 16px) */
+  --text-caption: 11px;
+  --text-body: 14px;
+  --text-base: 16px;
+  --text-body-lg: 18px;
+  --text-quote: 22px;
+  --text-slogan: 24px;
+  --text-mission: 36px;
+  --text-h1: 56px;
+
+  /* Fonts */
+  --font-serif-zh: 'Noto Serif SC', 'Songti SC', serif;
+  --font-sans-zh: 'Noto Sans SC', -apple-system, sans-serif;
+  --font-serif-en: 'Instrument Serif', Georgia, serif;
+  --font-sans-en: 'Inter', -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Inter', monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+/* 全局基础 */
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-cream);
+  color: var(--color-ink);
+  font-family: var(--font-sans-zh);
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.6;
+}
+
+/* 选中态彩蛋 */
+::selection { background: var(--color-rust); color: var(--color-cream); }
+::-moz-selection { background: var(--color-rust); color: var(--color-cream); }
+
+/* 锈橙高亮:常驻 */
+.highlight {
+  color: var(--color-rust);
+  border-bottom: 1px solid var(--color-rust);
+  padding-bottom: 1px;
+}
+
+details summary {
+  cursor: pointer;
+  list-style: none;
+}
+
+details summary::-webkit-details-marker {
+  display: none;
 }

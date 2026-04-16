@@ -1,0 +1,666 @@
+/* ==============================================
+   HeroSection.module.css
+   Origeno Hero V4.3 · CSS Modules
+
+   Class name mapping (kebab → camelCase):
+   hero-main → heroMain
+   left-column → leftColumn
+   nav-links → navLinks
+   geo-full → geoFull
+   fact-num → factNum
+   fact-body → factBody
+   slogan-en → sloganEn
+   slogan-brand → sloganBrand
+   cockpit-readout → cockpitReadout
+   readout-item → readoutItem
+   readout-label → readoutLabel
+   readout-value → readoutValue
+   t-ring-outer → tRingOuter
+   t-ring-mid → tRingMid
+   t-ring-inner → tRingInner
+   t-angle → tAngle
+   t-cross-h → tCrossH
+   t-cross-v → tCrossV
+   t-tick → tTick
+   t-sweep → tSweep
+   t-signal → tSignal
+   t-center → tCenter
+   cockpit-ticker → cockpitTicker
+   ticker-row → tickerRow
+   ticker-group → tickerGroup
+   ticker-item → tickerItem
+   peek-divider-long → peekDividerLong
+   peek-row → peekRow
+   peek-label → peekLabel
+   peek-title-wrap → peekTitleWrap
+   peek-title → peekTitle
+   peek-arrow → peekArrow
+   ============================================== */
+
+/* ==================== HERO ==================== */
+.hero {
+  min-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 64px 0;
+}
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1440px;
+  margin: 0 auto 48px;
+  width: 100%;
+}
+
+.logo {
+  font-family: var(--font-serif-en);
+  font-size: 26px;
+  letter-spacing: -0.01em;
+  color: var(--color-ink);
+}
+
+.navLinks {
+  display: flex;
+  gap: 36px;
+  font-family: var(--font-sans-en);
+  font-size: var(--text-body);
+  color: var(--color-warm-gray);
+}
+
+.navLinks a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.heroMain {
+  max-width: 1440px;
+  margin: 0 auto;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 80px;
+  align-items: center;
+  flex: 1;
+  padding: 8px 0 32px;
+}
+
+.leftColumn {
+  display: flex;
+  flex-direction: column;
+}
+
+/* H1 */
+.h1 {
+  font-family: var(--font-serif-zh);
+  font-size: var(--text-h1);
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  color: var(--color-ink);
+  margin-bottom: 20px;
+}
+
+.h1 :global(.highlight) {
+  border-bottom-width: 2px;
+  padding-bottom: 4px;
+}
+
+/* What */
+.what {
+  font-family: var(--font-sans-zh);
+  font-size: var(--text-body-lg);
+  line-height: 1.6;
+  color: var(--color-warm-gray);
+  margin-bottom: 36px;
+}
+
+.geoFull {
+  color: var(--color-rust);
+  font-weight: 500;
+}
+
+/* 定调句 */
+.judgment {
+  font-family: var(--font-serif-zh);
+  font-size: var(--text-quote);
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--color-ink);
+  margin-bottom: 28px;
+  padding-left: 18px;
+  border-left: 2px solid var(--color-rust);
+}
+
+/* 事实墙 */
+.facts {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 40px;
+}
+
+.fact {
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  gap: 12px;
+  padding: 8px 0;
+  align-items: start;
+}
+
+.factNum {
+  font-family: var(--font-serif-en);
+  font-style: italic;
+  color: var(--color-rust);
+  font-size: var(--text-body-lg);
+  line-height: 1.5;
+}
+
+.factBody {
+  font-family: var(--font-sans-zh);
+  font-size: var(--text-body);
+  line-height: 1.7;
+  color: var(--color-ink);
+}
+
+/* 使命句 */
+.mission {
+  font-family: var(--font-serif-zh);
+  font-size: var(--text-mission);
+  font-weight: 500;
+  line-height: 1.25;
+  color: var(--color-ink);
+  margin-bottom: 32px;
+  letter-spacing: -0.01em;
+}
+
+/* Who 段 */
+.who {
+  font-family: var(--font-sans-zh);
+  font-size: var(--text-body);
+  line-height: 1.75;
+  color: var(--color-warm-gray);
+  margin-bottom: 28px;
+}
+
+/* 英文 Slogan */
+.sloganEn {
+  font-family: var(--font-serif-en);
+  font-style: italic;
+  font-size: var(--text-slogan);
+  color: var(--color-warm-gray);
+  letter-spacing: 0.005em;
+}
+
+.sloganBrand {
+  font-style: normal;
+  color: var(--color-ink);
+}
+
+/* ==================== 驾驶舱 ==================== */
+.cockpit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.cockpitReadout {
+  display: flex;
+  gap: 36px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--color-warm-gray);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.readoutItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.readoutLabel {
+  opacity: 0.55;
+  font-size: 9px;
+}
+
+.readoutValue {
+  color: var(--color-ink);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  font-size: 11px;
+}
+
+.readoutValue.active {
+  color: var(--color-rust);
+}
+
+/* 经纬仪/雷达 */
+.theodolite {
+  position: relative;
+  width: 340px;
+  height: 340px;
+}
+
+@keyframes sweep {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.tRingOuter {
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(26, 26, 26, 0.2);
+  border-radius: 50%;
+}
+
+.tRingMid {
+  position: absolute;
+  inset: 18%;
+  border: 1px solid rgba(26, 26, 26, 0.12);
+  border-radius: 50%;
+}
+
+.tRingInner {
+  position: absolute;
+  inset: 35%;
+  border: 1px solid rgba(198, 93, 58, 0.3);
+  border-radius: 50%;
+}
+
+.tAngle {
+  position: absolute;
+  font-family: var(--font-serif-en);
+  font-style: italic;
+  font-size: 13px;
+  color: var(--color-light-gray);
+}
+
+.tAngle.top {
+  top: -22px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.tAngle.right {
+  right: -22px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.tAngle.bottom {
+  bottom: -22px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.tAngle.left {
+  left: -22px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.tCrossH,
+.tCrossV {
+  position: absolute;
+  background: rgba(26, 26, 26, 0.12);
+}
+
+.tCrossH {
+  left: 5%;
+  right: 5%;
+  top: 50%;
+  height: 1px;
+}
+
+.tCrossV {
+  top: 5%;
+  bottom: 5%;
+  left: 50%;
+  width: 1px;
+}
+
+.tTick {
+  position: absolute;
+  width: 5px;
+  height: 1px;
+  background: rgba(26, 26, 26, 0.35);
+  top: 50%;
+  left: 0;
+  transform-origin: 170px 0;
+}
+
+.tSweep {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 50%;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(198, 93, 58, 0.15) 40%,
+    var(--color-rust) 100%
+  );
+  transform-origin: left center;
+  animation: sweep 8s linear infinite;
+}
+
+.tSignal {
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--color-rust);
+  opacity: 0;
+  transform: scale(0.3);
+  transition: opacity 600ms ease, transform 800ms ease;
+}
+
+.tSignal::before {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border: 1px solid var(--color-rust);
+  border-radius: 50%;
+  opacity: 0.3;
+}
+
+.tSignal:global(.visible) {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.tSignal:global(.fade-out) {
+  opacity: 0;
+  transform: scale(1.8);
+}
+
+.tCenter {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  background: var(--color-ink);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* 跑马灯 */
+.cockpitTicker {
+  width: 340px;
+  overflow: hidden;
+  position: relative;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--color-warm-gray);
+  letter-spacing: 0.08em;
+  border-top: 1px solid rgba(229, 221, 200, 0.8);
+  padding-top: 10px;
+  margin-top: 8px;
+  mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+}
+
+@keyframes tickerScroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.tickerRow {
+  display: flex;
+  gap: 24px;
+  white-space: nowrap;
+  animation: tickerScroll 45s linear infinite;
+}
+
+.tickerGroup {
+  display: contents;
+}
+
+.tickerItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dot {
+  display: inline-block;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--color-rust);
+}
+
+.dot.dim {
+  background: var(--color-light-gray);
+}
+
+/* ==================== PEEK ==================== */
+.peek {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 32px 64px 40px;
+}
+
+.peekDividerLong {
+  width: 100%;
+  height: 1px;
+  background: var(--color-divider);
+  margin-bottom: 24px;
+}
+
+.peekRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.peekLabel {
+  font-family: var(--font-sans-en);
+  font-size: var(--text-caption);
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--color-rust);
+}
+
+.peekTitleWrap {
+  flex: 1;
+  padding: 0 32px;
+}
+
+.peekTitle {
+  font-family: var(--font-serif-zh);
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--color-light-gray);
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+
+.peekArrow {
+  font-family: var(--font-serif-en);
+  font-size: var(--text-body-lg);
+  color: var(--color-rust);
+  font-style: italic;
+}
+
+/* ==================== Tablet ==================== */
+@media (max-width: 1024px) {
+  .hero {
+    padding: 16px 40px 0;
+    min-height: auto;
+  }
+
+  .nav {
+    margin-bottom: 32px;
+  }
+
+  .heroMain {
+    grid-template-columns: 1fr;
+    gap: 48px;
+    padding: 8px 0 24px;
+  }
+
+  .theodolite {
+    width: 280px;
+    height: 280px;
+  }
+
+  .cockpitTicker {
+    width: 280px;
+  }
+
+  .tTick {
+    transform-origin: 140px 0;
+  }
+
+  .h1 {
+    font-size: 44px;
+  }
+
+  .mission {
+    font-size: 30px;
+  }
+
+  .sloganEn {
+    font-size: 20px;
+  }
+
+  .judgment {
+    font-size: 19px;
+  }
+
+  .peek {
+    padding: 28px 40px 36px;
+  }
+
+  .peekTitle {
+    font-size: 18px;
+  }
+}
+
+/* ==================== Mobile ==================== */
+@media (max-width: 640px) {
+  .hero {
+    padding: 14px 20px 0;
+  }
+
+  .nav {
+    margin-bottom: 24px;
+  }
+
+  .navLinks {
+    gap: 18px;
+    font-size: 13px;
+  }
+
+  .logo {
+    font-size: 22px;
+  }
+
+  .h1 {
+    font-size: 34px;
+  }
+
+  .mission {
+    font-size: 24px;
+  }
+
+  .sloganEn {
+    font-size: 17px;
+  }
+
+  .judgment {
+    font-size: 17px;
+    padding-left: 14px;
+    margin-bottom: 20px;
+  }
+
+  .what {
+    font-size: 14px;
+    margin-bottom: 28px;
+  }
+
+  .factBody {
+    font-size: 13px;
+  }
+
+  .heroMain {
+    gap: 32px;
+    padding: 6px 0 16px;
+  }
+
+  .fact {
+    grid-template-columns: 24px 1fr;
+    gap: 10px;
+    padding: 6px 0;
+  }
+
+  .factNum {
+    font-size: 14px;
+  }
+
+  .facts {
+    margin-bottom: 28px;
+  }
+
+  .mission {
+    margin-bottom: 20px;
+  }
+
+  .who {
+    margin-bottom: 20px;
+  }
+
+  .theodolite {
+    width: 220px;
+    height: 220px;
+  }
+
+  .cockpitTicker {
+    width: 220px;
+  }
+
+  .tTick {
+    transform-origin: 110px 0;
+  }
+
+  .cockpitReadout {
+    gap: 20px;
+  }
+
+  .peek {
+    padding: 20px 20px 28px;
+  }
+
+  .peekRow {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .peekTitleWrap {
+    padding: 0;
+    order: 3;
+    width: 100%;
+    margin-top: 8px;
+  }
+
+  .peekTitle {
+    font-size: 15px;
+  }
+
+  .readoutLabel {
+    font-size: 8px;
+  }
+
+  .readoutValue {
+    font-size: 10px;
+  }
+}
