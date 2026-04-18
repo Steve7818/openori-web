@@ -1,59 +1,27 @@
 @import "tailwindcss";
 
-@theme inline {
-  /* Origeno Design System v1.0 · Colors */
-  --color-ink: #1A1A1A;
-  --color-warm-gray: #6B6558;
-  --color-light-gray: #9C9689;
-  --color-rust: #C65D3A;
-  --color-rust-hover: #A84A2B;
-  --color-cream: #F5EFE0;
-  --color-cream-subtle: #EDE6D3;
-  --color-divider: #E5DDC8;
-
-  /* Typography · 倍率系统(base 16px) */
-  --text-caption: 11px;
-  --text-body: 14px;
-  --text-base: 16px;
-  --text-body-lg: 18px;
-  --text-quote: 22px;
-  --text-slogan: 24px;
-  --text-mission: 36px;
-  --text-h1: 56px;
-
-  /* Fonts */
-  --font-serif-zh: 'Noto Serif SC', 'Songti SC', serif;
-  --font-sans-zh: 'Noto Sans SC', -apple-system, sans-serif;
-  --font-serif-en: 'Instrument Serif', Georgia, serif;
-  --font-sans-en: 'Inter', -apple-system, sans-serif;
-  --font-mono: 'JetBrains Mono', 'Inter', monospace;
+/* 全局基础 reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-/* 全局基础 */
 body {
-  background: var(--color-cream);
-  color: var(--color-ink);
-  font-family: var(--font-sans-zh);
+  background: #0A0A0A;
+  color: #F2E6D3;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   -webkit-font-smoothing: antialiased;
   line-height: 1.6;
 }
 
-/* 选中态彩蛋 */
-::selection { background: var(--color-rust); color: var(--color-cream); }
-::-moz-selection { background: var(--color-rust); color: var(--color-cream); }
-
-/* 锈橙高亮:常驻 */
-.highlight {
-  color: var(--color-rust);
-  border-bottom: 1px solid var(--color-rust);
-  padding-bottom: 1px;
+/* 选中态 */
+::selection {
+  background: #D97757;
+  color: #0A0A0A;
 }
 
-details summary {
-  cursor: pointer;
-  list-style: none;
-}
-
-details summary::-webkit-details-marker {
-  display: none;
+::-moz-selection {
+  background: #D97757;
+  color: #0A0A0A;
 }
