@@ -159,8 +159,30 @@
   box-shadow: 0 4px 16px rgba(200, 164, 94, 0.3);
 }
 
+.submitBig:disabled {
+  background: var(--line);
+  color: var(--ink-faint);
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
 .submitBig:hover .arrow {
   transform: translateX(4px);
+}
+
+.submitBig:disabled {
+  background: var(--line);
+  color: var(--ink-faint);
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.submitBig:disabled:hover {
+  background: var(--line);
+  color: var(--ink-faint);
+  transform: none;
 }
 
 .arrow {

@@ -22,7 +22,7 @@ export interface UseLensStreamResult {
   panels: PanelsState;
   status: 'idle' | 'streaming' | 'done' | 'error';
   error: string | null;
-  start: (sessionId: string, brand: string, question: string) => Promise<void>;
+  start: (sessionId: string, brand: string, question: string, turnstileToken?: string) => Promise<void>;
 }
 
 export function useLensStream(): UseLensStreamResult {
@@ -30,7 +30,7 @@ export function useLensStream(): UseLensStreamResult {
   const [status, setStatus] = useState<'idle' | 'streaming' | 'done' | 'error'>('idle');
   const [error, setError] = useState<string | null>(null);
 
-  const start = useCallback(async (sessionId: string, brand: string, question: string) => {
+  const start = useCallback(async (sessionId: string, brand: string, question: string, turnstileToken?: string) => {
     setStatus('streaming');
     setError(null);
 
@@ -53,44 +53,73 @@ export function useLensStream(): UseLensStreamResult {
 
     try {
       const t0 = Date.now();
-      const response = await streamLens({
-        session_id: sessionId,
-        brand,
-        question,
-        t0,
-      });
+
+      // AbortController with 90s timeout to avoid infinite hangs
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 90_000);
+
+      let response: Response;
+      try {
+        response = await streamLens({
+          session_id: sessionId,
+          brand,
+          question,
+          turnstile_token: turnstileToken,
+          t0,
+        }, controller.signal);
+      } catch (fetchErr: any) {
+        clearTimeout(timeoutId);
+        if (fetchErr.name === 'AbortError') {
+          throw new Error('请求超时，请检查网络连接后重试');
+        }
+        throw fetchErr;
+      }
 
       const reader = response.body!.getReader();
       const decoder = new TextDecoder();
       let buffer = '';
       let firstTokenReceived = false;
 
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
+      try {
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
 
-        buffer += decoder.decode(value, { stream: true });
-        const lines = buffer.split('\n');
-        buffer = lines.pop() || '';
+          buffer += decoder.decode(value, { stream: true });
+          const lines = buffer.split('\n');
+          buffer = lines.pop() || '';
 
-        for (const line of lines) {
-          if (!line.startsWith('data: ')) continue;
+          for (const line of lines) {
+            if (!line.startsWith('data: ')) continue;
 
-          try {
-            const event = JSON.parse(line.substring(6));
-            handleEvent(event, sessionId, setPanels, setStatus, () => {
-              if (!firstTokenReceived) {
-                firstTokenReceived = true;
-                trackEvent(sessionId, 'lens_first_token');
-              }
-            });
-          } catch (e) {
-            console.error('Failed to parse SSE event:', e);
+            try {
+              const event = JSON.parse(line.substring(6));
+              handleEvent(event, sessionId, setPanels, setStatus, () => {
+                if (!firstTokenReceived) {
+                  firstTokenReceived = true;
+                  trackEvent(sessionId, 'lens_first_token');
+                }
+              });
+            } catch (e) {
+              console.warn('Failed to parse SSE event:', line, e);
+            }
           }
         }
+      } finally {
+        clearTimeout(timeoutId);
+        reader.releaseLock();
+      }
+
+      // If stream ended without any tokens and status is still 'streaming',
+      // it means something went wrong silently
+      if (!firstTokenReceived) {
+        setError('未收到任何平台响应，请稍后重试');
+        setStatus('error');
       }
     } catch (err: any) {
-      setError(err.message || 'Stream failed');
+      console.error('Lens stream error:', err);
+      const message = err.message || 'Stream failed';
+      setError(message);
       setStatus('error');
     }
   }, []);

@@ -15,6 +15,8 @@ interface LensModalProps {
   panels: PanelsState;
   sessionId: string;
   dailyRemaining: number;
+  streamStatus: 'idle' | 'streaming' | 'done' | 'error';
+  streamError: string | null;
 }
 
 export default function LensModal({
@@ -25,6 +27,8 @@ export default function LensModal({
   panels,
   sessionId,
   dailyRemaining,
+  streamStatus,
+  streamError,
 }: LensModalProps) {
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
@@ -65,6 +69,18 @@ export default function LensModal({
         <button className={styles.close} onClick={onClose}>
           ×
         </button>
+
+        {streamError && (
+          <div className={styles.errorBanner}>
+            <div className={styles.errorIcon}>!</div>
+            <div className={styles.errorBody}>
+              <strong>
+                {streamError.includes('今日扫描次数已用完') ? '今日扫描次数已用完' : '扫描失败'}
+              </strong>
+              <p>{streamError}</p>
+            </div>
+          </div>
+        )}
 
         <div className={styles.header}>
           <div className={styles.eyebrow}>// AI 偏离度扫描报告 · 6 大平台</div>

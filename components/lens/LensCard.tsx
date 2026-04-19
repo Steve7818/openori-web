@@ -2,37 +2,49 @@
 
 import { useState, useEffect, FormEvent, KeyboardEvent } from 'react';
 import { PLATFORMS } from './platforms';
-import { initSession } from '@/lib/lens/api';
-import { getSessionId, setSessionId } from '@/lib/lens/storage';
+import { getSessionId } from '@/lib/lens/storage';
 import { trackEvent } from '@/lib/lens/events';
 import styles from './LensCard.module.css';
 
 interface LensCardProps {
   onLaunch: (brand: string, question: string) => void;
   dailyRemaining: number;
+  isLoading?: boolean;
 }
 
-export default function LensCard({ onLaunch, dailyRemaining }: LensCardProps) {
+export default function LensCard({ onLaunch, dailyRemaining, isLoading = false }: LensCardProps) {
   const [brand, setBrand] = useState('');
   const [question, setQuestion] = useState('');
   const [sessionId, setSessionIdState] = useState<string | null>(null);
   const [remaining, setRemaining] = useState(dailyRemaining);
 
   useEffect(() => {
-    // Initialize session on mount
+    setRemaining(dailyRemaining);
+  }, [dailyRemaining]);
+
+  useEffect(() => {
+    // Session init is now handled by HeroSection.
+    // Just read from storage once available (poll briefly).
     const existingSession = getSessionId();
     if (existingSession) {
       setSessionIdState(existingSession);
-    } else {
-      initSession().then(data => {
-        setSessionId(data.session_id);
-        setSessionIdState(data.session_id);
-        setRemaining(data.daily_remaining);
-        trackEvent(data.session_id, 'lens_open');
-      }).catch(err => {
-        console.error('Failed to init session:', err);
-      });
+      trackEvent(existingSession, 'lens_open');
+      return;
     }
+
+    // Poll sessionStorage for up to 3s (HeroSection is initializing)
+    let attempts = 0;
+    const interval = setInterval(() => {
+      const sid = getSessionId();
+      if (sid) {
+        clearInterval(interval);
+        setSessionIdState(sid);
+        trackEvent(sid, 'lens_open');
+      }
+      if (++attempts >= 30) clearInterval(interval);
+    }, 100);
+
+    return () => clearInterval(interval);
   }, []);
 
   const handleSubmit = (e: FormEvent) => {
@@ -41,6 +53,13 @@ export default function LensCard({ onLaunch, dailyRemaining }: LensCardProps) {
       // TODO: Add shake animation
       return;
     }
+
+    // Check quota before launching
+    if (remaining <= 0) {
+      alert('今日扫描次数已用完，明天再来吧！或者试试我们的免费 GEO 诊断 →');
+      return;
+    }
+
     onLaunch(brand.trim(), question.trim());
   };
 
@@ -113,9 +132,9 @@ export default function LensCard({ onLaunch, dailyRemaining }: LensCardProps) {
             />
           </div>
 
-          <button type="submit" className={styles.submitBig}>
-            <span>开始扫描</span>
-            <span className={styles.arrow}>→</span>
+          <button type="submit" className={styles.submitBig} disabled={remaining === 0 || isLoading}>
+            <span>{isLoading ? '扫描中...' : remaining === 0 ? '今日额度已用完' : '开始扫描'}</span>
+            {!isLoading && remaining > 0 && <span className={styles.arrow}>→</span>}
           </button>
         </form>
 

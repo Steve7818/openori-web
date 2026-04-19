@@ -188,3 +188,51 @@
   from { opacity: 0; transform: translateY(16px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+.errorBanner {
+  background: linear-gradient(135deg, #FFF5E6 0%, #FFE8CC 100%);
+  border: 1.5px solid #F4A261;
+  border-radius: 10px;
+  padding: 20px 24px;
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  margin-bottom: 20px;
+  animation: fadeInUp 0.4s ease-out;
+}
+
+.errorIcon {
+  width: 32px;
+  height: 32px;
+  background: #F4A261;
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mono);
+  font-size: 18px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.errorBody {
+  flex: 1;
+}
+
+.errorBody strong {
+  display: block;
+  font-family: var(--sans);
+  font-size: 15px;
+  color: var(--navy);
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.errorBody p {
+  font-family: var(--sans);
+  font-size: 14px;
+  color: var(--ink-dim);
+  margin: 0;
+  line-height: 1.5;
+}
