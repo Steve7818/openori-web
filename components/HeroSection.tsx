@@ -77,9 +77,16 @@ export default function HeroSection() {
     let turnstileToken: string | undefined;
     if (turnstileWidget.current) {
       try {
-        turnstileToken = await turnstileWidget.current.execute();
+        // Add 5s timeout to prevent infinite hang
+        turnstileToken = await Promise.race([
+          turnstileWidget.current.execute(),
+          new Promise<string>((_, reject) =>
+            setTimeout(() => reject(new Error('Turnstile timeout')), 5000)
+          )
+        ]);
       } catch (err) {
         console.warn('Turnstile execute failed (non-blocking):', err);
+        // Continue without token - backend will allow test key
       }
     }
 
