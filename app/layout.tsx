@@ -15,16 +15,14 @@ export default function RootLayout({
   return (
     <html lang="zh-CN" className="antialiased">
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Serif+SC:wght@400;500;700;900&display=swap"
-          rel="stylesheet"
-        />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/instrument-serif@5.0.0/index.css" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/instrument-sans@5.0.0/400.css" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/instrument-sans@5.0.0/500.css" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono@5.0.0/400.css" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono@5.0.0/500.css" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/noto-serif-sc@5.0.0/400.css" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/noto-sans-sc@5.0.0/400.css" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/noto-sans-sc@5.0.0/500.css" />
       </head>
       <body>{children}</body>
     </html>

@@ -1,0 +1,431 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/instrument-serif@5.0.0/index.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/instrument-sans@5.0.0/400.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/instrument-sans@5.0.0/500.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono@5.0.0/400.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/noto-serif-sc@5.0.0/400.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/noto-sans-sc@5.0.0/400.css">
+
+<style>
+.og{--bg:#0A0A0A;--surface:#141413;--ink:#F2E6D3;--ink-dim:#B0AEA5;--ink-faint:rgba(242,230,211,0.28);--ember:#D97757;--rule:rgba(242,230,211,0.12);--grid:rgba(242,230,211,0.03);--serif:'Instrument Serif','Noto Serif SC',serif;--sans:'Instrument Sans','Noto Sans SC',sans-serif;--mono:'JetBrains Mono',ui-monospace,monospace;background:var(--bg);color:var(--ink);font-family:var(--sans);font-weight:400;line-height:1.55;letter-spacing:-0.005em;margin:-16px 0;position:relative;overflow:hidden}
+.og *{box-sizing:border-box}
+
+.og-bg-rose{position:absolute;top:50%;left:50%;width:220vmax;height:220vmax;transform:translate(-50%,-50%);pointer-events:none;z-index:0;opacity:0;animation:ogBgIn 3s cubic-bezier(0.22,1,0.36,1) forwards}
+.og-bg-rose svg{width:100%;height:100%;animation:ogRotate 200s linear infinite}
+.og-bg-grid{position:absolute;inset:0;background-image:linear-gradient(var(--grid) 0.5px,transparent 0.5px),linear-gradient(90deg,var(--grid) 0.5px,transparent 0.5px);background-size:96px 96px;pointer-events:none;z-index:1;opacity:0;animation:ogGridIn 2.5s ease-out forwards;animation-delay:0.3s}
+
+.og-nav{position:relative;z-index:10;display:flex;justify-content:space-between;align-items:center;padding:22px 48px;border-bottom:0.5px solid var(--rule);font-family:var(--mono);font-size:11px;color:var(--ink-dim);letter-spacing:0.04em;animation:ogFade 1s cubic-bezier(0.22,1,0.36,1) forwards;opacity:0;animation-delay:0.4s}
+.og-nav a{color:var(--ink-dim);text-decoration:none;transition:color 0.3s}
+.og-nav a:hover{color:var(--ink)}
+.og-brand{display:flex;align-items:center;gap:14px}
+.og-logo-mark{width:28px;height:28px;display:inline-block;flex-shrink:0}
+.og-logo-mark svg{width:100%;height:100%;animation:ogRotate 60s linear infinite}
+.og-brand-text{display:flex;align-items:baseline;gap:12px}
+.og-brand-name{font-family:var(--serif);font-size:22px;color:var(--ink);letter-spacing:0.05em;text-transform:uppercase;font-weight:400}
+.og-brand-sep{width:0.5px;height:14px;background:var(--ink-faint);align-self:center}
+.og-brand-tag{font-family:var(--serif);font-size:14px;color:var(--ink-dim);font-style:italic;letter-spacing:-0.005em}
+.og-brand-tag em{color:var(--ember);font-style:italic}
+.og-brand-tag-en{font-family:var(--serif);font-size:12px;color:var(--ink-faint);font-style:italic;letter-spacing:0}
+.og-nav-right{display:flex;gap:28px;align-items:center}
+
+.og-hero{position:relative;z-index:2;padding:96px 48px 88px;min-height:calc(100vh - 68px);display:grid;grid-template-columns:1.4fr 1fr;grid-template-rows:auto 1fr auto auto;gap:24px 64px;align-content:start}
+.og-hero-meta{grid-column:1/3;display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;color:var(--ink-faint);letter-spacing:0.05em;animation:ogFade 1s forwards;opacity:0;animation-delay:0.6s;margin-bottom:8px}
+
+.og-h1-wrap{grid-column:1;grid-row:2;align-self:center;position:relative;z-index:2}
+.og-h1{font-family:var(--serif);font-size:clamp(54px,8vw,108px);line-height:0.98;letter-spacing:-0.03em;color:var(--ink);font-weight:400;margin:0;font-feature-settings:"liga" 1}
+.og-h1-line{display:block;overflow:hidden;padding-bottom:0.08em}
+.og-h1-line span{display:inline-block;transform:translateY(110%);animation:ogReveal 1.4s cubic-bezier(0.22,1,0.36,1) forwards}
+.og-h1-line:nth-child(1) span{animation-delay:0.8s}
+.og-h1-line:nth-child(2) span{animation-delay:0.95s}
+.og-h1-em{font-style:italic;color:var(--ember)}
+
+.og-hero-echo{grid-column:2;grid-row:2;align-self:center;justify-self:center;position:relative;width:min(36vw,420px);aspect-ratio:1/1;opacity:0;animation:ogFade 2s forwards;animation-delay:1.4s}
+.og-hero-echo svg{width:100%;height:100%;animation:ogRotate 100s linear infinite}
+.og-hero-echo .dot{fill:var(--ember)}
+
+.og-what{grid-column:1/3;display:flex;align-items:baseline;gap:20px;animation:ogFade 1s forwards;opacity:0;animation-delay:1.3s;flex-wrap:wrap;margin-top:16px}
+.og-what-label{font-family:var(--mono);font-size:11px;letter-spacing:0.1em;color:var(--ink-dim);text-transform:uppercase;padding-right:20px;border-right:0.5px solid var(--rule)}
+.og-what-text{font-family:var(--serif);font-size:clamp(18px,2vw,24px);color:var(--ink);line-height:1.4;font-style:italic;margin:0}
+
+.og-divider{grid-column:1/3;border-top:0.5px solid var(--rule);transform:scaleX(0);transform-origin:left;animation:ogLine 1.6s cubic-bezier(0.22,1,0.36,1) forwards;animation-delay:1.5s;margin:32px 0 8px}
+
+.og-facts{grid-column:1/3;display:grid;grid-template-columns:1fr 1.5fr 1.2fr;gap:56px;align-items:start}
+.og-fact{opacity:0;animation:ogFade 1.1s forwards;position:relative}
+.og-fact:nth-child(1){animation-delay:1.8s}
+.og-fact:nth-child(2){animation-delay:2.05s}
+.og-fact:nth-child(3){animation-delay:2.3s}
+.og-fact-idx{font-family:var(--mono);font-size:10px;color:var(--ember);letter-spacing:0.12em;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.og-fact-idx::after{content:'';flex:1;height:0.5px;background:var(--rule)}
+.og-fact-body{font-family:var(--serif);font-size:clamp(15px,1.3vw,18px);line-height:1.55;color:var(--ink);letter-spacing:-0.005em}
+.og-fact-body em{font-style:italic;color:var(--ember);font-weight:400}
+.og-fact-addendum{font-family:var(--sans);font-size:13px;line-height:1.65;color:var(--ink-dim);margin-top:16px;padding-top:14px;border-top:0.5px solid var(--rule)}
+
+.og-section{position:relative;z-index:2;padding:120px 48px 110px;border-top:0.5px solid var(--rule)}
+.og-s-header{display:flex;align-items:baseline;gap:16px;margin-bottom:56px;font-family:var(--mono);font-size:11px;color:var(--ember);letter-spacing:0.1em}
+.og-s-header::after{content:'';flex:1;height:0.5px;background:var(--rule)}
+
+.og-who{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start}
+.og-who-left h2{font-family:var(--serif);font-size:clamp(32px,4vw,48px);line-height:1.15;color:var(--ink);margin:0 0 24px;letter-spacing:-0.02em;font-weight:400}
+.og-who-left h2 em{font-style:italic;color:var(--ember)}
+.og-who-left p{font-family:var(--serif);font-size:19px;line-height:1.55;color:var(--ink-dim);font-style:italic;margin:0;max-width:480px}
+.og-who-right{border-left:0.5px solid var(--rule);padding-left:40px}
+.og-who-stats{display:grid;gap:32px}
+.og-stat{display:grid;grid-template-columns:90px 1fr;gap:20px;align-items:baseline}
+.og-stat-num{font-family:var(--serif);font-size:40px;line-height:1;color:var(--ink);letter-spacing:-0.03em;font-style:italic}
+.og-stat-label{font-family:var(--mono);font-size:11px;color:var(--ink-dim);letter-spacing:0.05em;line-height:1.55}
+.og-stat-label strong{color:var(--ink);font-weight:500;display:block;font-size:13px;margin-bottom:4px;font-family:var(--sans);letter-spacing:0}
+
+.og-panels{margin-top:48px;padding-top:40px;border-top:0.5px solid var(--rule);display:grid;grid-template-columns:1fr 1fr;gap:40px}
+.og-panel-label{font-family:var(--mono);font-size:10px;color:var(--ember);letter-spacing:0.12em;margin-bottom:18px}
+.og-panel-hint{font-family:var(--mono);font-size:10px;color:var(--ink-faint);letter-spacing:0.05em;margin-bottom:14px}
+.og-panel-list{display:flex;flex-direction:column;gap:14px}
+.og-panel-item{display:flex;justify-content:space-between;align-items:baseline;padding-bottom:10px;border-bottom:0.5px dashed rgba(242,230,211,0.08)}
+.og-panel-name{font-family:var(--serif);font-size:17px;color:var(--ink);font-style:italic;letter-spacing:-0.005em}
+.og-panel-sub{font-family:var(--mono);font-size:10px;color:var(--ink-faint);letter-spacing:0.04em}
+
+.og-section.dashboard{background:var(--surface);padding-top:110px;padding-bottom:120px}
+.og-dash-h{font-family:var(--serif);font-size:clamp(36px,5vw,56px);line-height:1.1;color:var(--ink);margin:0 0 20px;letter-spacing:-0.025em;font-weight:400;max-width:920px}
+.og-dash-h em{font-style:italic;color:var(--ember)}
+.og-dash-sub{font-family:var(--serif);font-size:19px;color:var(--ink-dim);font-style:italic;margin:0 0 56px;max-width:780px;line-height:1.5}
+.og-dash-sub em{color:var(--ink);font-style:italic}
+
+.og-dash-grid{display:grid;grid-template-columns:1.1fr 1fr 1fr;gap:2px;background:var(--rule);border:0.5px solid var(--rule)}
+.og-dash-cell{background:var(--surface);padding:28px 26px;min-height:300px;position:relative;overflow:hidden}
+.og-dash-cell-full{grid-column:1/4}
+.og-dash-tag{font-family:var(--mono);font-size:10px;color:var(--ember);letter-spacing:0.1em;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.og-dash-tag-live{width:6px;height:6px;border-radius:50%;background:var(--ember);animation:ogPulse 2s ease-in-out infinite}
+.og-dash-title{font-family:var(--serif);font-size:22px;color:var(--ink);font-style:italic;margin-bottom:20px;letter-spacing:-0.01em;line-height:1.3}
+
+.og-dash-barlist{display:flex;flex-direction:column;gap:14px;margin-top:12px}
+.og-dash-bar{display:grid;grid-template-columns:62px 1fr 46px;gap:12px;align-items:center;font-family:var(--mono);font-size:11px}
+.og-dash-bar-name{color:var(--ink-dim);letter-spacing:0.02em}
+.og-dash-bar-track{height:4px;background:rgba(242,230,211,0.08);border-radius:2px;position:relative;overflow:hidden}
+.og-dash-bar-fill{position:absolute;left:0;top:0;height:100%;background:var(--ink);border-radius:2px;transform-origin:left;transform:scaleX(0);animation:ogBarFill 1.6s cubic-bezier(0.22,1,0.36,1) forwards}
+.og-dash-bar-fill.ember{background:var(--ember)}
+.og-dash-bar-val{color:var(--ink);text-align:right;font-weight:500}
+
+.og-dash-log{font-family:var(--mono);font-size:11px;line-height:1.9;color:var(--ink-dim);letter-spacing:0.01em}
+.og-dash-log-entry{opacity:0;animation:ogFade 0.6s forwards;display:flex;gap:12px;border-bottom:0.5px dashed rgba(242,230,211,0.08);padding:6px 0}
+.og-dash-log-entry:nth-child(1){animation-delay:0.2s}
+.og-dash-log-entry:nth-child(2){animation-delay:0.4s}
+.og-dash-log-entry:nth-child(3){animation-delay:0.6s}
+.og-dash-log-entry:nth-child(4){animation-delay:0.8s}
+.og-dash-log-entry:nth-child(5){animation-delay:1.0s}
+.og-dash-log-entry:nth-child(6){animation-delay:1.2s}
+.og-dash-log-time{color:var(--ink-faint);width:50px;flex-shrink:0}
+.og-dash-log-tag{color:var(--ember);width:60px;flex-shrink:0}
+.og-dash-log-text{color:var(--ink-dim);flex:1}
+
+.og-dash-bignum{font-family:var(--serif);font-size:clamp(56px,7vw,96px);line-height:0.95;color:var(--ink);letter-spacing:-0.04em;font-style:italic;margin:16px 0 8px}
+.og-dash-bignum em{color:var(--ember)}
+.og-dash-smallnum{font-family:var(--mono);font-size:11px;color:var(--ink-dim);letter-spacing:0.04em}
+
+.og-dash-spark{width:100%;height:80px;margin-top:20px}
+.og-dash-spark path.line{fill:none;stroke:var(--ember);stroke-width:1.2;stroke-dasharray:500;stroke-dashoffset:500;animation:ogDraw 2s cubic-bezier(0.22,1,0.36,1) forwards;animation-delay:0.5s}
+.og-dash-spark path.area{fill:var(--ember);opacity:0.08;clip-path:inset(0 100% 0 0);animation:ogClipRight 2s cubic-bezier(0.22,1,0.36,1) forwards;animation-delay:0.5s}
+
+.og-dash-arch{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:16px;align-items:center;padding:28px 0 12px}
+.og-dash-arch-node{text-align:center;padding:18px 14px;border:0.5px solid var(--rule);background:rgba(242,230,211,0.02);border-radius:0}
+.og-dash-arch-node strong{display:block;font-family:var(--serif);font-style:italic;font-size:18px;color:var(--ink);margin-bottom:6px;letter-spacing:-0.01em}
+.og-dash-arch-node span{font-family:var(--mono);font-size:10px;color:var(--ink-dim);letter-spacing:0.05em}
+.og-dash-arch-node.main{border-color:var(--ember);background:rgba(217,119,87,0.06)}
+.og-dash-arch-node.main strong{color:var(--ember)}
+.og-dash-arch-arrow{color:var(--ink-faint);font-family:var(--mono);font-size:14px}
+
+.og-finale{position:relative;z-index:2;padding:140px 48px 120px;border-top:0.5px solid var(--rule);text-align:center;overflow:hidden}
+.og-finale-rose{position:absolute;top:50%;left:50%;width:min(90vmin,800px);height:min(90vmin,800px);transform:translate(-50%,-50%);pointer-events:none;opacity:0.08;z-index:0}
+.og-finale-rose svg{width:100%;height:100%;animation:ogRotate 120s linear infinite}
+.og-finale-content{position:relative;z-index:2}
+.og-finale-label{font-family:var(--mono);font-size:11px;color:var(--ember);letter-spacing:0.12em;margin-bottom:36px}
+.og-finale-h{font-family:var(--serif);font-size:clamp(44px,6.5vw,88px);line-height:1.05;letter-spacing:-0.03em;color:var(--ink);font-style:italic;margin:0 0 24px;font-weight:400}
+.og-finale-h em{color:var(--ember)}
+.og-finale-en{font-family:var(--serif);font-size:clamp(20px,2vw,26px);color:var(--ink-dim);font-style:italic;letter-spacing:-0.005em;margin:0 0 56px}
+.og-finale-cta{display:inline-flex;align-items:center;gap:14px;font-family:var(--mono);font-size:12px;color:var(--ink);letter-spacing:0.1em;text-transform:uppercase;padding:16px 28px;border:0.5px solid var(--ink-faint);text-decoration:none;transition:all 0.4s cubic-bezier(0.22,1,0.36,1)}
+.og-finale-cta:hover{border-color:var(--ember);color:var(--ember);background:rgba(217,119,87,0.04)}
+.og-finale-cta svg{width:14px;height:14px;transition:transform 0.4s}
+.og-finale-cta:hover svg{transform:translate(3px,-3px)}
+
+.og-foot{position:relative;z-index:2;padding:44px 48px;border-top:0.5px solid var(--rule);display:flex;justify-content:space-between;align-items:flex-start;font-family:var(--mono);font-size:11px;color:var(--ink-faint);letter-spacing:0.04em}
+.og-foot strong{color:var(--ink-dim);font-weight:400}
+.og-foot a{color:var(--ember);text-decoration:none}
+.og-foot-left,.og-foot-right{line-height:1.9}
+.og-foot-right{text-align:right}
+
+@keyframes ogFade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes ogReveal{from{transform:translateY(110%)}to{transform:translateY(0)}}
+@keyframes ogLine{to{transform:scaleX(1)}}
+@keyframes ogBgIn{to{opacity:0.08}}
+@keyframes ogGridIn{to{opacity:1}}
+@keyframes ogRotate{to{transform:rotate(360deg)}}
+@keyframes ogDraw{to{stroke-dashoffset:0}}
+@keyframes ogClipRight{to{clip-path:inset(0 0 0 0)}}
+@keyframes ogBarFill{to{transform:scaleX(var(--w,1))}}
+@keyframes ogPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.4;transform:scale(1.3)}}
+
+@media(max-width:900px){
+.og-hero{grid-template-columns:1fr;padding:64px 24px 72px}
+.og-hero-meta,.og-h1-wrap,.og-what,.og-divider,.og-facts{grid-column:1}
+.og-hero-echo{grid-column:1;grid-row:auto;justify-self:start;width:60vw;margin-top:24px}
+.og-facts{grid-template-columns:1fr;gap:36px}
+.og-section{padding:80px 24px}
+.og-who,.og-panels,.og-dash-grid{grid-template-columns:1fr;gap:32px}
+.og-who-right{border-left:none;padding-left:0;border-top:0.5px solid var(--rule);padding-top:40px}
+.og-dash-cell-full{grid-column:1}
+.og-dash-arch{grid-template-columns:1fr;gap:8px}
+.og-nav{padding:16px 24px;gap:12px;flex-wrap:wrap}
+.og-brand-tag,.og-brand-tag-en,.og-brand-sep{display:none}
+.og-nav-right{gap:16px}
+.og-nav-right a{font-size:10px}
+.og-foot{padding:32px 24px;flex-direction:column;gap:20px}
+.og-finale{padding:90px 24px}
+}
+</style>
+
+<div class="og">
+
+<div class="og-bg-rose" aria-hidden="true">
+  <svg viewBox="-120 -120 240 240" preserveAspectRatio="xMidYMid meet">
+    <g fill="none" stroke="#F2E6D3" stroke-width="0.22">
+      <rect x="-60" y="-60" width="120" height="120" rx="18" transform="rotate(0)"/>
+      <rect x="-60" y="-60" width="120" height="120" rx="18" transform="rotate(15)"/>
+      <rect x="-60" y="-60" width="120" height="120" rx="18" transform="rotate(30)"/>
+      <rect x="-60" y="-60" width="120" height="120" rx="18" transform="rotate(45)"/>
+      <rect x="-60" y="-60" width="120" height="120" rx="18" transform="rotate(60)"/>
+      <rect x="-60" y="-60" width="120" height="120" rx="18" transform="rotate(75)"/>
+      <circle cx="0" cy="0" r="56"/>
+      <circle cx="0" cy="0" r="78"/>
+    </g>
+  </svg>
+</div>
+
+<div class="og-bg-grid"></div>
+
+<nav class="og-nav">
+  <div class="og-brand">
+    <span class="og-logo-mark">
+      <svg viewBox="-50 -50 100 100" fill="none" stroke="#F2E6D3" stroke-width="1.2">
+        <rect x="-30" y="-30" width="60" height="60" rx="10" transform="rotate(0)"/>
+        <rect x="-30" y="-30" width="60" height="60" rx="10" transform="rotate(15)"/>
+        <rect x="-30" y="-30" width="60" height="60" rx="10" transform="rotate(30)"/>
+        <rect x="-30" y="-30" width="60" height="60" rx="10" transform="rotate(45)"/>
+        <rect x="-30" y="-30" width="60" height="60" rx="10" transform="rotate(60)"/>
+        <rect x="-30" y="-30" width="60" height="60" rx="10" transform="rotate(75)"/>
+        <circle cx="0" cy="0" r="26"/>
+      </svg>
+    </span>
+    <span class="og-brand-text">
+      <span class="og-brand-name">Origeno</span>
+      <span class="og-brand-sep"></span>
+      <span class="og-brand-tag">成为<em>答案的答案</em></span>
+      <span class="og-brand-tag-en">/ be the answer AI remembers</span>
+    </span>
+  </div>
+  <div class="og-nav-right">
+    <a href="#engine">// engine</a>
+    <a href="#master">// master</a>
+    <a href="#submit">// submit ↗</a>
+  </div>
+</nav>
+
+<section class="og-hero">
+  <div class="og-hero-meta">
+    <span>∙ archival ember / v3.6</span>
+    <span>origeno.io — 2026</span>
+  </div>
+
+  <div class="og-h1-wrap">
+    <h1 class="og-h1">
+      <span class="og-h1-line"><span>世界在换一种</span></span>
+      <span class="og-h1-line"><span>方式<em class="og-h1-em">找答案</em>。</span></span>
+    </h1>
+  </div>
+
+  <div class="og-hero-echo" aria-hidden="true">
+    <svg viewBox="-60 -60 120 120" fill="none" stroke="#F2E6D3" stroke-width="0.25" opacity="0.55">
+      <rect x="-40" y="-40" width="80" height="80" rx="12" transform="rotate(0)"/>
+      <rect x="-40" y="-40" width="80" height="80" rx="12" transform="rotate(15)"/>
+      <rect x="-40" y="-40" width="80" height="80" rx="12" transform="rotate(30)"/>
+      <rect x="-40" y="-40" width="80" height="80" rx="12" transform="rotate(45)"/>
+      <rect x="-40" y="-40" width="80" height="80" rx="12" transform="rotate(60)"/>
+      <rect x="-40" y="-40" width="80" height="80" rx="12" transform="rotate(75)"/>
+      <circle cx="0" cy="0" r="36"/>
+      <circle class="dot" cx="0" cy="0" r="2" stroke="none"/>
+    </svg>
+  </div>
+
+  <div class="og-what">
+    <span class="og-what-label">GEO ∙ Generative Engine Optimization</span>
+    <p class="og-what-text">让品牌被 AI 看见、被推荐、被引用。</p>
+  </div>
+
+  <div class="og-divider"></div>
+
+  <div class="og-facts">
+    <div class="og-fact">
+      <div class="og-fact-idx">// 01 ∙ macro</div>
+      <div class="og-fact-body">Google 搜索市场份额跌破 <em>90%</em>,为 10 年来首次。</div>
+    </div>
+    <div class="og-fact">
+      <div class="og-fact-idx">// 02 ∙ brand</div>
+      <div class="og-fact-body">AI 正在替你解释你的品牌。而它讲的版本,<em>20%</em> 的情况下,严重偏离你想要的样子。</div>
+      <div class="og-fact-addendum">每一笔你花在品牌上的预算,都在为这个偏离买单。</div>
+    </div>
+    <div class="og-fact">
+      <div class="og-fact-idx">// 03 ∙ commerce</div>
+      <div class="og-fact-body">AI 正在直接替用户完成决策与交易 —— ChatGPT 支持对话内下单,美团小美可语音点餐,小龙虾 Agent 已开始吃掉电商流量。</div>
+    </div>
+  </div>
+</section>
+
+<section class="og-section" id="engine">
+  <div class="og-s-header">// 02 ∙ who &amp; engine</div>
+  
+  <div class="og-who">
+    <div class="og-who-left">
+      <h2>Origeno 以 <em>OpenAI ∙ Anthropic ∙ Perplexity</em> 等全球顶级模型驱动。</h2>
+      <p>服务来自阿里生态、大健康、法律、教育、出行等多行业的品牌团队。</p>
+    </div>
+    <div class="og-who-right">
+      <div class="og-who-stats">
+        <div class="og-stat">
+          <div class="og-stat-num">6</div>
+          <div class="og-stat-label"><strong>AI 平台持续监测</strong>豆包 / DeepSeek / 文心 / 千问 / Kimi / 智谱</div>
+        </div>
+        <div class="og-stat">
+          <div class="og-stat-num">24h</div>
+          <div class="og-stat-label"><strong>一次完整的回测循环</strong>T+1h / 2h / 4h / 6h / 12h / 24h,周而复始</div>
+        </div>
+        <div class="og-stat">
+          <div class="og-stat-num">7</div>
+          <div class="og-stat-label"><strong>可见度维度</strong>权重 / 时效 / 提及 / 情感 / 竞品 / 覆盖 / 新鲜度</div>
+        </div>
+      </div>
+
+      <div class="og-panels">
+        <div>
+          <div class="og-panel-label">// monitored surfaces</div>
+          <div class="og-panel-hint">客户要被看见的场所</div>
+          <div class="og-panel-list">
+            <div class="og-panel-item"><span class="og-panel-name">Doubao</span><span class="og-panel-sub">字节 / 豆包</span></div>
+            <div class="og-panel-item"><span class="og-panel-name">DeepSeek</span><span class="og-panel-sub">深度求索</span></div>
+            <div class="og-panel-item"><span class="og-panel-name">Ernie</span><span class="og-panel-sub">百度 / 文心</span></div>
+            <div class="og-panel-item"><span class="og-panel-name">Qwen</span><span class="og-panel-sub">阿里 / 千问</span></div>
+            <div class="og-panel-item"><span class="og-panel-name">Kimi</span><span class="og-panel-sub">月之暗面</span></div>
+            <div class="og-panel-item"><span class="og-panel-name">GLM</span><span class="og-panel-sub">智谱 AI</span></div>
+          </div>
+        </div>
+        <div>
+          <div class="og-panel-label">// master layer</div>
+          <div class="og-panel-hint">驱动 Origeno 决策的模型</div>
+          <div class="og-panel-list">
+            <div class="og-panel-item"><span class="og-panel-name">Claude Opus</span><span class="og-panel-sub">Anthropic</span></div>
+            <div class="og-panel-item"><span class="og-panel-name">Sonnet ∙ Haiku</span><span class="og-panel-sub">Anthropic</span></div>
+            <div class="og-panel-item"><span class="og-panel-name">ChatGPT</span><span class="og-panel-sub">OpenAI</span></div>
+            <div class="og-panel-item"><span class="og-panel-name">Codex</span><span class="og-panel-sub">OpenAI</span></div>
+            <div class="og-panel-item"><span class="og-panel-name">Perplexity</span><span class="og-panel-sub">Perplexity AI</span></div>
+            <div class="og-panel-item"><span class="og-panel-name">+ emerging</span><span class="og-panel-sub">持续迭代接入</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="og-section dashboard" id="master">
+  <div class="og-s-header">// 03 ∙ master layer live</div>
+  <h2 class="og-dash-h">Master 层 —— <em>而不是另一张仪表盘。</em></h2>
+  <p class="og-dash-sub">由 <em>OpenAI ∙ Anthropic ∙ Perplexity</em> 等全球顶级模型驱动 —— 每 24 小时完成一次"监测 → 分析 → 决策 → 投放 → 回测"的闭环。</p>
+
+  <div class="og-dash-grid">
+    
+    <div class="og-dash-cell">
+      <div class="og-dash-tag"><span class="og-dash-tag-live"></span>平台敏感度 ∙ platform sensitivity</div>
+      <div class="og-dash-title">哪个平台先接住你的投放?</div>
+      <div class="og-dash-barlist">
+        <div class="og-dash-bar"><span class="og-dash-bar-name">Kimi</span><div class="og-dash-bar-track"><div class="og-dash-bar-fill ember" style="--w:0.96;animation-delay:0.2s"></div></div><span class="og-dash-bar-val">0.68</span></div>
+        <div class="og-dash-bar"><span class="og-dash-bar-name">Ernie</span><div class="og-dash-bar-track"><div class="og-dash-bar-fill" style="--w:0.91;animation-delay:0.3s"></div></div><span class="og-dash-bar-val">0.71</span></div>
+        <div class="og-dash-bar"><span class="og-dash-bar-name">DeepSeek</span><div class="og-dash-bar-track"><div class="og-dash-bar-fill" style="--w:0.87;animation-delay:0.4s"></div></div><span class="og-dash-bar-val">0.73</span></div>
+        <div class="og-dash-bar"><span class="og-dash-bar-name">Doubao</span><div class="og-dash-bar-track"><div class="og-dash-bar-fill" style="--w:0.82;animation-delay:0.5s"></div></div><span class="og-dash-bar-val">0.75</span></div>
+        <div class="og-dash-bar"><span class="og-dash-bar-name">Qwen</span><div class="og-dash-bar-track"><div class="og-dash-bar-fill" style="--w:0.78;animation-delay:0.6s"></div></div><span class="og-dash-bar-val">0.75</span></div>
+        <div class="og-dash-bar"><span class="og-dash-bar-name">GLM</span><div class="og-dash-bar-track"><div class="og-dash-bar-fill" style="--w:0.62;animation-delay:0.7s"></div></div><span class="og-dash-bar-val">0.80</span></div>
+      </div>
+    </div>
+
+    <div class="og-dash-cell">
+      <div class="og-dash-tag"><span class="og-dash-tag-live"></span>可见度指数 ∙ visibility index</div>
+      <div class="og-dash-title">投放 28 天后的轨迹</div>
+      <div class="og-dash-bignum"><em>+34</em><span style="font-size:0.4em;color:var(--ink-dim);margin-left:8px;font-style:normal;font-family:var(--mono)">pts</span></div>
+      <div class="og-dash-smallnum">baseline 42 → current 76 ∙ 本客户当前</div>
+      <svg class="og-dash-spark" viewBox="0 0 300 80" preserveAspectRatio="none">
+        <path class="area" d="M0,58 L20,60 L40,55 L60,52 L80,48 L100,44 L120,42 L140,38 L160,32 L180,28 L200,26 L220,22 L240,20 L260,16 L280,14 L300,12 L300,80 L0,80 Z"/>
+        <path class="line" d="M0,58 L20,60 L40,55 L60,52 L80,48 L100,44 L120,42 L140,38 L160,32 L180,28 L200,26 L220,22 L240,20 L260,16 L280,14 L300,12"/>
+      </svg>
+    </div>
+
+    <div class="og-dash-cell">
+      <div class="og-dash-tag"><span class="og-dash-tag-live"></span>实时日志 ∙ master log</div>
+      <div class="og-dash-title">系统正在做什么?</div>
+      <div class="og-dash-log">
+        <div class="og-dash-log-entry"><span class="og-dash-log-time">03:14</span><span class="og-dash-log-tag">采样</span><span class="og-dash-log-text">deepseek ∙ 5 keywords</span></div>
+        <div class="og-dash-log-entry"><span class="og-dash-log-time">03:18</span><span class="og-dash-log-tag">分析</span><span class="og-dash-log-text">term bottleneck detected</span></div>
+        <div class="og-dash-log-entry"><span class="og-dash-log-time">03:22</span><span class="og-dash-log-tag">决策</span><span class="og-dash-log-text">goal shift ∙ term → rank</span></div>
+        <div class="og-dash-log-entry"><span class="og-dash-log-time">03:30</span><span class="og-dash-log-tag">投放</span><span class="og-dash-log-text">zhihu ∙ content dispatched</span></div>
+        <div class="og-dash-log-entry"><span class="og-dash-log-time">04:30</span><span class="og-dash-log-tag">回测</span><span class="og-dash-log-text">T+1h ∙ 6 platforms</span></div>
+        <div class="og-dash-log-entry"><span class="og-dash-log-time">06:30</span><span class="og-dash-log-tag">权重</span><span class="og-dash-log-text">source matrix updated</span></div>
+      </div>
+    </div>
+
+    <div class="og-dash-cell og-dash-cell-full">
+      <div class="og-dash-tag"><span class="og-dash-tag-live"></span>系统架构 ∙ master architecture</div>
+      <div class="og-dash-title">从监测到决策,每 24 小时一个闭环,周而复始。</div>
+      <div class="og-dash-arch">
+        <div class="og-dash-arch-node"><strong>持续监测</strong><span>continuous sampling</span></div>
+        <span class="og-dash-arch-arrow">→</span>
+        <div class="og-dash-arch-node main"><strong>Master 决策</strong><span>insight & action</span></div>
+        <span class="og-dash-arch-arrow">→</span>
+        <div class="og-dash-arch-node"><strong>内容投放</strong><span>placement & recheck</span></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="og-finale" id="submit">
+  <div class="og-finale-rose" aria-hidden="true">
+    <svg viewBox="-100 -100 200 200" fill="none" stroke="#F2E6D3" stroke-width="0.3">
+      <rect x="-60" y="-60" width="120" height="120" rx="14" transform="rotate(0)"/>
+      <rect x="-60" y="-60" width="120" height="120" rx="14" transform="rotate(15)"/>
+      <rect x="-60" y="-60" width="120" height="120" rx="14" transform="rotate(30)"/>
+      <rect x="-60" y="-60" width="120" height="120" rx="14" transform="rotate(45)"/>
+      <rect x="-60" y="-60" width="120" height="120" rx="14" transform="rotate(60)"/>
+      <rect x="-60" y="-60" width="120" height="120" rx="14" transform="rotate(75)"/>
+      <circle cx="0" cy="0" r="52"/>
+      <circle cx="0" cy="0" r="78"/>
+    </svg>
+  </div>
+  <div class="og-finale-content">
+    <div class="og-finale-label">// finale</div>
+    <h2 class="og-finale-h">和 Origeno 一起,<br>助您成为<em>答案的答案</em>。</h2>
+    <div class="og-finale-en">With Origeno, <em style="color:var(--ember)">be the answer</em> AI remembers.</div>
+    <a href="mailto:hello@origeno.io" class="og-finale-cta">
+      <span>get in touch</span>
+      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.2">
+        <line x1="2" y1="12" x2="12" y2="2"/>
+        <polyline points="5,2 12,2 12,9"/>
+      </svg>
+    </a>
+  </div>
+</section>
+
+<footer class="og-foot">
+  <div class="og-foot-left">
+    <strong>数据源 ∙ 第三方研究</strong><br>
+    origeno engine 2026 q2 国内 ai 平台监测<br>
+    © origeno, 2026
+  </div>
+  <div class="og-foot-right">
+    hello@origeno.io<br>
+    origeno.io
+  </div>
+</footer>
+
+</div>

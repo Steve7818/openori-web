@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Origeno · AI 偏离度扫描</title>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/instrument-serif@5.0.0/index.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/instrument-sans@5.0.0/400.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/instrument-sans@5.0.0/500.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono@5.0.0/400.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono@5.0.0/500.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/noto-serif-sc@5.0.0/400.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/noto-sans-sc@5.0.0/400.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/noto-sans-sc@5.0.0/500.css">
+
+<style>
+:root {
+  --bg: #FFFFFF;
+  --surface: #F7F8FA;
+  --surface-2: #EEF1F6;
+  --ink: #0F1E3A;
+  --ink-dim: #4A5878;
+  --ink-faint: #8B96B0;
+  --line: #E3E7EF;
+  --line-strong: #C7CFDD;
+  --champagne: #C8A45E;
+  --champagne-dim: #E6D3A5;
+  --champagne-bg: #F8F2E2;
+  --navy: #0F1E3A;
+  --navy-hover: #1B3566;
+  --danger: #A83E3E;
+  --success: #3A7A5F;
+
+  --serif: 'Instrument Serif', 'Noto Serif SC', serif;
+  --sans: 'Instrument Sans', 'Noto Sans SC', sans-serif;
+  --mono: 'JetBrains Mono', 'Courier New', monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body {
+  margin: 0; padding: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  line-height: 1.6;
+}
+
+em { font-style: italic; color: var(--champagne); font-weight: 400; }
+
+.guide {
+  background: var(--navy);
+  color: #fff;
+  padding: 12px 24px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-align: center;
+}
+.guide em { color: var(--champagne); }
+
+.hero {
+  min-height: 100vh;
+  padding: 60px 56px;
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 72px;
+  align-items: center;
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+.hero-left .meta {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-faint);
+  letter-spacing: 0.15em;
+  margin-bottom: 28px;
+  display: flex;
+  gap: 24px;
+}
+
+.hero-h1 {
+  font-family: var(--serif);
+  font-size: clamp(52px, 6.5vw, 88px);
+  line-height: 1;
+  letter-spacing: -0.035em;
+  color: var(--navy);
+  font-weight: 400;
+  margin: 0 0 36px;
+}
+.hero-h1 em { color: var(--champagne); font-style: italic; }
+
+.what {
+  display: flex; gap: 24px;
+  padding: 22px 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 0;
+}
+.what-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--champagne);
+  letter-spacing: 0.15em;
+  padding-top: 4px;
+  white-space: nowrap;
+}
+.what-text {
+  font-family: var(--serif);
+  font-size: 22px;
+  color: var(--ink);
+  font-style: italic;
+  margin: 0;
+}
+
+/* ============================================
+   Lens Card
+   ============================================ */
+.lens-card {
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 0;
+  max-width: 520px;
+  width: 100%;
+  justify-self: center;
+  overflow: hidden;
+  box-shadow: 0 8px 40px rgba(15, 30, 58, 0.06);
+}
+
+.lens-topbar {
+  background: var(--navy);
+  color: #fff;
+  padding: 14px 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+}
+.lens-topbar-left {
+  display: flex; align-items: center; gap: 10px;
+}
+.lens-topbar-dot {
+  width: 8px; height: 8px;
+  background: var(--champagne);
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+.lens-topbar-right { color: rgba(255,255,255,0.5); }
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(1.2); }
+}
+
+.lens-body {
+  padding: 32px 32px 0;
+}
+
+.lens-headline {
+  margin-bottom: 28px;
+}
+.lens-headline-serif {
+  font-family: var(--serif);
+  font-size: 34px;
+  color: var(--navy);
+  font-weight: 400;
+  line-height: 1.15;
+  margin: 0 0 10px;
+  letter-spacing: -0.01em;
+}
+.lens-headline-serif em { color: var(--champagne); font-style: italic; }
+.lens-headline-desc {
+  font-family: var(--sans);
+  font-size: 14px;
+  color: var(--ink-dim);
+  margin: 0;
+  line-height: 1.65;
+}
+.lens-headline-desc strong {
+  color: var(--navy);
+  font-weight: 500;
+}
+
+.lens-field {
+  margin-bottom: 16px;
+}
+.lens-field-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink);
+}
+.lens-field-num {
+  display: inline-flex;
+  width: 20px;
+  height: 20px;
+  background: var(--navy);
+  color: #fff;
+  border-radius: 50%;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 500;
+}
+.lens-input-wrap {
+  position: relative;
+}
+.lens-input {
+  width: 100%;
+  padding: 16px 20px;
+  background: var(--surface);
+  border: 1.5px solid var(--line);
+  border-radius: 8px;
+  font-family: var(--sans);
+  font-size: 14px;
+  color: var(--ink);
+  outline: none;
+  transition: all 0.2s;
+}
+.lens-input:focus {
+  border-color: var(--champagne);
+  background: var(--bg);
+  box-shadow: 0 0 0 4px var(--champagne-bg);
+}
+.lens-input::placeholder {
+  color: var(--ink-faint);
+}
+
+.lens-submit-big {
+  width: 100%;
+  padding: 16px 24px;
+  background: var(--navy);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-family: var(--sans);
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 12px;
+}
+.lens-submit-big:hover {
+  background: var(--champagne);
+  color: var(--navy);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(200, 164, 94, 0.3);
+}
+.lens-submit-big:hover .arrow { transform: translateX(4px); }
+.lens-submit-big .arrow {
+  font-family: var(--mono);
+  transition: transform 0.2s;
+}
+
+.lens-promise {
+  margin-top: 18px;
+  padding: 16px 20px;
+  background: var(--champagne-bg);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.lens-promise-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--sans);
+  font-size: 13px;
+  color: var(--navy);
+}
+.lens-promise-row svg {
+  flex-shrink: 0;
+  color: var(--champagne);
+}
+.lens-promise-row strong {
+  font-weight: 500;
+}
+
+.lens-logos {
+  margin-top: 24px;
+  padding: 20px 0 24px;
+  border-top: 1px solid var(--line);
+}
+.lens-logos-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--ink-faint);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+  text-align: center;
+  font-weight: 500;
+}
+.lens-logos-scroll {
+  overflow: hidden;
+  position: relative;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+.lens-logos-track {
+  display: flex;
+  gap: 0;
+  animation: logoScroll 25s linear infinite;
+  width: fit-content;
+}
+.lens-logo-item {
+  flex-shrink: 0;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  height: 48px;
+  border-right: 1px solid var(--line);
+}
+.lens-logo-item:last-child { border-right: none; }
+.lens-logo-text {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 17px;
+  color: var(--ink);
+  font-weight: 400;
+  white-space: nowrap;
+}
+.lens-logo-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: 11px;
+  flex-shrink: 0;
+}
+
+@keyframes logoScroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.lens-footer {
+  padding: 16px 28px;
+  background: var(--surface);
+  border-top: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--ink-faint);
+  letter-spacing: 0.1em;
+}
+.lens-quota {
+  color: var(--champagne);
+  font-weight: 500;
+}
+.lens-live {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.lens-live-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--success);
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+/* ============================================
+   Modal
+   ============================================ */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 30, 58, 0.7);
+  backdrop-filter: blur(12px);
+  z-index: 1000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+}
+.modal-backdrop.active {
+  display: flex;
+  animation: backdropIn 0.3s ease-out;
+}
+
+@keyframes backdropIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal {
+  background: var(--bg);
+  border-radius: 16px;
+  max-width: 1200px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 40px 48px 48px;
+  position: relative;
+  animation: modalIn 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+@keyframes modalIn {
+  from { opacity: 0; transform: scale(0.96) translateY(12px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.modal-close {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--ink-dim);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-family: var(--mono);
+  font-size: 16px;
+  transition: all 0.2s;
+}
+.modal-close:hover {
+  border-color: var(--champagne);
+  color: var(--champagne);
+}
+
+.modal-header {
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--line);
+}
+.modal-eyebrow {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--champagne);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 500;
+  margin-bottom: 12px;
+}
+.modal-question {
+  font-family: var(--serif);
+  font-size: 28px;
+  color: var(--navy);
+  font-weight: 400;
+  margin: 0;
+  line-height: 1.3;
+}
+.modal-question-brand {
+  color: var(--champagne);
+  font-style: italic;
+}
+
+.lens-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+@media (max-width: 980px) {
+  .lens-grid { grid-template-columns: repeat(2, 1fr); }
+  .hero { grid-template-columns: 1fr; gap: 48px; padding: 40px 24px; }
+}
+@media (max-width: 640px) {
+  .lens-grid { grid-template-columns: 1fr; }
+}
+
+.lens-panel {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 20px 20px 24px;
+  min-height: 320px;
+  display: flex;
+  flex-direction: column;
+  transition: border-color 0.3s;
+  position: relative;
+}
+.lens-panel.streaming { border-color: var(--champagne); }
+.lens-panel.done { border-color: var(--line-strong); }
+
+.lens-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 16px;
+}
+.lens-panel-name-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.lens-panel-logo {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+.lens-panel-name {
+  font-family: var(--serif);
+  font-size: 17px;
+  color: var(--navy);
+  font-weight: 400;
+}
+.lens-panel-latency {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--ink-faint);
+  letter-spacing: 0.05em;
+}
+.lens-panel-latency.fast { color: var(--success); }
+.lens-panel-latency.slow { color: var(--danger); }
+
+.lens-panel-content {
+  font-family: var(--sans);
+  font-size: 13px;
+  color: var(--ink);
+  line-height: 1.65;
+  flex-grow: 1;
+}
+
+.lens-skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.skeleton-bar {
+  height: 10px;
+  background: linear-gradient(90deg, var(--line) 0%, var(--surface-2) 50%, var(--line) 100%);
+  background-size: 200% 100%;
+  border-radius: 5px;
+  animation: skeletonShimmer 1.4s infinite;
+}
+.skeleton-bar.w-full { width: 100%; }
+.skeleton-bar.w-90 { width: 90%; }
+.skeleton-bar.w-75 { width: 75%; }
+.skeleton-bar.w-60 { width: 60%; }
+
+@keyframes skeletonShimmer {
+  from { background-position: 200% 0; }
+  to { background-position: -200% 0; }
+}
+
+.typing-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 14px;
+  background: var(--champagne);
+  margin-left: 2px;
+  vertical-align: middle;
+  animation: blink 0.9s step-end infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.brand-highlight {
+  background: var(--champagne-bg);
+  color: var(--navy);
+  padding: 1px 6px;
+  font-weight: 500;
+  border-radius: 3px;
+}
+
+.deviation-row {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--line);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--ink-faint);
+  letter-spacing: 0.05em;
+}
+.deviation-score {
+  font-weight: 500;
+  font-family: var(--sans);
+  letter-spacing: 0;
+  font-size: 12px;
+}
+.deviation-score.low { color: var(--success); }
+.deviation-score.med { color: var(--champagne); }
+.deviation-score.high { color: var(--danger); }
+
+.modal-cta {
+  padding: 40px;
+  background: linear-gradient(135deg, var(--surface) 0%, var(--champagne-bg) 100%);
+  border-radius: 12px;
+  text-align: center;
+  opacity: 0;
+  animation: fadeInUp 0.8s ease-out forwards;
+  animation-delay: 3.5s;
+}
+.modal-cta h3 {
+  font-family: var(--serif);
+  font-size: 32px;
+  color: var(--navy);
+  font-weight: 400;
+  margin: 0 0 8px;
+}
+.modal-cta h3 em { color: var(--champagne); }
+.modal-cta p {
+  font-family: var(--sans);
+  font-size: 15px;
+  color: var(--ink-dim);
+  margin: 0 0 28px;
+}
+.modal-cta-buttons {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.cta-primary {
+  padding: 14px 36px;
+  background: var(--navy);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-family: var(--sans);
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.cta-primary:hover { background: var(--navy-hover); }
+.cta-secondary {
+  padding: 14px 32px;
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid var(--line-strong);
+  border-radius: 4px;
+  font-family: var(--sans);
+  font-size: 15px;
+  cursor: pointer;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Platform brand colors (logo backgrounds) */
+.logo-deepseek { background: #4D6BFE; }
+.logo-kimi     { background: #1F1F22; }
+.logo-qwen     { background: #5F5FDD; }
+.logo-zhipu    { background: #2B7FFF; }
+.logo-ernie    { background: #E62E5C; }
+.logo-doubao   { background: #4A90E2; }
+
+</style>
+</head>
+<body>
+
+<div class="guide">
+  ◆ GEO LENS v3 · <em>文案全部重写 · LLM 卡片加 logo · 人话版</em> · 输入品牌和问题查看效果
+</div>
+
+<section class="hero">
+  <div class="hero-left">
+    <div class="meta">
+      <span>01 · Origeno v2</span>
+      <span>生成式引擎优化咨询</span>
+    </div>
+    <h1 class="hero-h1">
+      世界在换一种<br>方式找<em>答案。</em>
+    </h1>
+    <div class="what">
+      <span class="what-label">// What is GEO</span>
+      <p class="what-text">让品牌被 AI <em>看见、被推荐、被引用</em>。</p>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="lens-card">
+
+      <div class="lens-topbar">
+        <div class="lens-topbar-left">
+          <div class="lens-topbar-dot"></div>
+          <span>ORIGENO · AI 偏离度扫描</span>
+        </div>
+        <span class="lens-topbar-right">LIVE</span>
+      </div>
+
+      <div class="lens-body">
+
+        <div class="lens-headline">
+          <h2 class="lens-headline-serif">AI 在怎么<br>介绍你的<em>品牌?</em></h2>
+          <p class="lens-headline-desc">输入品牌名和行业问题, <strong>30 秒</strong>看到豆包 / DeepSeek / 千问 / 文心 / Kimi / 智谱的真实回答, 附 <strong>AI 偏离度</strong>评分。</p>
+        </div>
+
+        <div class="lens-field">
+          <div class="lens-field-label">
+            <span class="lens-field-num">1</span>
+            <span>品牌名</span>
+          </div>
+          <div class="lens-input-wrap">
+            <input type="text" class="lens-input" id="lens-b" placeholder="Babycare / 珀莱雅 / 公司名" />
+          </div>
+        </div>
+
+        <div class="lens-field">
+          <div class="lens-field-label">
+            <span class="lens-field-num">2</span>
+            <span>行业问题</span>
+          </div>
+          <div class="lens-input-wrap">
+            <input type="text" class="lens-input" id="lens-q" placeholder="推荐国产母婴品牌 / 新能源汽车怎么选..." />
+          </div>
+        </div>
+
+        <button class="lens-submit-big" onclick="launchLens()">
+          <span>开始扫描</span>
+          <span class="arrow">→</span>
+        </button>
+
+        <div class="lens-promise">
+          <div class="lens-promise-row">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
+              <circle cx="7" cy="7" r="6"/><path d="M4 7l2 2 4-4"/>
+            </svg>
+            <span>真实调用 6 大平台, <strong>非静态模拟</strong></span>
+          </div>
+          <div class="lens-promise-row">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
+              <circle cx="7" cy="7" r="6"/><path d="M4 7l2 2 4-4"/>
+            </svg>
+            <span>自动生成 <strong>AI 偏离度</strong>评分</span>
+          </div>
+          <div class="lens-promise-row">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
+              <circle cx="7" cy="7" r="6"/><path d="M4 7l2 2 4-4"/>
+            </svg>
+            <span><strong>30 秒出结果</strong> · 免费 · 无需注册</span>
+          </div>
+        </div>
+
+        <div class="lens-logos">
+          <div class="lens-logos-label">覆盖 6 大国内 AI 平台</div>
+          <div class="lens-logos-scroll">
+            <div class="lens-logos-track">
+              <div class="lens-logo-item"><span class="lens-logo-icon logo-doubao">豆</span><span class="lens-logo-text">豆包</span></div>
+              <div class="lens-logo-item"><span class="lens-logo-icon logo-deepseek">DS</span><span class="lens-logo-text">DeepSeek</span></div>
+              <div class="lens-logo-item"><span class="lens-logo-icon logo-qwen">千</span><span class="lens-logo-text">通义千问</span></div>
+              <div class="lens-logo-item"><span class="lens-logo-icon logo-ernie">文</span><span class="lens-logo-text">文心一言</span></div>
+              <div class="lens-logo-item"><span class="lens-logo-icon logo-kimi">K</span><span class="lens-logo-text">Kimi</span></div>
+              <div class="lens-logo-item"><span class="lens-logo-icon logo-zhipu">智</span><span class="lens-logo-text">智谱 GLM</span></div>
+              <!-- 克隆 -->
+              <div class="lens-logo-item"><span class="lens-logo-icon logo-doubao">豆</span><span class="lens-logo-text">豆包</span></div>
+              <div class="lens-logo-item"><span class="lens-logo-icon logo-deepseek">DS</span><span class="lens-logo-text">DeepSeek</span></div>
+              <div class="lens-logo-item"><span class="lens-logo-icon logo-qwen">千</span><span class="lens-logo-text">通义千问</span></div>
+              <div class="lens-logo-item"><span class="lens-logo-icon logo-ernie">文</span><span class="lens-logo-text">文心一言</span></div>
+              <div class="lens-logo-item"><span class="lens-logo-icon logo-kimi">K</span><span class="lens-logo-text">Kimi</span></div>
+              <div class="lens-logo-item"><span class="lens-logo-icon logo-zhipu">智</span><span class="lens-logo-text">智谱 GLM</span></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="lens-footer">
+        <span class="lens-quota">今日剩余 2/2 次</span>
+        <div class="lens-live">
+          <div class="lens-live-dot"></div>
+          <span>过去 24h · 3,842 次扫描</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- Modal -->
+<div class="modal-backdrop" id="modal-backdrop">
+  <div class="modal">
+    <button class="modal-close" onclick="closeLens()">×</button>
+    <div class="modal-header">
+      <div class="modal-eyebrow">// AI 偏离度扫描报告 · 6 大平台</div>
+      <h2 class="modal-question">
+        <span id="modal-question">行业问题</span>
+        · <span class="modal-question-brand" id="modal-brand">品牌</span>
+      </h2>
+    </div>
+
+    <div class="lens-grid">
+      <div class="lens-panel" data-platform="deepseek">
+        <div class="lens-panel-header">
+          <div class="lens-panel-name-group">
+            <div class="lens-panel-logo logo-deepseek">DS</div>
+            <div class="lens-panel-name">DeepSeek</div>
+          </div>
+          <div class="lens-panel-latency">⏳ 查询中</div>
+        </div>
+        <div class="lens-panel-content">
+          <div class="lens-skeleton">
+            <div class="skeleton-bar w-full"></div>
+            <div class="skeleton-bar w-90"></div>
+            <div class="skeleton-bar w-75"></div>
+            <div class="skeleton-bar w-60"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="lens-panel" data-platform="kimi">
+        <div class="lens-panel-header">
+          <div class="lens-panel-name-group">
+            <div class="lens-panel-logo logo-kimi">K</div>
+            <div class="lens-panel-name">Kimi</div>
+          </div>
+          <div class="lens-panel-latency">⏳ 查询中</div>
+        </div>
+        <div class="lens-panel-content">
+          <div class="lens-skeleton">
+            <div class="skeleton-bar w-full"></div>
+            <div class="skeleton-bar w-75"></div>
+            <div class="skeleton-bar w-90"></div>
+            <div class="skeleton-bar w-60"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="lens-panel" data-platform="qwen">
+        <div class="lens-panel-header">
+          <div class="lens-panel-name-group">
+            <div class="lens-panel-logo logo-qwen">千</div>
+            <div class="lens-panel-name">通义千问</div>
+          </div>
+          <div class="lens-panel-latency">⏳ 查询中</div>
+        </div>
+        <div class="lens-panel-content">
+          <div class="lens-skeleton">
+            <div class="skeleton-bar w-90"></div>
+            <div class="skeleton-bar w-full"></div>
+            <div class="skeleton-bar w-60"></div>
+            <div class="skeleton-bar w-75"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="lens-panel" data-platform="zhipu">
+        <div class="lens-panel-header">
+          <div class="lens-panel-name-group">
+            <div class="lens-panel-logo logo-zhipu">智</div>
+            <div class="lens-panel-name">智谱 GLM</div>
+          </div>
+          <div class="lens-panel-latency">⏳ 查询中</div>
+        </div>
+        <div class="lens-panel-content">
+          <div class="lens-skeleton">
+            <div class="skeleton-bar w-full"></div>
+            <div class="skeleton-bar w-60"></div>
+            <div class="skeleton-bar w-90"></div>
+            <div class="skeleton-bar w-75"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="lens-panel" data-platform="ernie">
+        <div class="lens-panel-header">
+          <div class="lens-panel-name-group">
+            <div class="lens-panel-logo logo-ernie">文</div>
+            <div class="lens-panel-name">文心一言</div>
+          </div>
+          <div class="lens-panel-latency">⏳ 查询中</div>
+        </div>
+        <div class="lens-panel-content">
+          <div class="lens-skeleton">
+            <div class="skeleton-bar w-75"></div>
+            <div class="skeleton-bar w-full"></div>
+            <div class="skeleton-bar w-90"></div>
+            <div class="skeleton-bar w-60"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="lens-panel" data-platform="doubao">
+        <div class="lens-panel-header">
+          <div class="lens-panel-name-group">
+            <div class="lens-panel-logo logo-doubao">豆</div>
+            <div class="lens-panel-name">豆包</div>
+          </div>
+          <div class="lens-panel-latency">⏳ 查询中</div>
+        </div>
+        <div class="lens-panel-content">
+          <div class="lens-skeleton">
+            <div class="skeleton-bar w-60"></div>
+            <div class="skeleton-bar w-90"></div>
+            <div class="skeleton-bar w-75"></div>
+            <div class="skeleton-bar w-full"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-cta">
+      <h3>你的 <em>AI 偏离度</em>评分已生成</h3>
+      <p>AI 时代, 品牌不在答案里 = 品牌不存在。让 Origeno 把你的偏离度降下来。</p>
+      <div class="modal-cta-buttons">
+        <button class="cta-primary">立即免费 GEO 诊断 →</button>
+        <button class="cta-secondary">再扫一次(剩 1/2)</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const MOCK_ANSWERS = {
+  deepseek: {
+    latency: 920, speed: 'fast', devScore: 'low', devLabel: '低 · 被充分提及',
+    text: `国产母婴品牌推荐以下几个:\n\n1. <b>Babycare</b> — 新消费品牌代表, 纸尿裤品类电商销量前三\n2. <b>全棉时代</b> — 全棉概念引领者\n3. 可优比 KUB — 性价比之选`
+  },
+  kimi: {
+    latency: 810, speed: 'fast', devScore: 'low', devLabel: '低 · 被充分提及',
+    text: `好的! 国产母婴领域推荐以下品牌:\n\n• <b>Babycare</b>: 成立于2014年, 全品类一站式\n• 好孩子 Goodbaby: 婴儿车类目头部\n• 飞鹤: 奶粉领域龙头`
+  },
+  qwen: {
+    latency: 1280, speed: 'medium', devScore: 'high', devLabel: '高 · 未被提及',
+    text: `国产母婴品牌中比较知名的有:\n\n<b>全棉时代</b>、<b>好孩子</b>、<b>巴拉巴拉</b>。\n\n其中全棉时代在婴童纺织品方面口碑突出。`
+  },
+  zhipu: {
+    latency: 1640, speed: 'medium', devScore: 'high', devLabel: '高 · 未被提及',
+    text: `国产母婴品牌推荐:\n\n• 好孩子\n• 全棉时代\n• 巴拉巴拉\n\n以上品牌在国内母婴市场认可度较高。`
+  },
+  ernie: {
+    latency: 1680, speed: 'medium', devScore: 'med', devLabel: '中 · 提及但排位偏后',
+    text: `国产母婴品牌方面可以考虑:\n\n<b>全棉时代</b>、<b>Babycare</b>、巴拉巴拉、好孩子。\n\nBabycare 作为新锐品牌, 近几年影响力较强。`
+  },
+  doubao: {
+    latency: 4200, speed: 'slow', devScore: 'high', devLabel: '高 · 未被提及',
+    text: `推荐以下国产母婴品牌:\n\n1. 全棉时代 — 主打全棉概念\n2. 好孩子 — 老牌母婴品牌, 婴儿车领先\n3. 巴拉巴拉 — 童装代表`
+  }
+};
+
+function launchLens() {
+  const q = document.getElementById('lens-q').value || '推荐国产母婴品牌';
+  const b = document.getElementById('lens-b').value || 'Babycare';
+
+  document.getElementById('modal-question').textContent = q;
+  document.getElementById('modal-brand').textContent = b;
+  document.getElementById('modal-backdrop').classList.add('active');
+
+  resetPanels();
+
+  Object.entries(MOCK_ANSWERS).forEach(([platform, data]) => {
+    setTimeout(() => streamPanel(platform, data, b), data.latency);
+  });
+}
+
+function resetPanels() {
+  document.querySelectorAll('.lens-panel').forEach(panel => {
+    panel.classList.remove('streaming', 'done');
+    const content = panel.querySelector('.lens-panel-content');
+    const latency = panel.querySelector('.lens-panel-latency');
+    content.innerHTML = `<div class="lens-skeleton"><div class="skeleton-bar w-full"></div><div class="skeleton-bar w-90"></div><div class="skeleton-bar w-75"></div><div class="skeleton-bar w-60"></div></div>`;
+    latency.className = 'lens-panel-latency';
+    latency.textContent = '⏳ 查询中';
+  });
+  const ctaEl = document.querySelector('.modal-cta');
+  ctaEl.style.animation = 'none';
+  ctaEl.style.opacity = '0';
+  setTimeout(() => { ctaEl.style.animation = ''; }, 50);
+}
+
+function streamPanel(platform, data, userBrand) {
+  const panel = document.querySelector(`.lens-panel[data-platform="${platform}"]`);
+  const content = panel.querySelector('.lens-panel-content');
+  const latency = panel.querySelector('.lens-panel-latency');
+
+  const latencyText = (data.latency / 1000).toFixed(1) + 's';
+  const speedClass = data.speed === 'fast' ? 'fast' : (data.speed === 'slow' ? 'slow' : '');
+  latency.className = `lens-panel-latency ${speedClass}`;
+  latency.textContent = '⚡ ' + latencyText;
+
+  panel.classList.add('streaming');
+
+  let processedText = data.text;
+  if (userBrand) {
+    const brandRegex = new RegExp(userBrand, 'gi');
+    processedText = processedText.replace(brandRegex, `<span class="brand-highlight">${userBrand}</span>`);
+  }
+
+  content.innerHTML = '<span id="typing-' + platform + '"></span><span class="typing-cursor"></span>';
+
+  const target = document.getElementById('typing-' + platform);
+  let i = 0;
+  const typingSpeed = 15;
+
+  const typeInterval = setInterval(() => {
+    if (i >= processedText.length) {
+      clearInterval(typeInterval);
+      content.innerHTML = processedText.replace(/\n/g, '<br>') +
+        `<div class="deviation-row">
+          <span>AI 偏离度</span>
+          <span class="deviation-score ${data.devScore}">${data.devLabel}</span>
+        </div>`;
+      panel.classList.remove('streaming');
+      panel.classList.add('done');
+      return;
+    }
+    let char = processedText[i];
+    if (char === '<') {
+      const closeIdx = processedText.indexOf('>', i);
+      if (closeIdx !== -1) {
+        target.innerHTML += processedText.substring(i, closeIdx + 1);
+        i = closeIdx + 1;
+        return;
+      }
+    }
+    if (char === '\n') {
+      target.innerHTML += '<br>';
+    } else {
+      target.innerHTML += char;
+    }
+    i++;
+  }, typingSpeed);
+}
+
+function closeLens() {
+  document.getElementById('modal-backdrop').classList.remove('active');
+}
+
+document.getElementById('lens-b').addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') document.getElementById('lens-q').focus();
+});
+document.getElementById('lens-q').addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') launchLens();
+});
+document.getElementById('modal-backdrop').addEventListener('click', (e) => {
+  if (e.target.id === 'modal-backdrop') closeLens();
+});
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeLens();
+});
+</script>
+
+</body>
+</html>

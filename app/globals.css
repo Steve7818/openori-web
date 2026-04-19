@@ -1,27 +1,62 @@
 @import "tailwindcss";
 
-/* 全局基础 reset */
-* {
+/* Lumen Azure Design Tokens */
+:root {
+  /* Background layers */
+  --bg: #FFFFFF;
+  --surface: #F7F8FA;
+  --surface-2: #EEF1F6;
+
+  /* Ink (text colors) */
+  --ink: #0F1E3A;
+  --ink-dim: #4A5878;
+  --ink-faint: #8B96B0;
+
+  /* Lines & Borders */
+  --line: #E3E7EF;
+  --line-strong: #C7CFDD;
+
+  /* Accent · Champagne Gold */
+  --champagne: #C8A45E;
+  --champagne-dim: #E6D3A5;
+  --champagne-bg: #F8F2E2;
+
+  /* Navy (CTA buttons) */
+  --navy: #0F1E3A;
+  --navy-hover: #1B3566;
+
+  /* State colors */
+  --success: #3A7A5F;
+  --danger: #A83E3E;
+
+  /* Font stacks */
+  --serif: 'Instrument Serif', 'Noto Serif SC', 'Songti SC', serif;
+  --sans: 'Instrument Sans', 'Noto Sans SC', 'PingFang SC', sans-serif;
+  --mono: 'JetBrains Mono', 'Courier New', monospace;
+}
+
+/* Global reset */
+*, *::before, *::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-body {
-  background: #0A0A0A;
-  color: #F2E6D3;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+html, body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
   -webkit-font-smoothing: antialiased;
   line-height: 1.6;
 }
 
-/* 选中态 */
+/* Selection */
 ::selection {
-  background: #D97757;
-  color: #0A0A0A;
+  background: var(--champagne-bg);
+  color: var(--navy);
 }
 
 ::-moz-selection {
-  background: #D97757;
-  color: #0A0A0A;
+  background: var(--champagne-bg);
+  color: var(--navy);
 }
