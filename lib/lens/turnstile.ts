@@ -43,12 +43,14 @@ export function renderTurnstile(
     const widgetId = window.turnstile.render(container, {
       sitekey: siteKey,
       theme: 'light',
-      size: 'invisible',
       callback: (token: string) => {
         // Token ready
       },
       'error-callback': () => {
         reject(new Error('Turnstile verification failed'));
+      },
+      'expired-callback': () => {
+        console.warn('Turnstile token expired');
       },
     });
 
