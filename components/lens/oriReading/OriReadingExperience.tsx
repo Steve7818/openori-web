@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import styles from './OriReadingExperience.module.css';
 import { PLATFORM_SLIDES, type Slide } from './slides';
 import type { PanelsState } from '../useLensStream';
@@ -29,9 +29,7 @@ export default function OriReadingExperience({
   onOpenQR,
 }: OriReadingExperienceProps) {
   const [currentIdx, setCurrentIdx] = useState(0);
-  const [isTransitioning, setIsTransitioning] = useState(false);
   const [visitedSlides, setVisitedSlides] = useState<Set<number>>(new Set([0]));
-  const stageRef = useRef<HTMLDivElement>(null);
 
   const slides: Slide[] = useMemo(
     () => [
@@ -45,83 +43,41 @@ export default function OriReadingExperience({
 
   const totalSlides = slides.length;
 
-  const goTo = (newIdx: number, direction: 'next' | 'prev') => {
-    if (isTransitioning) return;
+  const goTo = (newIdx: number) => {
     if (newIdx < 0 || newIdx >= totalSlides) return;
     if (newIdx === currentIdx) return;
-
-    setIsTransitioning(true);
-    const stage = stageRef.current;
-    if (!stage) {
-      setCurrentIdx(newIdx);
-      setIsTransitioning(false);
-      return;
-    }
-
-    const currentPage = stage.querySelector(`.${styles.page}`) as HTMLElement | null;
-    if (!currentPage) {
-      setCurrentIdx(newIdx);
-      setIsTransitioning(false);
-      return;
-    }
-
-    const fromX = direction === 'next' ? '100%' : '-100%';
-    const toX = direction === 'next' ? '-100%' : '100%';
-
     setCurrentIdx(newIdx);
     setVisitedSlides((prev) => new Set(prev).add(newIdx));
-
-    requestAnimationFrame(() => {
-      const newPage = stage.querySelector(`[data-slide-idx="${newIdx}"]`) as HTMLElement | null;
-      if (!newPage) {
-        setIsTransitioning(false);
-        return;
-      }
-      newPage.style.transform = `translateX(${fromX})`;
-      newPage.style.transition = 'transform 0.62s cubic-bezier(0.22, 1, 0.36, 1)';
-      currentPage.style.transition = 'transform 0.62s cubic-bezier(0.22, 1, 0.36, 1)';
-
-      requestAnimationFrame(() => {
-        newPage.style.transform = 'translateX(0)';
-        currentPage.style.transform = `translateX(${toX})`;
-      });
-
-      setTimeout(() => {
-        currentPage.remove();
-        newPage.style.transition = '';
-        setIsTransitioning(false);
-      }, 640);
-    });
   };
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowRight') goTo(currentIdx + 1, 'next');
-      if (e.key === 'ArrowLeft') goTo(currentIdx - 1, 'prev');
+      if (e.key === 'ArrowRight') goTo(currentIdx + 1);
+      if (e.key === 'ArrowLeft') goTo(currentIdx - 1);
       if (e.key === 'Escape') onClose();
     };
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
-  }, [currentIdx, isTransitioning, onClose]);
+  }, [currentIdx, onClose]);
 
   return (
     <div className={styles.container}>
-      <div ref={stageRef}>
+      <div
+        className={styles.slidesTrack}
+        style={{ transform: `translateX(-${currentIdx * 100}%)` }}
+      >
         {slides.map((slide, i) => (
-          <div
-            key={i}
-            className={styles.page}
-            data-slide-idx={i}
-            style={{ display: i === currentIdx ? 'flex' : 'none' }}
-          >
-            <SlideContent
-              slide={slide}
-              idx={i}
-              panels={panels}
-              oriReading={oriReading}
-              onOpenQR={onOpenQR}
-              onScanAgain={onScanAgain}
-            />
+          <div key={i} className={styles.slideWrapper}>
+            <div className={styles.page}>
+              <SlideContent
+                slide={slide}
+                idx={i}
+                panels={panels}
+                oriReading={oriReading}
+                onOpenQR={onOpenQR}
+                onScanAgain={onScanAgain}
+              />
+            </div>
           </div>
         ))}
       </div>
@@ -135,7 +91,7 @@ export default function OriReadingExperience({
               <button
                 key={i}
                 className={`${styles.dot} ${isActive ? styles.dotActive : ''} ${isVisited ? styles.dotVisited : ''}`}
-                onClick={() => goTo(i, i > currentIdx ? 'next' : 'prev')}
+                onClick={() => goTo(i)}
                 aria-label={`slide ${i + 1}`}
               />
             );
@@ -144,14 +100,14 @@ export default function OriReadingExperience({
         <div className={styles.arrows}>
           <button
             className={`${styles.arrow} ${currentIdx === 0 ? styles.arrowDisabled : ''}`}
-            onClick={() => goTo(currentIdx - 1, 'prev')}
+            onClick={() => goTo(currentIdx - 1)}
             aria-label="previous"
           >
             ←
           </button>
           <button
             className={`${styles.arrow} ${currentIdx === totalSlides - 1 ? styles.arrowDisabled : ''}`}
-            onClick={() => goTo(currentIdx + 1, 'next')}
+            onClick={() => goTo(currentIdx + 1)}
             aria-label="next"
           >
             →
@@ -211,10 +167,9 @@ function SlideContent({ slide, idx, panels, oriReading, onOpenQR, onScanAgain }:
           <span>
             <span className={styles.pgIndex}>{pageNum}</span> / 07
           </span>
-          <span>// platform read</span>
         </div>
         <div className={`${styles.streamStatus} ${isLive ? styles.streamStatusLive : ''}`}>
-          {panelStatus === 'waiting' ? 'ready' : panelStatus === 'streaming' ? 'live' : panelStatus === 'done' ? 'complete' : 'error'}
+          {panelStatus === 'waiting' ? '等待回答' : panelStatus === 'streaming' ? 'live' : panelStatus === 'done' ? '已完成' : '出错'}
         </div>
         <h2 className={styles.pgBrand}>{slide.brand}</h2>
         <div className={styles.pgSub}>{slide.sub}</div>
