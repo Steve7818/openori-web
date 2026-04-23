@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Origeno · 生成式引擎优化 GEO",
+  title: "OpenOri · 生成式引擎优化 GEO",
   description:
-    "Origeno 为品牌优化在 6 大 AI 平台中的可见度。GEO - Generative Engine Optimization。",
+    "OpenOri 为品牌优化在 6 大 AI 平台中的可见度。GEO - Generative Engine Optimization。",
 };
 
 export default function RootLayout({

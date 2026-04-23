@@ -236,3 +236,67 @@
   margin: 0;
   line-height: 1.5;
 }
+
+/* 企微二维码弹窗 */
+.qrOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 30, 58, 0.85);
+  backdrop-filter: blur(16px);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: backdropIn 0.25s ease-out;
+}
+
+.qrModal {
+  background: #fff;
+  border-radius: 16px;
+  padding: 36px 40px 32px;
+  max-width: 380px;
+  width: 100%;
+  text-align: center;
+  position: relative;
+  animation: modalIn 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.qrClose {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--ink-dim);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-family: var(--mono);
+  font-size: 18px;
+  line-height: 1;
+}
+
+.qrTitle {
+  font-family: var(--serif);
+  font-size: 22px;
+  color: var(--navy);
+  font-weight: 400;
+  margin: 0 0 20px 0;
+}
+
+.qrImage {
+  width: 240px;
+  height: 240px;
+  object-fit: contain;
+  margin: 0 auto 16px;
+  display: block;
+}
+
+.qrHint {
+  font-family: var(--sans);
+  font-size: 13px;
+  color: var(--ink-dim);
+  margin: 0;
+}

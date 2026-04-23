@@ -79,7 +79,7 @@ export default function ChatSpike() {
       fontFamily: "'JetBrains Mono', monospace", color: '#F2E6D3', background: '#0A0A0A', minHeight: '100vh'
     }}>
       <h1 style={{ fontSize: 18, color: '#D97757', marginBottom: 8 }}>
-        AI Chat Spike — Origeno
+        AI Chat Spike — OpenOri
       </h1>
       <p style={{ fontSize: 12, color: '#8A8477', marginBottom: 24 }}>
         技术可行性验证 · 不对外开放

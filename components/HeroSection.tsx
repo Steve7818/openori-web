@@ -110,7 +110,7 @@ export default function HeroSection() {
       <section className={styles.hero}>
         <div className={styles.heroLeft}>
           <div className={styles.meta}>
-            <span>01 · Origeno v2</span>
+            <span>01 · OpenOri v2</span>
             <span>生成式引擎优化咨询</span>
           </div>
 

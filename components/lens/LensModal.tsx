@@ -33,7 +33,7 @@ export default function LensModal({
   streamError,
   oriReading,
 }: LensModalProps) {
-  const [showQrModal, setShowQrModal] = useState(false);
+  const [showWecomQR, setShowWecomQR] = useState(false);
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
@@ -53,7 +53,7 @@ export default function LensModal({
 
   const handleCtaClick = () => {
     trackEvent(sessionId, 'cta_click', { target: 'wecom_qr' });
-    setShowQrModal(true);
+    setShowWecomQR(true);
   };
 
   const handleScanAgain = () => {
@@ -110,14 +110,14 @@ export default function LensModal({
 
         <div className={styles.cta}>
           <h3 className={styles.ctaH3}>
-            你的 <em>AI 偏离度</em>评分已生成
+            想继续跟 <em>Ori</em> 聊?
           </h3>
           <p className={styles.ctaP}>
-            AI 时代, 品牌不在答案里 = 品牌不存在。让 Origeno 把你的偏离度降下来。
+            这次扫描是 API 层的快照。真实用户在手机上刷到的答案,以及 Ori 基于全量数据能给你的诊断,都在下一步。加企微,让 Ori 给你一份完整的品牌 AI 体检报告。
           </p>
           <div className={styles.ctaButtons}>
-            <button className={styles.ctaPrimary} onClick={handleCtaClick}>
-              立即免费 GEO 诊断 →
+            <button className={styles.ctaPrimary} onClick={() => setShowWecomQR(true)}>
+              扫码加企业微信 →
             </button>
             <button
               className={styles.ctaSecondary}
@@ -128,6 +128,18 @@ export default function LensModal({
             </button>
           </div>
         </div>
+
+        {/* 企微二维码弹窗 */}
+        {showWecomQR && (
+          <div className={styles.qrOverlay} onClick={() => setShowWecomQR(false)}>
+            <div className={styles.qrModal} onClick={(e) => e.stopPropagation()}>
+              <button className={styles.qrClose} onClick={() => setShowWecomQR(false)}>×</button>
+              <h3 className={styles.qrTitle}>扫码添加 OpenOri 企业微信</h3>
+              <img src="/qrcode-wecom.png" alt="OpenOri 企业微信二维码" className={styles.qrImage} />
+              <p className={styles.qrHint}>使用微信扫一扫,Ori 的团队会在 24h 内联系你</p>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
