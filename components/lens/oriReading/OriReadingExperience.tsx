@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import styles from './OriReadingExperience.module.css';
-import { PLATFORM_SLIDES, type Slide } from './slides';
+import { PLATFORM_SLIDES, ORI_SLIDE_META, type Slide } from './slides';
 import type { PanelsState } from '../useLensStream';
 
 interface OriReadingExperienceProps {
@@ -74,6 +74,7 @@ export default function OriReadingExperience({
                 idx={i}
                 panels={panels}
                 oriReading={oriReading}
+                status={status}
                 onOpenQR={onOpenQR}
                 onScanAgain={onScanAgain}
               />
@@ -123,11 +124,12 @@ interface SlideContentProps {
   idx: number;
   panels: PanelsState;
   oriReading: string | null;
+  status: string;
   onOpenQR: () => void;
   onScanAgain: () => void;
 }
 
-function SlideContent({ slide, idx, panels, oriReading, onOpenQR, onScanAgain }: SlideContentProps) {
+function SlideContent({ slide, idx, panels, oriReading, status, onOpenQR, onScanAgain }: SlideContentProps) {
   if (slide.type === 'cover') {
     return (
       <div className={styles.cover}>
@@ -135,10 +137,10 @@ function SlideContent({ slide, idx, panels, oriReading, onOpenQR, onScanAgain }:
           // ori · 初步扫描
         </div>
         <h1>
-          读你的品牌,在 6 家 AI 里的样子
+          读一遍你的品牌,在 6 家 AI 里的样子
         </h1>
         <p className={styles.coverSub}>
-          接下来 Ori 会用 6 家主流 AI 的真实回答,读一遍「{slide.brand}」在这个赛道里被看到的样子。一家一家读完,她会说几句。
+          用 6 家主流 AI 的真实回答,看一次「{slide.brand}」在 AI 眼里的认知。读完 6 家,OpenOri 在最后说几句。
         </p>
         <div className={styles.coverMeta}>
           品牌<span className={styles.coverMetaVal}>{slide.brand}</span>
@@ -171,19 +173,61 @@ function SlideContent({ slide, idx, panels, oriReading, onOpenQR, onScanAgain }:
         <div className={`${styles.streamStatus} ${isLive ? styles.streamStatusLive : ''}`}>
           {panelStatus === 'waiting' ? '等待回答' : panelStatus === 'streaming' ? 'live' : panelStatus === 'done' ? '已完成' : '出错'}
         </div>
-        <h2 className={styles.pgBrand}>{slide.brand}</h2>
-        <div className={styles.pgSub}>{slide.sub}</div>
+        <div className={styles.pgBrandRow}>
+          {slide.logo && (
+            <img src={slide.logo} alt={slide.brand} className={styles.pgLogo} />
+          )}
+          <h2 className={styles.pgBrand}>{slide.brand}</h2>
+        </div>
+        <div className={styles.pgParent}>{slide.parent}</div>
+        <div className={styles.pgSub}>
+          {panel?.latency != null && (
+            <>响应 {(panel.latency / 1000).toFixed(1)} 秒</>
+          )}
+          {panel?.text && (
+            <> · {panel.text.length} 字</>
+          )}
+          {(panel?.latency == null && !panel?.text) && '等待中'}
+        </div>
         <div className={`${styles.pgBody} ${isDone ? styles.pgBodyDone : ''}`}>
           {text}
           {!isDone && <span className={styles.cursor} />}
         </div>
-        <PlatformNote note={slide.oriNote} isDone={isDone} />
       </>
     );
   }
 
   if (slide.type === 'ori') {
-    return <OriFinalSlide idx={idx} oriReading={oriReading} />;
+    const text = oriReading || '';
+    const isDone = status === 'done';
+    const pageNum = '07';
+
+    return (
+      <>
+        <div className={styles.pgTop}>
+          <span>
+            <span className={styles.pgIndex}>{pageNum}</span> / 07
+          </span>
+        </div>
+        <div className={`${styles.streamStatus} ${!isDone ? styles.streamStatusLive : ''}`}>
+          {isDone ? '已完成' : 'live'}
+        </div>
+        <div className={styles.pgBrandRow}>
+          {ORI_SLIDE_META.logo && (
+            <img src={ORI_SLIDE_META.logo} alt={ORI_SLIDE_META.brand} className={styles.pgLogo} />
+          )}
+          <h2 className={styles.pgBrand}>{ORI_SLIDE_META.brand}</h2>
+        </div>
+        <div className={styles.pgParent}>{ORI_SLIDE_META.parent}</div>
+        <div className={styles.pgSub}>
+          {text ? `${text.length} 字` : '等待中'}
+        </div>
+        <div className={`${styles.pgBody} ${isDone ? styles.pgBodyDone : ''}`}>
+          {text || 'Ori 正在整理观察...'}
+          {!isDone && text && <span className={styles.cursor} />}
+        </div>
+      </>
+    );
   }
 
   if (slide.type === 'cta') {
@@ -211,93 +255,4 @@ function SlideContent({ slide, idx, panels, oriReading, onOpenQR, onScanAgain }:
   }
 
   return null;
-}
-
-function PlatformNote({ note, isDone }: { note: string; isDone: boolean }) {
-  const [shown, setShown] = useState(false);
-
-  useEffect(() => {
-    if (isDone) {
-      const timer = setTimeout(() => setShown(true), 400);
-      return () => clearTimeout(timer);
-    } else {
-      setShown(false);
-    }
-  }, [isDone]);
-
-  return (
-    <div className={`${styles.pgNote} ${shown ? styles.shown : ''}`}>
-      {note}
-    </div>
-  );
-}
-
-function OriFinalSlide({ idx, oriReading }: { idx: number; oriReading: string | null }) {
-  const [shownParas, setShownParas] = useState(0);
-  const [showDivider, setShowDivider] = useState(false);
-  const [showDisclaimer, setShowDisclaimer] = useState(false);
-
-  const { mainBody, disclaimer } = useMemo(() => {
-    if (!oriReading) return { mainBody: '', disclaimer: '' };
-    const parts = oriReading.split(/\n\s*——\s*\n/);
-    return {
-      mainBody: parts[0] || oriReading,
-      disclaimer: parts.length > 1 ? parts.slice(1).join('\n——\n') : '',
-    };
-  }, [oriReading]);
-
-  const paragraphs = useMemo(() => mainBody.split('\n\n').filter((p) => p.trim()), [mainBody]);
-
-  useEffect(() => {
-    if (!oriReading) return;
-    setShownParas(0);
-    setShowDivider(false);
-    setShowDisclaimer(false);
-
-    const timers: ReturnType<typeof setTimeout>[] = [];
-    paragraphs.forEach((_, i) => {
-      timers.push(setTimeout(() => setShownParas((prev) => Math.max(prev, i + 1)), 200 + i * 380));
-    });
-    if (disclaimer) {
-      timers.push(setTimeout(() => setShowDivider(true), 200 + paragraphs.length * 380 + 200));
-      timers.push(setTimeout(() => setShowDisclaimer(true), 200 + paragraphs.length * 380 + 500));
-    }
-    return () => timers.forEach(clearTimeout);
-  }, [oriReading, paragraphs.length, disclaimer]);
-
-  if (!oriReading) {
-    return (
-      <div className={styles.oriFinal}>
-        <div className={styles.oriSub}>
-          // ori · 落笔中
-        </div>
-        <div className={styles.oriWaiting}>
-          Ori 正在整理她的观察
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className={styles.oriFinal}>
-      <div className={styles.oriSub}>
-        // ori · 读完了,我说几件事
-      </div>
-      <div className={styles.oriFinalBody}>
-        {paragraphs.map((para, i) => (
-          <p key={i} className={i < shownParas ? styles.shown : ''}>
-            {para}
-          </p>
-        ))}
-      </div>
-      {disclaimer && (
-        <>
-          <div className={`${styles.oriDivider} ${showDivider ? styles.shown : ''}`} />
-          <div className={`${styles.oriDisclaimer} ${showDisclaimer ? styles.shown : ''}`}>
-            {disclaimer}
-          </div>
-        </>
-      )}
-    </div>
-  );
 }
