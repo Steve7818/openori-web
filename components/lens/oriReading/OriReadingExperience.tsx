@@ -132,24 +132,26 @@ interface SlideContentProps {
 function SlideContent({ slide, idx, panels, oriReading, status, onOpenQR, onScanAgain }: SlideContentProps) {
   if (slide.type === 'cover') {
     return (
-      <div className={styles.cover}>
-        <div className={styles.coverMeta}>
-          // ori · 初步扫描
-        </div>
-        <h1>
-          读一遍你的品牌,在 6 家 AI 里的样子
-        </h1>
-        <p className={styles.coverSub}>
-          用 6 家主流 AI 的真实回答,看一次「{slide.brand}」在 AI 眼里的认知。读完 6 家,OpenOri 在最后说几句。
-        </p>
-        <div className={styles.coverMeta}>
-          品牌<span className={styles.coverMetaVal}>{slide.brand}</span>
-        </div>
-        <div className={styles.coverMeta}>
-          问题<span className={styles.coverMetaVal}>{slide.question}</span>
-        </div>
-        <div className={styles.coverHint}>
-          按 <span className={styles.kbd}>→</span> 开始
+      <div className={styles.pageInner}>
+        <div className={styles.cover}>
+          <div className={styles.coverMeta}>
+            // ori · 初步扫描
+          </div>
+          <h1>
+            读一遍你的品牌,在 6 家 AI 里的样子
+          </h1>
+          <p className={styles.coverSub}>
+            用 6 家主流 AI 的真实回答,看一次「{slide.brand}」在 AI 眼里的认知。读完 6 家,OpenOri 在最后说几句。
+          </p>
+          <div className={styles.coverMeta}>
+            品牌<span className={styles.coverMetaVal}>{slide.brand}</span>
+          </div>
+          <div className={styles.coverMeta}>
+            问题<span className={styles.coverMetaVal}>{slide.question}</span>
+          </div>
+          <div className={styles.coverHint}>
+            按 <span className={styles.kbd}>→</span> 开始
+          </div>
         </div>
       </div>
     );
@@ -165,33 +167,35 @@ function SlideContent({ slide, idx, panels, oriReading, status, onOpenQR, onScan
 
     return (
       <>
-        <div className={styles.pgTop}>
-          <span>
-            <span className={styles.pgIndex}>{pageNum}</span> / 07
+        <div className={styles.pgTopBar}>
+          <span className={styles.pgIndex}>{pageNum} / 07</span>
+          <span className={`${styles.streamStatus} ${isLive ? styles.streamStatusLive : ''}`}>
+            {panelStatus === 'waiting' ? '等待回答' : panelStatus === 'streaming' ? 'live' : panelStatus === 'done' ? '已完成' : '出错'}
           </span>
         </div>
-        <div className={`${styles.streamStatus} ${isLive ? styles.streamStatusLive : ''}`}>
-          {panelStatus === 'waiting' ? '等待回答' : panelStatus === 'streaming' ? 'live' : panelStatus === 'done' ? '已完成' : '出错'}
-        </div>
-        <div className={styles.pgBrandRow}>
-          {slide.logo && (
-            <img src={slide.logo} alt={slide.brand} className={styles.pgLogo} />
-          )}
-          <h2 className={styles.pgBrand}>{slide.brand}</h2>
-        </div>
-        <div className={styles.pgParent}>{slide.parent}</div>
-        <div className={styles.pgSub}>
-          {panel?.latency != null && (
-            <>响应 {(panel.latency / 1000).toFixed(1)} 秒</>
-          )}
-          {panel?.text && (
-            <> · {panel.text.length} 字</>
-          )}
-          {(panel?.latency == null && !panel?.text) && '等待中'}
-        </div>
-        <div className={`${styles.pgBody} ${isDone ? styles.pgBodyDone : ''}`}>
-          {text}
-          {!isDone && <span className={styles.cursor} />}
+        <div className={styles.pageInner}>
+          <div className={styles.pgBrandRow}>
+            {slide.logo && (
+              <div className={styles.pgLogoChip}>
+                <img src={slide.logo} alt={slide.brand} className={styles.pgLogo} />
+              </div>
+            )}
+            <h2 className={styles.pgBrand}>{slide.brand}</h2>
+          </div>
+          <div className={styles.pgParent}>{slide.parent}</div>
+          <div className={styles.pgSub}>
+            {panel?.latency != null && (
+              <>响应 {(panel.latency / 1000).toFixed(1)} 秒</>
+            )}
+            {panel?.text && (
+              <> · {panel.text.length} 字</>
+            )}
+            {(panel?.latency == null && !panel?.text) && '等待中'}
+          </div>
+          <div className={`${styles.pgBody} ${isDone ? styles.pgBodyDone : ''}`}>
+            {text}
+            {!isDone && <span className={styles.cursor} />}
+          </div>
         </div>
       </>
     );
@@ -200,31 +204,30 @@ function SlideContent({ slide, idx, panels, oriReading, status, onOpenQR, onScan
   if (slide.type === 'ori') {
     const text = oriReading || '';
     const isDone = status === 'done';
-    const pageNum = '07';
 
     return (
       <>
-        <div className={styles.pgTop}>
-          <span>
-            <span className={styles.pgIndex}>{pageNum}</span> / 07
+        <div className={styles.pgTopBar}>
+          <span className={styles.pgIndex}>07 / 07</span>
+          <span className={`${styles.streamStatus} ${!isDone ? styles.streamStatusLive : ''}`}>
+            {isDone ? '已完成' : 'live'}
           </span>
         </div>
-        <div className={`${styles.streamStatus} ${!isDone ? styles.streamStatusLive : ''}`}>
-          {isDone ? '已完成' : 'live'}
-        </div>
-        <div className={styles.pgBrandRow}>
-          {ORI_SLIDE_META.logo && (
-            <img src={ORI_SLIDE_META.logo} alt={ORI_SLIDE_META.brand} className={styles.pgLogo} />
-          )}
-          <h2 className={styles.pgBrand}>{ORI_SLIDE_META.brand}</h2>
-        </div>
-        <div className={styles.pgParent}>{ORI_SLIDE_META.parent}</div>
-        <div className={styles.pgSub}>
-          {text ? `${text.length} 字` : '等待中'}
-        </div>
-        <div className={`${styles.pgBody} ${isDone ? styles.pgBodyDone : ''}`}>
-          {text || 'Ori 正在整理观察...'}
-          {!isDone && text && <span className={styles.cursor} />}
+        <div className={styles.pageInner}>
+          <div className={styles.pgBrandRow}>
+            <div className={styles.pgLogoChip} style={{ background: 'rgba(200, 164, 94, 0.12)' }}>
+              <span style={{ fontFamily: 'var(--font-serif, Georgia, serif)', fontSize: '18px', fontStyle: 'italic', color: '#C8A45E', fontWeight: 400 }}>O</span>
+            </div>
+            <h2 className={styles.pgBrand} style={{ color: '#C8A45E', fontStyle: 'italic' }}>OpenOri</h2>
+          </div>
+          <div className={styles.pgParent}>第 7 家 · Ori 的判断</div>
+          <div className={styles.pgSub}>
+            {text ? `${text.length} 字` : '等待中'}
+          </div>
+          <div className={`${styles.pgBody} ${isDone ? styles.pgBodyDone : ''}`}>
+            {text || 'Ori 正在整理观察...'}
+            {!isDone && text && <span className={styles.cursor} />}
+          </div>
         </div>
       </>
     );
@@ -232,23 +235,25 @@ function SlideContent({ slide, idx, panels, oriReading, status, onOpenQR, onScan
 
   if (slide.type === 'cta') {
     return (
-      <div className={styles.cta}>
-        <div className={styles.coverMeta}>
-          // 想继续跟 ori 聊?
-        </div>
-        <h2>
-          下一步,Ori 给你看真实的 C 端
-        </h2>
-        <p className={styles.ctaDesc}>
-          这次是 API 层的快照。用户在手机上刷到的答案,以及 Ori 基于全量数据的诊断,都在下一步。加企微,让 Ori 给你一份完整的品牌 AI 体检报告。
-        </p>
-        <div className={styles.ctaButtons}>
-          <button className={styles.ctaPrimary} onClick={onOpenQR}>
-            扫码加企业微信 →
-          </button>
-          <button className={styles.ctaSecondary} onClick={onScanAgain} disabled={slide.dailyRemaining === 0}>
-            再扫一次(剩 {slide.dailyRemaining}/2)
-          </button>
+      <div className={styles.pageInner}>
+        <div className={styles.cta}>
+          <div className={styles.coverMeta}>
+            // 想继续跟 ori 聊?
+          </div>
+          <h2>
+            下一步,Ori 给你看真实的 C 端
+          </h2>
+          <p className={styles.ctaDesc}>
+            这次是 API 层的快照。用户在手机上刷到的答案,以及 Ori 基于全量数据的诊断,都在下一步。加企微,让 Ori 给你一份完整的品牌 AI 体检报告。
+          </p>
+          <div className={styles.ctaButtons}>
+            <button className={styles.ctaPrimary} onClick={onOpenQR}>
+              扫码加企业微信 →
+            </button>
+            <button className={styles.ctaSecondary} onClick={onScanAgain} disabled={slide.dailyRemaining === 0}>
+              再扫一次(剩 {slide.dailyRemaining}/2)
+            </button>
+          </div>
         </div>
       </div>
     );
