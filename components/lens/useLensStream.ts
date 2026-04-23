@@ -22,6 +22,7 @@ export interface UseLensStreamResult {
   panels: PanelsState;
   status: 'idle' | 'streaming' | 'done' | 'error';
   error: string | null;
+  oriReading: string | null;
   start: (sessionId: string, brand: string, question: string, turnstileToken?: string) => Promise<void>;
 }
 
@@ -29,10 +30,12 @@ export function useLensStream(): UseLensStreamResult {
   const [panels, setPanels] = useState<PanelsState>({});
   const [status, setStatus] = useState<'idle' | 'streaming' | 'done' | 'error'>('idle');
   const [error, setError] = useState<string | null>(null);
+  const [oriReading, setOriReading] = useState<string | null>(null);
 
   const start = useCallback(async (sessionId: string, brand: string, question: string, turnstileToken?: string) => {
     setStatus('streaming');
     setError(null);
+    setOriReading(null);
 
     // Initialize panels (6 skeleton states)
     const initialPanels: PanelsState = {};
@@ -94,7 +97,7 @@ export function useLensStream(): UseLensStreamResult {
 
             try {
               const event = JSON.parse(line.substring(6));
-              handleEvent(event, sessionId, setPanels, setStatus, () => {
+              handleEvent(event, sessionId, setPanels, setStatus, setOriReading, () => {
                 if (!firstTokenReceived) {
                   firstTokenReceived = true;
                   trackEvent(sessionId, 'lens_first_token');
@@ -124,7 +127,7 @@ export function useLensStream(): UseLensStreamResult {
     }
   }, []);
 
-  return { panels, status, error, start };
+  return { panels, status, error, oriReading, start };
 }
 
 function handleEvent(
@@ -132,6 +135,7 @@ function handleEvent(
   sessionId: string,
   setPanels: React.Dispatch<React.SetStateAction<PanelsState>>,
   setStatus: React.Dispatch<React.SetStateAction<'idle' | 'streaming' | 'done' | 'error'>>,
+  setOriReading: React.Dispatch<React.SetStateAction<string | null>>,
   onFirstToken: () => void
 ) {
   const { type } = event;
@@ -169,6 +173,9 @@ function handleEvent(
         latency: latency_ms,
       },
     }));
+  } else if (type === 'ori_reading') {
+    const { content } = event;
+    setOriReading(content);
   } else if (type === 'all_done') {
     setStatus('done');
     trackEvent(sessionId, 'lens_complete', {

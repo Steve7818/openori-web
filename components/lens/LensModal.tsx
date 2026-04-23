@@ -1,9 +1,10 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { PLATFORMS } from './platforms';
 import { PanelsState } from './useLensStream';
 import LensPanel from './LensPanel';
+import OriSummary from './OriSummary';
 import { trackEvent } from '@/lib/lens/events';
 import styles from './LensModal.module.css';
 
@@ -17,6 +18,7 @@ interface LensModalProps {
   dailyRemaining: number;
   streamStatus: 'idle' | 'streaming' | 'done' | 'error';
   streamError: string | null;
+  oriReading: string | null;
 }
 
 export default function LensModal({
@@ -29,7 +31,9 @@ export default function LensModal({
   dailyRemaining,
   streamStatus,
   streamError,
+  oriReading,
 }: LensModalProps) {
+  const [showQrModal, setShowQrModal] = useState(false);
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
@@ -48,8 +52,8 @@ export default function LensModal({
   };
 
   const handleCtaClick = () => {
-    trackEvent(sessionId, 'cta_click', { target: '/' });
-    window.location.href = '/';
+    trackEvent(sessionId, 'cta_click', { target: 'wecom_qr' });
+    setShowQrModal(true);
   };
 
   const handleScanAgain = () => {
@@ -101,6 +105,8 @@ export default function LensModal({
             />
           ))}
         </div>
+
+        <OriSummary text={oriReading} streamStatus={streamStatus} />
 
         <div className={styles.cta}>
           <h3 className={styles.ctaH3}>
