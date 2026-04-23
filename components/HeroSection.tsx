@@ -14,7 +14,7 @@ export default function HeroSection() {
   const [brand, setBrand] = useState('');
   const [question, setQuestion] = useState('');
   const [dailyRemaining, setDailyRemaining] = useState(2);
-  const { panels, status, error, start } = useLensStream();
+  const { panels, status, error, oriReading, start } = useLensStream();
   const sessionReady = useRef<Promise<string | null>>(null!);
   const turnstileWidget = useRef<TurnstileWidget | null>(null);
   const turnstileContainer = useRef<HTMLDivElement>(null);
@@ -145,6 +145,7 @@ export default function HeroSection() {
         dailyRemaining={dailyRemaining}
         streamStatus={status}
         streamError={error}
+        oriReading={oriReading}
       />
     </>
   );
