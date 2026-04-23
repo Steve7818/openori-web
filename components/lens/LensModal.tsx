@@ -1,10 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { PLATFORMS } from './platforms';
 import { PanelsState } from './useLensStream';
-import LensPanel from './LensPanel';
-import OriSummary from './OriSummary';
+import OriReadingExperience from './oriReading/OriReadingExperience';
 import { trackEvent } from '@/lib/lens/events';
 import styles from './LensModal.module.css';
 
@@ -86,48 +84,17 @@ export default function LensModal({
           </div>
         )}
 
-        <div className={styles.header}>
-          <div className={styles.eyebrow}>// AI 偏离度扫描报告 · 6 大平台</div>
-          <h2 className={styles.question}>
-            <span>{question}</span>
-            {' · '}
-            <span className={styles.questionBrand}>{brand}</span>
-          </h2>
-        </div>
-
-        <div className={styles.grid}>
-          {PLATFORMS.map(p => (
-            <LensPanel
-              key={p.id}
-              platformId={p.id}
-              state={panels[p.id] || { status: 'waiting', text: '', latency: null, devScore: null, devLabel: null, error: null }}
-              brand={brand}
-            />
-          ))}
-        </div>
-
-        <OriSummary text={oriReading} streamStatus={streamStatus} />
-
-        <div className={styles.cta}>
-          <h3 className={styles.ctaH3}>
-            想继续跟 <em>Ori</em> 聊?
-          </h3>
-          <p className={styles.ctaP}>
-            这次扫描是 API 层的快照。真实用户在手机上刷到的答案,以及 Ori 基于全量数据能给你的诊断,都在下一步。加企微,让 Ori 给你一份完整的品牌 AI 体检报告。
-          </p>
-          <div className={styles.ctaButtons}>
-            <button className={styles.ctaPrimary} onClick={() => setShowWecomQR(true)}>
-              扫码加企业微信 →
-            </button>
-            <button
-              className={styles.ctaSecondary}
-              onClick={handleScanAgain}
-              disabled={dailyRemaining === 0}
-            >
-              再扫一次(剩 {dailyRemaining}/2)
-            </button>
-          </div>
-        </div>
+        <OriReadingExperience
+          panels={panels}
+          oriReading={oriReading}
+          status={streamStatus}
+          brand={brand}
+          question={question}
+          dailyRemaining={dailyRemaining}
+          onClose={onClose}
+          onScanAgain={handleScanAgain}
+          onOpenQR={() => setShowWecomQR(true)}
+        />
 
         {/* 企微二维码弹窗 */}
         {showWecomQR && (
