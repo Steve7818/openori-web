@@ -59,7 +59,7 @@ export function useLensStream(): UseLensStreamResult {
 
       // AbortController with 90s timeout to avoid infinite hangs
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 90_000);
+      const timeoutId = setTimeout(() => controller.abort(), 180_000);
 
       let response: Response;
       try {
