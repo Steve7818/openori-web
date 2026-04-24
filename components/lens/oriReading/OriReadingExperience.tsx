@@ -1,6 +1,8 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import styles from './OriReadingExperience.module.css';
 import { PLATFORM_SLIDES, ORI_SLIDE_META, type Slide } from './slides';
 import type { PanelsState } from '../useLensStream';
@@ -192,8 +194,26 @@ function SlideContent({ slide, idx, panels, oriReading, status, onOpenQR, onScan
             )}
             {(panel?.latency == null && !panel?.text) && '等待中'}
           </div>
-          <div className={`${styles.pgBody} ${isDone ? styles.pgBodyDone : ''}`}>
-            {text}
+          <div className={`${styles.readColumn} ${isDone ? styles.readColumnDone : ''}`}>
+            <ReactMarkdown
+              remarkPlugins={[remarkGfm]}
+              components={{
+                p: ({children}) => <p>{children}</p>,
+                strong: ({children}) => <strong>{children}</strong>,
+                em: ({children}) => <em>{children}</em>,
+                ol: ({children}) => <>{children}</>,
+                ul: ({children}) => <>{children}</>,
+                li: ({children}) => <p>{children}</p>,
+                h1: ({children}) => <p><strong>{children}</strong></p>,
+                h2: ({children}) => <p><strong>{children}</strong></p>,
+                h3: ({children}) => <p><strong>{children}</strong></p>,
+                code: ({children}) => <code>{children}</code>,
+                pre: ({children}) => <>{children}</>,
+                a: ({href, children}) => <a href={href} target="_blank" rel="noopener noreferrer">{children}</a>,
+              }}
+            >
+              {text}
+            </ReactMarkdown>
             {!isDone && <span className={styles.cursor} />}
           </div>
         </div>
@@ -224,8 +244,26 @@ function SlideContent({ slide, idx, panels, oriReading, status, onOpenQR, onScan
           <div className={styles.pgSub}>
             {text ? `${text.length} 字` : '等待中'}
           </div>
-          <div className={`${styles.pgBody} ${isDone ? styles.pgBodyDone : ''}`}>
-            {text || 'Ori 正在整理观察...'}
+          <div className={`${styles.readColumn} ${styles.readColumnOri} ${isDone ? styles.readColumnDone : ''}`}>
+            <ReactMarkdown
+              remarkPlugins={[remarkGfm]}
+              components={{
+                p: ({children}) => <p>{children}</p>,
+                strong: ({children}) => <strong>{children}</strong>,
+                em: ({children}) => <em>{children}</em>,
+                ol: ({children}) => <>{children}</>,
+                ul: ({children}) => <>{children}</>,
+                li: ({children}) => <p>{children}</p>,
+                h1: ({children}) => <p><strong>{children}</strong></p>,
+                h2: ({children}) => <p><strong>{children}</strong></p>,
+                h3: ({children}) => <p><strong>{children}</strong></p>,
+                code: ({children}) => <code>{children}</code>,
+                pre: ({children}) => <>{children}</>,
+                a: ({href, children}) => <a href={href} target="_blank" rel="noopener noreferrer">{children}</a>,
+              }}
+            >
+              {text || 'Ori 正在整理观察...'}
+            </ReactMarkdown>
             {!isDone && text && <span className={styles.cursor} />}
           </div>
         </div>
