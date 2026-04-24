@@ -166,34 +166,36 @@ function SlideContent({ slide, idx, panels, oriReading, status, onOpenQR, onScan
     const isLive = panelStatus === 'streaming';
     const isDone = panelStatus === 'done';
     const pageNum = String(idx).padStart(2, '0');
+    const logoPath = slide.logo;
 
     return (
       <>
-        <div className={styles.pgTopBar}>
-          <span className={styles.pgIndex}>{pageNum} / 07</span>
-          <span className={`${styles.streamStatus} ${isLive ? styles.streamStatusLive : ''}`}>
-            {panelStatus === 'waiting' ? '等待回答' : panelStatus === 'streaming' ? 'live' : panelStatus === 'done' ? '已完成' : '出错'}
-          </span>
+        <div className={styles.topRight}>
+          <div className={styles.pageIndex}>
+            <span className={styles.pageNum}>{pageNum}</span> / 07
+          </div>
+          <div className={`${styles.streamStatus} ${isLive ? styles.streamStatusLive : ''}`}>
+            {panelStatus === 'waiting' ? '等待中' : panelStatus === 'streaming' ? 'LIVE' : panelStatus === 'done' ? '已完成' : '出错'}
+          </div>
         </div>
-        <div className={styles.pageInner}>
-          <div className={styles.pgBrandRow}>
-            {slide.logo && (
-              <div className={styles.pgLogoChip}>
-                <img src={slide.logo} alt={slide.brand} className={styles.pgLogo} />
-              </div>
-            )}
-            <h2 className={styles.pgBrand}>{slide.brand}</h2>
+        <div className={styles.headerFixed}>
+          {logoPath && (
+            <div className={styles.logoChip}>
+              <img src={logoPath} alt={slide.brand} className={styles.pgLogo} />
+            </div>
+          )}
+          <div className={styles.headerText}>
+            <div className={styles.eyebrow}>{slide.parent}</div>
+            <div className={styles.brandName}>{slide.brand}</div>
+            <div className={styles.brandMeta}>
+              {panel?.latency != null && `响应 ${(panel.latency / 1000).toFixed(1)} 秒`}
+              {panel?.text && panel?.latency != null && ' · '}
+              {panel?.text && `${panel.text.length} 字`}
+              {(panel?.latency == null && !panel?.text) && '等待中'}
+            </div>
           </div>
-          <div className={styles.pgParent}>{slide.parent}</div>
-          <div className={styles.pgSub}>
-            {panel?.latency != null && (
-              <>响应 {(panel.latency / 1000).toFixed(1)} 秒</>
-            )}
-            {panel?.text && (
-              <> · {panel.text.length} 字</>
-            )}
-            {(panel?.latency == null && !panel?.text) && '等待中'}
-          </div>
+        </div>
+        <div className={styles.contentArea}>
           <div className={`${styles.readColumn} ${isDone ? styles.readColumnDone : ''}`}>
             <ReactMarkdown
               remarkPlugins={[remarkGfm]}
@@ -227,23 +229,27 @@ function SlideContent({ slide, idx, panels, oriReading, status, onOpenQR, onScan
 
     return (
       <>
-        <div className={styles.pgTopBar}>
-          <span className={styles.pgIndex}>07 / 07</span>
-          <span className={`${styles.streamStatus} ${!isDone ? styles.streamStatusLive : ''}`}>
-            {isDone ? '已完成' : 'live'}
-          </span>
+        <div className={styles.topRight}>
+          <div className={styles.pageIndex}>
+            <span className={styles.pageNum}>07</span> / 07
+          </div>
+          <div className={`${styles.streamStatus} ${!isDone ? styles.streamStatusLive : ''}`}>
+            {isDone ? '已完成' : '落笔中'}
+          </div>
         </div>
-        <div className={styles.pageInner}>
-          <div className={styles.pgBrandRow}>
-            <div className={styles.pgLogoChip} style={{ background: 'rgba(200, 164, 94, 0.12)' }}>
-              <span style={{ fontFamily: 'var(--font-serif, Georgia, serif)', fontSize: '18px', fontStyle: 'italic', color: '#C8A45E', fontWeight: 400 }}>O</span>
+        <div className={styles.headerFixed}>
+          <div className={`${styles.logoChip} ${styles.logoChipOri}`}>
+            <span>O</span>
+          </div>
+          <div className={styles.headerText}>
+            <div className={`${styles.eyebrow} ${styles.eyebrowOri}`}>第 7 家 · Ori 的判断</div>
+            <div className={`${styles.brandName} ${styles.brandNameOri}`}>OpenOri</div>
+            <div className={styles.brandMeta}>
+              {oriReading ? `${oriReading.length} 字` : '落笔中'}
             </div>
-            <h2 className={styles.pgBrand} style={{ color: '#C8A45E', fontStyle: 'italic' }}>OpenOri</h2>
           </div>
-          <div className={styles.pgParent}>第 7 家 · Ori 的判断</div>
-          <div className={styles.pgSub}>
-            {text ? `${text.length} 字` : '等待中'}
-          </div>
+        </div>
+        <div className={styles.contentArea}>
           <div className={`${styles.readColumn} ${styles.readColumnOri} ${isDone ? styles.readColumnDone : ''}`}>
             <ReactMarkdown
               remarkPlugins={[remarkGfm]}

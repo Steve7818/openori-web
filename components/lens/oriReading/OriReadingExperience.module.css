@@ -27,12 +27,7 @@
 .page {
   position: absolute;
   inset: 0;
-  padding: 64px 0 100px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
   background: #FAFBFC;
-  overflow-y: auto;
 }
 
 .pageInner {
@@ -42,32 +37,36 @@
   padding: 0 32px;
 }
 
-.pgTopBar {
+.topRight {
   position: absolute;
   top: 40px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 680px;
-  max-width: calc(100% - 64px);
+  right: 56px;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-family: var(--font-mono, 'SF Mono', Menlo, monospace);
-  font-size: 10px;
-  letter-spacing: 0.15em;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  z-index: 10;
 }
 
-.pgIndex {
+.pageIndex {
+  font-family: 'SF Mono', Menlo, monospace;
+  font-size: 10px;
+  color: rgba(15, 30, 58, 0.5);
+  letter-spacing: 0.22em;
+  line-height: 1;
+}
+
+.pageNum {
   color: #C8A45E;
-  font-weight: 500;
 }
 
 .streamStatus {
+  font-family: 'SF Mono', Menlo, monospace;
   font-size: 9px;
   letter-spacing: 0.2em;
   color: rgba(15, 30, 58, 0.4);
   text-transform: uppercase;
-  transition: color 0.2s ease;
+  line-height: 1;
 }
 
 .streamStatusLive {
@@ -91,59 +90,96 @@
   50% { opacity: 0.35; }
 }
 
-.pgBrandRow {
+.headerFixed {
+  position: absolute;
+  top: 40px;
+  left: 56px;
   display: flex;
-  align-items: center;
-  gap: 18px;
-  margin-bottom: 8px;
+  align-items: flex-start;
+  gap: 14px;
+  z-index: 10;
 }
 
-.pgLogoChip {
-  width: 48px;
-  height: 48px;
-  background: rgba(15, 30, 58, 0.04);
+.logoChip {
+  width: 44px;
+  height: 44px;
+  background: rgba(15, 30, 58, 0.05);
   border-radius: 10px;
-  padding: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  margin-top: 18px;
+}
+
+.logoChipOri {
+  background: rgba(200, 164, 94, 0.12);
+}
+
+.logoChipOri span {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 20px;
+  font-weight: 500;
+  font-style: italic;
+  color: #C8A45E;
 }
 
 .pgLogo {
-  max-width: 100%;
-  max-height: 100%;
+  max-width: 28px;
+  max-height: 28px;
   object-fit: contain;
   display: block;
 }
 
-.pgBrand {
-  font-family: var(--font-serif, Georgia, serif);
-  font-size: 44px;
-  font-weight: 400;
+.headerText {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.eyebrow {
+  font-family: 'SF Mono', Menlo, monospace;
+  font-size: 13px;
+  color: rgba(15, 30, 58, 0.55);
+  letter-spacing: 0.12em;
+  margin-bottom: 6px;
+  line-height: 1;
+}
+
+.eyebrowOri {
+  color: #C8A45E;
+}
+
+.brandName {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 1.1;
   color: #0F1E3A;
-  margin: 0;
-  letter-spacing: -0.02em;
-  line-height: 0.95;
-  padding-top: 4px;
+  letter-spacing: -0.01em;
+  margin-bottom: 6px;
 }
 
-.pgParent {
-  font-family: var(--font-mono, 'SF Mono', Menlo, monospace);
-  font-size: 11px;
-  color: rgba(15, 30, 58, 0.5);
-  letter-spacing: 0.08em;
-  margin-bottom: 22px;
-  padding-left: 66px;
+.brandNameOri {
+  color: #C8A45E;
+  font-style: italic;
 }
 
-.pgSub {
-  font-family: var(--font-mono, 'SF Mono', Menlo, monospace);
+.brandMeta {
+  font-family: 'SF Mono', Menlo, monospace;
   font-size: 11px;
   color: rgba(15, 30, 58, 0.45);
-  letter-spacing: 0.05em;
-  margin-bottom: 36px;
-  padding-left: 66px;
+  letter-spacing: 0.04em;
+  line-height: 1;
+}
+
+.contentArea {
+  position: absolute;
+  top: 160px;
+  left: 56px;
+  right: 56px;
+  bottom: 90px;
+  overflow-y: auto;
 }
 
 .readColumn {
