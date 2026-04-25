@@ -76,7 +76,6 @@
   font-size: 11px;
   letter-spacing: 0.18em;
   color: var(--light-50, rgba(240, 235, 226, 0.5));
-  text-transform: uppercase;
   position: relative;
   z-index: 5;
   flex-shrink: 0;
@@ -87,6 +86,11 @@
   left: 50%;
   transform: translateX(-50%);
   color: var(--light-30, rgba(240, 235, 226, 0.3));
+  text-transform: uppercase;
+}
+
+.topbarDate {
+  text-transform: uppercase;
 }
 
 .brandStamp {

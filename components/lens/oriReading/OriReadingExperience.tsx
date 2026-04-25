@@ -217,7 +217,7 @@ function TopBar({ idx, totalSlides }: { idx: number; totalSlides: number }) {
     <div className={styles.topbar}>
       <BrandLockup />
       <span className={styles.topbarCenter}>{sectionName}</span>
-      <span>{currentDate}</span>
+      <span className={styles.topbarDate}>{currentDate}</span>
     </div>
   );
 }
@@ -291,22 +291,18 @@ function SlideContent({ slide, idx, totalSlides, panels, oriReading, status, bra
                 <span className={styles.platformName}>{slide.brand}</span>
               </div>
               <div className={styles.platformStats}>
-                {panel?.text && (
-                  <div className={styles.stat}>
-                    <span className={styles.statNum}>{panel.text.length}</span>
-                    <span className={styles.statLabel}>提及次数</span>
-                  </div>
-                )}
+                <div className={styles.stat}>
+                  <span className={styles.statNum}>{panel?.text ? panel.text.length : '—'}</span>
+                  <span className={styles.statLabel}>提及次数</span>
+                </div>
                 <div className={styles.stat}>
                   <span className={styles.statNum}>—</span>
                   <span className={styles.statLabel}>偏离度</span>
                 </div>
-                {panel?.latency != null && (
-                  <div className={styles.stat}>
-                    <span className={styles.statNum}>{(panel.latency / 1000).toFixed(1)}s</span>
-                    <span className={styles.statLabel}>响应延迟</span>
-                  </div>
-                )}
+                <div className={styles.stat}>
+                  <span className={styles.statNum}>{panel?.latency != null ? `${(panel.latency / 1000).toFixed(1)}s` : '—'}</span>
+                  <span className={styles.statLabel}>响应延迟</span>
+                </div>
                 <div className={styles.stat}>
                   <span className={`${styles.statNum} ${styles.statSrc}`}>{slide.source}</span>
                   <span className={styles.statLabel}>数据来源</span>
@@ -422,7 +418,7 @@ function SlideContent({ slide, idx, totalSlides, panels, oriReading, status, bra
 
               <h2 className={styles.ctaTitle}>
                 Lite 报告已完成。<br/>
-                下一步 — Ori 调度全球顶尖 <span className={styles.em}>AI 架构</span>，<br/>
+                下一步 — Ori 调度全球顶尖 <span className={styles.em}>AI 架构</span>,<br/>
                 和您进军本时代最大的品牌战场。
               </h2>
 
@@ -443,7 +439,7 @@ function SlideContent({ slide, idx, totalSlides, panels, oriReading, status, bra
                 </div>
                 <div className={styles.ctaBullet}>
                   <span className={styles.ctaBulletMark} />
-                  <span>海外 3 大平台（ChatGPT / Claude / Perplexity）同题对照</span>
+                  <span>海外 3 大平台(ChatGPT / Claude / Perplexity)同题对照</span>
                 </div>
                 <div className={styles.ctaBullet}>
                   <span className={styles.ctaBulletMark} />
