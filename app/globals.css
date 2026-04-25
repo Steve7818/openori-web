@@ -8,7 +8,8 @@
   --surface-2: #EEF1F6;
 
   /* Ink (text colors) */
-  --ink: #0F1E3A;
+  --ink: #1a1a1a;
+  --ink-soft: #2a2a2a;
   --ink-dim: #4A5878;
   --ink-faint: #8B96B0;
 
@@ -33,6 +34,17 @@
   --serif: 'Instrument Serif', 'Noto Serif SC', 'Songti SC', serif;
   --sans: 'Instrument Sans', 'Noto Sans SC', 'PingFang SC', sans-serif;
   --mono: 'JetBrains Mono', 'Courier New', monospace;
+
+  /* Hero v5 brand tokens */
+  --cream: #f5f0e8;
+  --light: #f0ebe2;
+  --light-50: rgba(240, 235, 226, 0.5);
+  --light-30: rgba(240, 235, 226, 0.3);
+  --light-15: rgba(240, 235, 226, 0.15);
+  --light-08: rgba(240, 235, 226, 0.08);
+  --ember: #d97757;
+  --ember-soft: rgba(217, 119, 87, 0.6);
+  --ember-faint: rgba(217, 119, 87, 0.15);
 }
 
 /* Global reset */
@@ -43,8 +55,8 @@
 }
 
 html, body {
-  background: var(--bg);
-  color: var(--ink);
+  background: var(--ink);
+  color: var(--light);
   font-family: var(--sans);
   -webkit-font-smoothing: antialiased;
   line-height: 1.6;

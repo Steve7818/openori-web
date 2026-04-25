@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { newsreader, notoSerifSC, jetbrainsMono } from "@/lib/fonts";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -13,17 +14,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="zh-CN" className="antialiased">
-      <head>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/instrument-serif@5.0.0/index.css" />
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/instrument-sans@5.0.0/400.css" />
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/instrument-sans@5.0.0/500.css" />
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono@5.0.0/400.css" />
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono@5.0.0/500.css" />
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/noto-serif-sc@5.0.0/400.css" />
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/noto-sans-sc@5.0.0/400.css" />
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/noto-sans-sc@5.0.0/500.css" />
-      </head>
+    <html
+      lang="zh-CN"
+      className={`antialiased ${newsreader.variable} ${notoSerifSC.variable} ${jetbrainsMono.variable}`}
+    >
       <body>{children}</body>
     </html>
   );

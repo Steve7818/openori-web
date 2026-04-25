@@ -1,0 +1,62 @@
+.lockup {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.mark {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  line-height: 1;
+}
+
+.wordmark {
+  font-family: var(--font-newsreader), var(--font-noto-serif-sc), Georgia, serif;
+  font-size: 22px;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: var(--light);
+  line-height: 1.1;
+}
+
+.ori {
+  font-style: italic;
+  color: var(--ember);
+}
+
+.tagline {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-family: var(--font-jetbrains-mono), 'SF Mono', Consolas, monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--light-50);
+  line-height: 1;
+  margin-top: 4px;
+}
+
+.cn {
+  font-family: var(--font-noto-serif-sc), var(--font-newsreader), serif;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--light-50);
+}
+
+.sep {
+  color: var(--light-30);
+}
+
+.en {
+  font-style: italic;
+  font-family: var(--font-newsreader), Georgia, serif;
+  font-size: 11px;
+  letter-spacing: 0.02em;
+}

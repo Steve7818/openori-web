@@ -1,7 +1,11 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import LensCard from './lens/LensCard';
+import BrandLockup from './hero/BrandLockup';
+import HeroLeft from './hero/HeroLeft';
+import AskBox from './hero/AskBox';
+import TrustBand from './hero/TrustBand';
+import AmbientBackground from './hero/AmbientBackground';
 import LensModal from './lens/LensModal';
 import { useLensStream } from './lens/useLensStream';
 import { initLensSession } from '@/lib/lens/api';
@@ -114,33 +118,28 @@ export default function HeroSection({ initialLensDebug = false, initialPage = 1 
       {/* Turnstile invisible widget container */}
       <div ref={turnstileContainer} style={{ position: 'absolute', opacity: 0, pointerEvents: 'none' }} />
 
-      <section className={styles.hero}>
-        <div className={styles.heroLeft}>
-          <div className={styles.meta}>
-            <span>01 · OpenOri v2</span>
-            <span>生成式引擎优化咨询</span>
+      <div className={styles.page}>
+        <AmbientBackground />
+
+        <header className={styles.topbar}>
+          <BrandLockup />
+          <nav className={styles.nav}>
+            <a href="#approach">方法</a>
+            <a href="#cases">案例</a>
+            <a href="#about">关于</a>
+            <a href="#contact">联系</a>
+          </nav>
+        </header>
+
+        <main className={styles.hero}>
+          <div className={styles.leftColumn}>
+            <HeroLeft />
+            <TrustBand />
           </div>
 
-          <h1 className={styles.heroH1}>
-            世界在换一种<br />方式找<em>答案。</em>
-          </h1>
-
-          <div className={styles.what}>
-            <span className={styles.whatLabel}>// What is GEO</span>
-            <p className={styles.whatText}>
-              让品牌被 AI <em>看见、被推荐、被引用</em>。
-            </p>
-          </div>
-        </div>
-
-        <div className={styles.heroRight}>
-          <LensCard
-            onLaunch={handleLaunch}
-            dailyRemaining={dailyRemaining}
-            isLoading={status === 'streaming'}
-          />
-        </div>
-      </section>
+          <AskBox onSubmit={handleLaunch} isLoading={status === 'streaming'} />
+        </main>
+      </div>
 
       <LensModal
         isOpen={isModalOpen}

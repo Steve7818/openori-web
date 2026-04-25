@@ -1,84 +1,76 @@
-.hero {
+.page {
   min-height: 100vh;
-  padding: 60px 56px;
-  display: grid;
-  grid-template-columns: 1fr 1.1fr;
-  gap: 72px;
-  align-items: center;
-  max-width: 1440px;
-  margin: 0 auto;
-}
-
-.heroLeft {
   display: flex;
   flex-direction: column;
+  position: relative;
+  overflow: hidden;
 }
 
-.meta {
-  font-family: var(--mono);
-  font-size: 11px;
-  color: var(--ink-faint);
-  letter-spacing: 0.15em;
-  margin-bottom: 28px;
+.topbar {
+  position: relative;
+  z-index: 10;
+  padding: 32px 56px;
   display: flex;
-  gap: 24px;
-}
-
-.heroH1 {
-  font-family: var(--serif);
-  font-size: clamp(52px, 6.5vw, 88px);
-  line-height: 1;
-  letter-spacing: -0.035em;
-  color: var(--navy);
-  font-weight: 400;
-  margin: 0 0 36px;
-}
-
-.heroH1 em {
-  color: var(--champagne);
-  font-style: italic;
-}
-
-.what {
-  display: flex;
-  gap: 24px;
-  padding: 22px 0;
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
-  margin-bottom: 0;
-}
-
-.whatLabel {
-  font-family: var(--mono);
-  font-size: 11px;
-  color: var(--champagne);
-  letter-spacing: 0.15em;
-  padding-top: 4px;
-  white-space: nowrap;
-}
-
-.whatText {
-  font-family: var(--serif);
-  font-size: 22px;
-  color: var(--ink);
-  font-style: italic;
-  margin: 0;
-}
-
-.whatText em {
-  color: var(--champagne);
-}
-
-.heroRight {
-  display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
+  opacity: 0;
+  animation: fadeIn 600ms ease-out 0ms forwards;
 }
 
-@media (max-width: 980px) {
+.nav {
+  display: flex;
+  gap: 32px;
+  font-family: var(--font-jetbrains-mono), 'SF Mono', Consolas, monospace;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--light-50);
+}
+
+.nav a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 200ms;
+}
+
+.nav a:hover {
+  color: var(--light);
+}
+
+.hero {
+  flex: 1;
+  position: relative;
+  z-index: 5;
+  padding: 40px 56px 56px;
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 80px;
+  align-items: start;
+}
+
+.leftColumn {
+  max-width: 640px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 900px) {
   .hero {
     grid-template-columns: 1fr;
     gap: 48px;
-    padding: 40px 24px;
+    padding: 24px 32px 48px;
+  }
+  .topbar {
+    padding: 24px 32px;
+  }
+  .nav {
+    display: none;
   }
 }

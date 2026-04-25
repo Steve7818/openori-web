@@ -1,0 +1,55 @@
+.left {
+  max-width: 640px;
+}
+
+.h1 {
+  font-family: var(--font-noto-serif-sc), var(--font-newsreader), serif;
+  font-size: clamp(48px, 6.5vw, 92px);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--light);
+  margin-bottom: 44px;
+  opacity: 0;
+  animation: fadeUp 800ms ease-out 400ms forwards;
+}
+
+.em {
+  font-family: var(--font-newsreader), Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--ember);
+}
+
+.sub {
+  font-family: var(--font-noto-serif-sc), var(--font-newsreader), serif;
+  font-size: 19px;
+  font-weight: 300;
+  line-height: 1.65;
+  color: var(--light);
+  max-width: 560px;
+  opacity: 0;
+  animation: fadeUp 800ms ease-out 600ms forwards;
+}
+
+.line {
+  display: block;
+}
+
+.num {
+  font-family: var(--font-jetbrains-mono), 'SF Mono', Consolas, monospace;
+  font-weight: 400;
+  color: var(--ember);
+  font-size: 18px;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

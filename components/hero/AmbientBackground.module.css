@@ -1,0 +1,43 @@
+.ambient {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 90vw;
+  height: 90vw;
+  max-width: 1200px;
+  max-height: 1200px;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  opacity: 0.09;
+  z-index: 0;
+}
+
+.ecliptic {
+  transform-origin: 100px 100px;
+  animation: eclipticSpin 60s linear infinite;
+}
+
+.ember {
+  transform-origin: 100px 100px;
+  animation: emberPulse 6s ease-in-out infinite;
+}
+
+@keyframes eclipticSpin {
+  from {
+    transform: rotate(-23.5deg);
+  }
+  to {
+    transform: rotate(336.5deg);
+  }
+}
+
+@keyframes emberPulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.1);
+  }
+}
