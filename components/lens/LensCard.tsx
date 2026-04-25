@@ -82,7 +82,7 @@ export default function LensCard({ onLaunch, dailyRemaining, isLoading = false }
       <div className={styles.topbar}>
         <div className={styles.topbarLeft}>
           <div className={styles.topbarDot}></div>
-          <span>ORIGENO · AI 偏离度扫描</span>
+          <span>OPENORI · AI 偏离度扫描</span>
         </div>
         <span className={styles.topbarRight}>LIVE</span>
       </div>
@@ -182,10 +182,6 @@ export default function LensCard({ onLaunch, dailyRemaining, isLoading = false }
 
       <div className={styles.footer}>
         <span className={styles.quota}>今日剩余 {remaining}/2 次</span>
-        <div className={styles.live}>
-          <div className={styles.liveDot}></div>
-          <span>过去 24h · 3,842 次扫描</span>
-        </div>
       </div>
     </div>
   );

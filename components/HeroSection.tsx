@@ -19,6 +19,18 @@ export default function HeroSection() {
   const turnstileWidget = useRef<TurnstileWidget | null>(null);
   const turnstileContainer = useRef<HTMLDivElement>(null);
 
+  // DEV ONLY: Check for ?lens-debug=1 to auto-open modal with mock data
+  useEffect(() => {
+    if (typeof window !== 'undefined' && process.env.NEXT_PUBLIC_LENS_DEBUG === '1') {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('lens-debug') === '1') {
+        setBrand('Babycare');
+        setQuestion('推荐国产母婴品牌');
+        setIsModalOpen(true);
+      }
+    }
+  }, []);
+
   // Eagerly ensure session exists — start on mount, share the promise
   useEffect(() => {
     const existing = getSessionId();

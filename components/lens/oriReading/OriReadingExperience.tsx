@@ -50,8 +50,24 @@ export default function OriReadingExperience({
   onScanAgain,
   onOpenQR,
 }: OriReadingExperienceProps) {
-  const [currentIdx, setCurrentIdx] = useState(0);
-  const [visitedSlides, setVisitedSlides] = useState<Set<number>>(new Set([0]));
+  // DEV ONLY: Check for ?page=N to jump to specific slide
+  const getInitialPage = () => {
+    if (typeof window !== 'undefined' && process.env.NEXT_PUBLIC_LENS_DEBUG === '1') {
+      const params = new URLSearchParams(window.location.search);
+      const pageParam = params.get('page');
+      if (pageParam) {
+        const pageNum = parseInt(pageParam, 10);
+        if (!isNaN(pageNum) && pageNum >= 1 && pageNum <= 8) {
+          return pageNum - 1; // Convert 1-indexed to 0-indexed
+        }
+      }
+    }
+    return 0;
+  };
+
+  const initialPage = getInitialPage();
+  const [currentIdx, setCurrentIdx] = useState(initialPage);
+  const [visitedSlides, setVisitedSlides] = useState<Set<number>>(new Set([initialPage]));
 
   const slides: Slide[] = useMemo(
     () => [
