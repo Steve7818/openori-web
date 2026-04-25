@@ -132,7 +132,7 @@
   font-family: var(--mono, 'JetBrains Mono', monospace);
   font-size: 10px;
   letter-spacing: 0.15em;
-  color: var(--light-50, rgba(240, 235, 226, 0.5));
+  color: var(--light-65, rgba(240, 235, 226, 0.65));
   text-transform: uppercase;
   position: relative;
   z-index: 5;
