@@ -177,21 +177,21 @@ export default function OriReadingExperience({
             onClick={() => goTo(currentIdx - 1)}
             aria-label="previous"
           >
-            \u2190
+            ←
           </button>
           <button
             className={`${styles.arrow} ${currentIdx === totalSlides - 1 ? styles.arrowDisabled : ''}`}
             onClick={() => goTo(currentIdx + 1)}
             aria-label="next"
           >
-            \u2192
+            →
           </button>
         </div>
       </div>
 
       {/* Toast for copy link */}
       {toastVisible && (
-        <div className={styles.toast}>\u5df2\u590d\u5236\u94fe\u63a5</div>
+        <div className={styles.toast}>已复制链接</div>
       )}
     </div>
   );
@@ -247,7 +247,7 @@ function BottomBar({ idx, totalSlides, brand }: { idx: number; totalSlides: numb
 
   return (
     <div className={styles.bottombar}>
-      <span>LITE SCAN \u00b7 {brandUpper}</span>
+      <span>LITE SCAN · {brandUpper}</span>
       <span>P. {pageNum} / {total}</span>
     </div>
   );
@@ -265,14 +265,14 @@ function SlideContent({ slide, idx, totalSlides, panels, oriReading, status, bra
             <div className={`${styles.coverCol} ${styles.coverColBrand}`}>
               <div className={styles.coverLabel}>BRAND</div>
               <h1 className={styles.coverTitle}>{slide.brand}</h1>
-              <p className={styles.coverSub}>\u4eca\u5929\u6211\u4eec\u770b\u5b83\u5728 6 \u5bb6\u4e3b\u6d41 AI \u773c\u91cc\u662f\u8c01\u3002</p>
+              <p className={styles.coverSub}>今天我们看它在 6 家主流 AI 眼里是谁。</p>
             </div>
             <div className={styles.coverDivider} />
             <div className={`${styles.coverCol} ${styles.coverColQuery}`}>
               <div className={styles.coverLabel}>QUERY</div>
               <p className={styles.coverQuote}>{slide.question}</p>
               <p className={styles.coverDesc}>
-                \u8fd9\u9053\u9898 6 \u5bb6 AI \u90fd\u4f1a\u7b54\u3002\u7b54\u6848\u91cc\u6709\u6ca1\u6709\u63d0\u5230 <strong>{slide.brand}</strong>\uff0c\u600e\u4e48\u63d0 <strong>{slide.brand}</strong>\uff0c\u5c31\u662f\u54c1\u724c\u7684 GEO \u4fe1\u53f7\u3002
+                这道题 6 家 AI 都会答。答案里有没有提到 <strong>{slide.brand}</strong>，怎么提 <strong>{slide.brand}</strong>，就是品牌的 GEO 信号。
               </p>
             </div>
           </div>
@@ -368,7 +368,7 @@ function SlideContent({ slide, idx, totalSlides, panels, oriReading, status, bra
         <div className={styles.content}>
           {oriReading ? (
             <div className={styles.oriContent}>
-              <div className={styles.oriEyebrow}>Ori \u7ed9\u4f60\u7684 read</div>
+              <div className={styles.oriEyebrow}>Ori 给你的 read</div>
 
               <h2 className={styles.oriActionTitle}>
                 <ReactMarkdown
@@ -408,13 +408,13 @@ function SlideContent({ slide, idx, totalSlides, panels, oriReading, status, bra
               </div>
 
               <div className={styles.oriSignoff}>
-                <span className={styles.oriSignoffCn}>\u6210\u4e3a\u7b54\u6848\u7684\u7b54\u6848</span>
-                <span className={styles.oriSignoffSep}>\u00b7</span>
+                <span className={styles.oriSignoffCn}>成为答案的答案</span>
+                <span className={styles.oriSignoffSep}>·</span>
                 <span className={styles.oriSignoffEn}>The answer behind the answers</span>
               </div>
             </div>
           ) : (
-            <div className={styles.oriWaiting}>Ori \u6b63\u5728\u6574\u7406\u5979\u7684\u89c2\u5bdf</div>
+            <div className={styles.oriWaiting}>Ori 正在整理她的观察</div>
           )}
         </div>
 
@@ -432,36 +432,36 @@ function SlideContent({ slide, idx, totalSlides, panels, oriReading, status, bra
         <div className={styles.content}>
           <div className={styles.ctaGrid}>
             <div className={styles.ctaColText}>
-              <div className={styles.ctaEyebrow}>\u7531 Ori \u5448\u73b0</div>
+              <div className={styles.ctaEyebrow}>由 Ori 呈现</div>
 
               <h2 className={styles.ctaTitle}>
-                Lite \u62a5\u544a\u5df2\u5b8c\u6210\u3002<br/>
-                \u4e0b\u4e00\u6b65 \u2014 Ori \u8c03\u5ea6\u5168\u7403\u9876\u5c16 <span className={styles.em}>AI \u67b6\u6784</span>\uff0c<br/>
-                \u548c\u60a8\u8fdb\u519b\u672c\u65f6\u4ee3\u6700\u5927\u7684\u54c1\u724c\u6218\u573a\u3002
+                Lite 报告已完成。<br/>
+                下一步 — Ori 调度全球顶尖 <span className={styles.em}>AI 架构</span>，<br/>
+                和您进军本时代最大的品牌战场。
               </h2>
 
               <p className={styles.ctaBody}>
-                \u60a8\u521a\u770b\u5230\u7684 Lite Scan\uff0cOri \u76f4\u63a5\u8c03\u4e86 6 \u5927\u5e73\u53f0\u7684 API\u3002\u4f46 AI \u5728 APP \u548c Web \u4e0a\u5448\u73b0\u7684\u7248\u672c\u4e0d\u4e00\u6837\uff0c\u7528\u6237\u5728 ChatGPT App \u770b\u5230\u7684\u3001\u8c46\u5305 Web \u770b\u5230\u7684\u3001\u5c0f\u7ea2\u4e66 AI \u770b\u5230\u7684\uff0c\u5dee\u5f02\u5de8\u5927\u3002
+                您刚看到的 Lite Scan，Ori 直接调了 6 大平台的 API。但 AI 在 APP 和 Web 上呈现的版本不一样，用户在 ChatGPT App 看到的、豆包 Web 看到的、小红书 AI 看到的，差异巨大。
               </p>
 
-              <div className={styles.ctaDeliverableLabel}>\u2014 \u5168\u91cf\u62a5\u544a\u4f1a\u5c55\u5f00</div>
+              <div className={styles.ctaDeliverableLabel}>— 全量报告会展开</div>
 
               <div className={styles.ctaBullets}>
                 <div className={styles.ctaBullet}>
                   <span className={styles.ctaBulletMark} />
-                  <span>\u53cc\u7aef \u00d7 6 \u5e73\u53f0\u771f\u5b9e\u56de\u7b54\u5bf9\u7167</span>
+                  <span>双端 × 6 平台真实回答对照</span>
                 </div>
                 <div className={styles.ctaBullet}>
                   <span className={styles.ctaBulletMark} />
-                  <span>\u884c\u4e1a Top 5 \u5bf9\u624b\u54c1\u724c\u58f0\u91cf\u5360\u6bd4</span>
+                  <span>行业 Top 5 对手品牌声量占比</span>
                 </div>
                 <div className={styles.ctaBullet}>
                   <span className={styles.ctaBulletMark} />
-                  <span>\u6d77\u5916 3 \u5927\u5e73\u53f0\uff08ChatGPT / Claude / Perplexity\uff09\u540c\u9898\u5bf9\u7167</span>
+                  <span>海外 3 大平台（ChatGPT / Claude / Perplexity）同题对照</span>
                 </div>
                 <div className={styles.ctaBullet}>
                   <span className={styles.ctaBulletMark} />
-                  <span>AI \u504f\u79bb\u5ea6\u6839\u56e0 + \u4fee\u590d\u8def\u5f84</span>
+                  <span>AI 偏离度根因 + 修复路径</span>
                 </div>
               </div>
             </div>
@@ -472,18 +472,18 @@ function SlideContent({ slide, idx, totalSlides, panels, oriReading, status, bra
               <div className={styles.qrBlock}>
                 <div className={styles.qrPlaceholder}>QR</div>
                 <span className={styles.qrLabel}>
-                  \u626b\u7801\u6dfb\u52a0 OpenOri \u56e2\u961f<br/>
-                  \u8ba9 AI \u4e3a\u60a8\u8bf4\u8bdd <span className={styles.qrArrow}>\u2192</span>
+                  扫码添加 OpenOri 团队<br/>
+                  让 AI 为您说话 <span className={styles.qrArrow}>→</span>
                 </span>
               </div>
 
               <button className={styles.ctaSecondary} onClick={onShareLink}>
-                \u5206\u4eab\u672c\u6b21 Ori \u8bca\u65ad\u62a5\u544a
+                分享本次 Ori 诊断报告
               </button>
 
               <div className={styles.ctaSignoff}>
-                <span className={styles.ctaSignoffCn}>\u6210\u4e3a\u7b54\u6848\u7684\u7b54\u6848</span>
-                <span className={styles.ctaSignoffSep}>\u00b7</span>
+                <span className={styles.ctaSignoffCn}>成为答案的答案</span>
+                <span className={styles.ctaSignoffSep}>·</span>
                 <span className={styles.ctaSignoffEn}>The answer behind the answers</span>
               </div>
             </div>
