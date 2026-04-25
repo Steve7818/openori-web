@@ -66,14 +66,15 @@ export default function HeroSection({ initialLensDebug = false, initialPage = 1 
 
   // Auto-start stream in debug mode
   useEffect(() => {
-    if (shouldOpenModal && brand && question) {
+    if (shouldOpenModal && brand && question && status === 'idle') {
       sessionReady.current.then(sessionId => {
         if (sessionId) {
+          console.log('[DEBUG] Auto-starting stream:', { sessionId, brand, question });
           start(sessionId, brand, question);
         }
       });
     }
-  }, [shouldOpenModal, brand, question, start]);
+  }, [shouldOpenModal, brand, question, status, start]);
 
   const handleLaunch = async (brandInput: string, questionInput: string) => {
     setBrand(brandInput);
