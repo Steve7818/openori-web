@@ -33,6 +33,13 @@ export function useLensStream(): UseLensStreamResult {
   const [oriReading, setOriReading] = useState<string | null>(null);
 
   const start = useCallback(async (sessionId: string, brand: string, question: string, turnstileToken?: string) => {
+    console.log('[DEBUG-STREAM] start() CALLED', {
+      sessionId,
+      brand,
+      question,
+      timestamp: Date.now()
+    });
+
     setStatus('streaming');
     setError(null);
     setOriReading(null);
@@ -82,34 +89,49 @@ export function useLensStream(): UseLensStreamResult {
       const decoder = new TextDecoder();
       let buffer = '';
       let firstTokenReceived = false;
+      const processEventBlock = (rawEvent: string) => {
+        const lines = rawEvent
+          .split(/\r?\n/)
+          .map(line => line.trim())
+          .filter(line => line.startsWith('data:'));
+
+        if (lines.length === 0) return;
+
+        for (const line of lines) {
+          try {
+            const json = line.startsWith('data: ') ? line.substring(6) : line.substring(5).trimStart();
+            const data = JSON.parse(json);
+            handleEvent(data, sessionId, setPanels, setStatus, setOriReading, () => {
+              if (!firstTokenReceived) {
+                firstTokenReceived = true;
+                trackEvent(sessionId, 'lens_first_token');
+              }
+            });
+          } catch (e) {
+            console.warn('Failed to parse SSE event:', line, e);
+          }
+        }
+      };
 
       try {
         while (true) {
           const { done, value } = await reader.read();
-          if (done) break;
+          if (done) {
+            buffer += decoder.decode();
+            break;
+          }
 
           buffer += decoder.decode(value, { stream: true });
-          const events = buffer.split('\n\n');
+          const events = buffer.split(/\r?\n\r?\n/);
           buffer = events.pop() || '';
 
           for (const event of events) {
-            const lines = event.split('\n').filter(l => l.startsWith('data: '));
-            if (lines.length === 0) continue;
-
-            for (const line of lines) {
-              try {
-                const data = JSON.parse(line.substring(6));
-                handleEvent(data, sessionId, setPanels, setStatus, setOriReading, () => {
-                  if (!firstTokenReceived) {
-                    firstTokenReceived = true;
-                    trackEvent(sessionId, 'lens_first_token');
-                  }
-                });
-              } catch (e) {
-                console.warn('Failed to parse SSE event:', line, e);
-              }
-            }
+            processEventBlock(event);
           }
+        }
+
+        if (buffer.trim()) {
+          processEventBlock(buffer);
         }
       } finally {
         clearTimeout(timeoutId);
@@ -147,7 +169,10 @@ function handleEvent(
     const { platform, token, t_first } = event;
     setPanels(prev => {
       const panel = prev[platform];
-      if (!panel) return prev;
+      if (!panel) {
+        console.warn('Lens stream received token for unknown platform:', platform, Object.keys(prev));
+        return prev;
+      }
 
       const isFirstToken = panel.status === 'waiting';
       if (isFirstToken) {
