@@ -166,6 +166,22 @@ function SlideContent({ slide, idx, totalSlides, panels, oriReading, status, onO
           <span>{currentDate}</span>
         </div>
 
+        <div className={styles.coverHero}>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="140" height="140" role="img" className={styles.coverLogo}>
+            <title>OpenOri idle (breathing baseline)</title>
+            <desc>Hero idle state: ecliptic ring rotates every 18 seconds, ember pulses gently every 6 seconds</desc>
+            <line x1="68" y1="22" x2="132" y2="178" stroke="#1a1a1a" strokeWidth="3" strokeLinecap="round"/>
+            <ellipse cx="100" cy="100" rx="76" ry="24" stroke="#1a1a1a" strokeWidth="6.5" fill="none"/>
+            <g>
+              <ellipse cx="100" cy="100" rx="62" ry="19" stroke="#1a1a1a" strokeWidth="4" fill="none" transform="rotate(-23.5 100 100)" strokeOpacity="0.88"/>
+              <animateTransform attributeName="transform" type="rotate" from="0 100 100" to="360 100 100" dur="18s" repeatCount="indefinite"/>
+            </g>
+            <circle cx="100" cy="100" r="9" fill="#d97757">
+              <animate attributeName="r" values="9;9.6;9" dur="6s" repeatCount="indefinite"/>
+            </circle>
+          </svg>
+        </div>
+
         <div className={styles.coverGrid}>
           <div className={styles.coverLeft}>
             <div>
@@ -296,6 +312,17 @@ function SlideContent({ slide, idx, totalSlides, panels, oriReading, status, onO
         <div className={styles.slideTopBar}>
           <span><span className={styles.topNum}>07</span> / 07</span>
           <span style={{ color: '#C8A45E' }}>FINAL READ · BY ORI</span>
+        </div>
+
+        <div className={styles.oriLogoWatermark}>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="120" height="120" role="img">
+            <title>OpenOri</title>
+            <desc>Armillary sphere logo: tilted gnomon, horizontal equator, ecliptic at -23.5 degrees, ember at center</desc>
+            <line x1="68" y1="22" x2="132" y2="178" stroke="#1a1a1a" strokeWidth="3" strokeLinecap="round"/>
+            <ellipse cx="100" cy="100" rx="76" ry="24" stroke="#1a1a1a" strokeWidth="6.5" fill="none"/>
+            <ellipse cx="100" cy="100" rx="62" ry="19" stroke="#1a1a1a" strokeWidth="4" fill="none" transform="rotate(-23.5 100 100)" strokeOpacity="0.88"/>
+            <circle cx="100" cy="100" r="9" fill="#d97757"/>
+          </svg>
         </div>
 
         {oriReading ? (

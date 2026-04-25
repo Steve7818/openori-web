@@ -7,6 +7,7 @@
   overflow: hidden;
   font-family: var(--font-sans, -apple-system, 'Helvetica Neue', sans-serif);
   color: #0F1E3A;
+  --brand-ember: #d97757;
 }
 
 .slidesTrack {
@@ -103,6 +104,20 @@
 }
 
 /* Cover slide */
+.coverHero {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+  opacity: 0.08;
+  pointer-events: none;
+}
+
+.coverLogo {
+  display: block;
+}
+
 .coverGrid {
   position: absolute;
   top: 70px;
@@ -302,6 +317,16 @@
 }
 
 /* Ori finale slide */
+.oriLogoWatermark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+  opacity: 0.06;
+  pointer-events: none;
+}
+
 .oriActionTitle {
   position: absolute;
   top: 70px;

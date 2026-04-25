@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200" role="img">
+  <title>OpenOri loading (active scan)</title>
+  <desc>Loading state: ecliptic rotates every 4 seconds, conveys processing without spinner anxiety</desc>
+  <line x1="68" y1="22" x2="132" y2="178" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round"/>
+  <ellipse cx="100" cy="100" rx="76" ry="24" stroke="#1a1a1a" stroke-width="6.5" fill="none"/>
+  <g>
+    <ellipse cx="100" cy="100" rx="62" ry="19" stroke="#1a1a1a" stroke-width="4" fill="none" transform="rotate(-23.5 100 100)" stroke-opacity="0.92"/>
+    <animateTransform attributeName="transform" type="rotate" from="0 100 100" to="360 100 100" dur="4s" repeatCount="indefinite"/>
+  </g>
+  <circle cx="100" cy="100" r="9" fill="#d97757"/>
+</svg>

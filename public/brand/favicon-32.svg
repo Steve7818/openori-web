@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="32" height="32" role="img">
+  <title>OpenOri favicon</title>
+  <desc>Small-size optimized: strokes thickened so equator, ecliptic, gnomon stay legible at 32 pixels</desc>
+  <line x1="60" y1="18" x2="140" y2="182" stroke="#1a1a1a" stroke-width="7" stroke-linecap="round"/>
+  <ellipse cx="100" cy="100" rx="80" ry="25" stroke="#1a1a1a" stroke-width="13" fill="none"/>
+  <ellipse cx="100" cy="100" rx="62" ry="19" stroke="#1a1a1a" stroke-width="9" fill="none" transform="rotate(-23.5 100 100)"/>
+  <circle cx="100" cy="100" r="15" fill="#d97757"/>
+</svg>

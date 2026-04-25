@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 200" width="600" height="200" role="img">
+  <title>OpenOri wordmark lockup</title>
+  <desc>Logo paired with Newsreader OpenOri wordmark and Chinese subtitle</desc>
+  <line x1="68" y1="22" x2="132" y2="178" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round"/>
+  <ellipse cx="100" cy="100" rx="76" ry="24" stroke="#1a1a1a" stroke-width="6.5" fill="none"/>
+  <ellipse cx="100" cy="100" rx="62" ry="19" stroke="#1a1a1a" stroke-width="4" fill="none" transform="rotate(-23.5 100 100)" stroke-opacity="0.88"/>
+  <circle cx="100" cy="100" r="9" fill="#d97757"/>
+  <text x="220" y="118" font-family="Newsreader, 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif" font-size="64" font-weight="400" fill="#1a1a1a" letter-spacing="-0.012em">OpenOri</text>
+  <text x="220" y="148" font-family="Newsreader, 'Iowan Old Style', serif" font-size="11" fill="#9a9286" letter-spacing="5">奥 瑞 津 · 生 成 引 擎 优 化</text>
+</svg>

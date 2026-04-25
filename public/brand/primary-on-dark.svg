@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200" role="img">
+  <title>OpenOri (on dark)</title>
+  <desc>Logo for dark backgrounds: cream strokes, ember accent</desc>
+  <line x1="68" y1="22" x2="132" y2="178" stroke="#f0ebe2" stroke-width="3" stroke-linecap="round"/>
+  <ellipse cx="100" cy="100" rx="76" ry="24" stroke="#f0ebe2" stroke-width="6.5" fill="none"/>
+  <ellipse cx="100" cy="100" rx="62" ry="19" stroke="#f0ebe2" stroke-width="4" fill="none" transform="rotate(-23.5 100 100)" stroke-opacity="0.88"/>
+  <circle cx="100" cy="100" r="9" fill="#d97757"/>
+</svg>
