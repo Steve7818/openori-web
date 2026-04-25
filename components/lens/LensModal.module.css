@@ -32,16 +32,17 @@
 }
 
 .close {
-  position: absolute;
-  top: 24px;
-  right: 24px;
+  position: fixed;
+  top: 32px;
+  right: 32px;
   z-index: 1002;
   width: 44px;
   height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: transparent;
+  background: rgba(26, 26, 26, 0.6);
+  backdrop-filter: blur(8px);
   border: 1px solid var(--light-30, rgba(240, 235, 226, 0.3));
   border-radius: 50%;
   color: var(--light-50, rgba(240, 235, 226, 0.5));

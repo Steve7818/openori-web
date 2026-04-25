@@ -384,10 +384,31 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   max-width: 820px;
   margin: 0 auto;
   width: 100%;
+  overflow-y: auto;
+  padding-right: 12px;
+}
+
+/* Ember-style thin scrollbar for Ori content */
+.oriContent::-webkit-scrollbar {
+  width: 3px;
+}
+
+.oriContent::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.oriContent::-webkit-scrollbar-thumb {
+  background: var(--ember, #d97757);
+  border-radius: 2px;
+  opacity: 0.6;
+}
+
+.oriContent::-webkit-scrollbar-thumb:hover {
+  background: var(--ember, #d97757);
+  opacity: 0.9;
 }
 
 .oriEyebrow {
