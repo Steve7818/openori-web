@@ -17,6 +17,7 @@ interface OriReadingExperienceProps {
   onClose: () => void;
   onScanAgain: () => void;
   onOpenQR: () => void;
+  initialPage?: number;
 }
 
 const PLATFORM_DOMAINS: Record<string, string> = {
@@ -49,25 +50,20 @@ export default function OriReadingExperience({
   onClose,
   onScanAgain,
   onOpenQR,
+  initialPage = 1,
 }: OriReadingExperienceProps) {
-  // DEV ONLY: Check for ?page=N to jump to specific slide
-  const getInitialPage = () => {
-    if (typeof window !== 'undefined' && process.env.NEXT_PUBLIC_LENS_DEBUG === '1') {
-      const params = new URLSearchParams(window.location.search);
-      const pageParam = params.get('page');
-      if (pageParam) {
-        const pageNum = parseInt(pageParam, 10);
-        if (!isNaN(pageNum) && pageNum >= 1 && pageNum <= 8) {
-          return pageNum - 1; // Convert 1-indexed to 0-indexed
-        }
-      }
+  // Convert 1-indexed page to 0-indexed, validate range
+  const getInitialIdx = () => {
+    if (process.env.NEXT_PUBLIC_LENS_DEBUG === '1' && initialPage) {
+      const idx = initialPage - 1;
+      if (idx >= 0 && idx <= 7) return idx;
     }
     return 0;
   };
 
-  const initialPage = getInitialPage();
-  const [currentIdx, setCurrentIdx] = useState(initialPage);
-  const [visitedSlides, setVisitedSlides] = useState<Set<number>>(new Set([initialPage]));
+  const initialIdx = getInitialIdx();
+  const [currentIdx, setCurrentIdx] = useState(initialIdx);
+  const [visitedSlides, setVisitedSlides] = useState<Set<number>>(new Set([initialIdx]));
 
   const slides: Slide[] = useMemo(
     () => [

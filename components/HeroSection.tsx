@@ -9,27 +9,22 @@ import { getSessionId, setSessionId } from '@/lib/lens/storage';
 import { loadTurnstileScript, renderTurnstile, type TurnstileWidget } from '@/lib/lens/turnstile';
 import styles from './HeroSection.module.css';
 
-export default function HeroSection() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [brand, setBrand] = useState('');
-  const [question, setQuestion] = useState('');
+interface HeroSectionProps {
+  initialLensDebug?: boolean;
+  initialPage?: number;
+}
+
+export default function HeroSection({ initialLensDebug = false, initialPage = 1 }: HeroSectionProps) {
+  const shouldOpenModal = initialLensDebug && process.env.NEXT_PUBLIC_LENS_DEBUG === '1';
+
+  const [isModalOpen, setIsModalOpen] = useState(shouldOpenModal);
+  const [brand, setBrand] = useState(shouldOpenModal ? 'Babycare' : '');
+  const [question, setQuestion] = useState(shouldOpenModal ? '推荐国产母婴品牌' : '');
   const [dailyRemaining, setDailyRemaining] = useState(2);
   const { panels, status, error, oriReading, start } = useLensStream();
   const sessionReady = useRef<Promise<string | null>>(null!);
   const turnstileWidget = useRef<TurnstileWidget | null>(null);
   const turnstileContainer = useRef<HTMLDivElement>(null);
-
-  // DEV ONLY: Check for ?lens-debug=1 to auto-open modal with mock data
-  useEffect(() => {
-    if (typeof window !== 'undefined' && process.env.NEXT_PUBLIC_LENS_DEBUG === '1') {
-      const params = new URLSearchParams(window.location.search);
-      if (params.get('lens-debug') === '1') {
-        setBrand('Babycare');
-        setQuestion('推荐国产母婴品牌');
-        setIsModalOpen(true);
-      }
-    }
-  }, []);
 
   // Eagerly ensure session exists — start on mount, share the promise
   useEffect(() => {
@@ -158,6 +153,7 @@ export default function HeroSection() {
         streamStatus={status}
         streamError={error}
         oriReading={oriReading}
+        initialPage={initialPage}
       />
     </>
   );

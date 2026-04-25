@@ -17,6 +17,7 @@ interface LensModalProps {
   streamStatus: 'idle' | 'streaming' | 'done' | 'error';
   streamError: string | null;
   oriReading: string | null;
+  initialPage?: number;
 }
 
 export default function LensModal({
@@ -30,6 +31,7 @@ export default function LensModal({
   streamStatus,
   streamError,
   oriReading,
+  initialPage = 1,
 }: LensModalProps) {
   const [showWecomQR, setShowWecomQR] = useState(false);
 
@@ -105,6 +107,7 @@ export default function LensModal({
           onClose={onClose}
           onScanAgain={handleScanAgain}
           onOpenQR={() => setShowWecomQR(true)}
+          initialPage={initialPage}
         />
 
         {/* 企微二维码弹窗 */}
