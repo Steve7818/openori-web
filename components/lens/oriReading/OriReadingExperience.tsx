@@ -1,8 +1,10 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
+import Image from 'next/image';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import BrandLockup from '@/components/hero/BrandLockup';
 import styles from './OriReadingExperience.module.css';
 import { PLATFORM_SLIDES, SECTION_NAMES, type Slide } from './slides';
 import type { PanelsState } from '../useLensStream';
@@ -41,17 +43,6 @@ function splitOriReading(text: string | null): { actionTitle: string; summary: s
   return { actionTitle, summary, bullets };
 }
 
-/** Mini brand mark SVG used in top/bottom bars */
-function MiniMark() {
-  return (
-    <svg className={styles.miniMark} viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <ellipse cx="100" cy="100" rx="76" ry="24" stroke="#f0ebe2" strokeWidth="6.5"/>
-      <line x1="68" y1="22" x2="132" y2="178" stroke="#f0ebe2" strokeWidth="3"/>
-      <ellipse cx="100" cy="100" rx="62" ry="19" stroke="#f0ebe2" strokeWidth="4" strokeOpacity="0.88" transform="rotate(-23.5 100 100)"/>
-      <circle cx="100" cy="100" r="9" fill="#d97757"/>
-    </svg>
-  );
-}
 
 export default function OriReadingExperience({
   panels,
@@ -224,12 +215,7 @@ function TopBar({ idx, totalSlides }: { idx: number; totalSlides: number }) {
 
   return (
     <div className={styles.topbar}>
-      <div className={styles.brandStamp}>
-        <MiniMark />
-        <span className={styles.brandStampName}>
-          Open<span className={styles.oriEm}>Ori</span>
-        </span>
-      </div>
+      <BrandLockup />
       <span className={styles.topbarCenter}>{sectionName}</span>
       <span>{currentDate}</span>
     </div>
@@ -308,22 +294,22 @@ function SlideContent({ slide, idx, totalSlides, panels, oriReading, status, bra
                 {panel?.text && (
                   <div className={styles.stat}>
                     <span className={styles.statNum}>{panel.text.length}</span>
-                    <span className={styles.statLabel}>MENTIONS</span>
+                    <span className={styles.statLabel}>提及次数</span>
                   </div>
                 )}
                 <div className={styles.stat}>
                   <span className={styles.statNum}>—</span>
-                  <span className={styles.statLabel}>DEVIATION</span>
+                  <span className={styles.statLabel}>偏离度</span>
                 </div>
                 {panel?.latency != null && (
                   <div className={styles.stat}>
                     <span className={styles.statNum}>{(panel.latency / 1000).toFixed(1)}s</span>
-                    <span className={styles.statLabel}>LATENCY</span>
+                    <span className={styles.statLabel}>响应延迟</span>
                   </div>
                 )}
                 <div className={styles.stat}>
                   <span className={`${styles.statNum} ${styles.statSrc}`}>{slide.source}</span>
-                  <span className={styles.statLabel}>SOURCE</span>
+                  <span className={styles.statLabel}>数据来源</span>
                 </div>
               </div>
             </div>
@@ -470,7 +456,13 @@ function SlideContent({ slide, idx, totalSlides, panels, oriReading, status, bra
 
             <div className={styles.ctaColAction}>
               <div className={styles.qrBlock}>
-                <div className={styles.qrPlaceholder}>QR</div>
+                <Image
+                  src="/wechat-qr.jpg"
+                  alt="OpenOri 团队企业微信"
+                  width={132}
+                  height={132}
+                  className={styles.qrImage}
+                />
                 <span className={styles.qrLabel}>
                   扫码添加 OpenOri 团队<br/>
                   让 AI 为您说话 <span className={styles.qrArrow}>→</span>
