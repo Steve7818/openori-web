@@ -30,7 +30,7 @@
 .topbarDot {
   width: 8px;
   height: 8px;
-  background: var(--champagne);
+  background: var(--ember);
   border-radius: 50%;
   animation: pulse 2s infinite;
 }
@@ -63,7 +63,7 @@
 }
 
 .headlineSerif em {
-  color: var(--champagne);
+  color: var(--ember);
   font-style: italic;
 }
 
@@ -123,9 +123,9 @@
 }
 
 .input:focus {
-  border-color: var(--champagne);
+  border-color: var(--ember);
   background: var(--bg);
-  box-shadow: 0 0 0 4px var(--champagne-bg);
+  box-shadow: 0 0 0 4px var(--ember-bg, rgba(217, 119, 87, 0.1));
 }
 
 .input::placeholder {
@@ -153,10 +153,10 @@
 }
 
 .submitBig:hover {
-  background: var(--champagne);
+  background: var(--ember);
   color: var(--navy);
   transform: translateY(-1px);
-  box-shadow: 0 4px 16px rgba(200, 164, 94, 0.3);
+  box-shadow: 0 4px 16px rgba(217, 119, 87, 0.3);
 }
 
 .submitBig:disabled {
@@ -193,7 +193,7 @@
 .promise {
   margin-top: 18px;
   padding: 16px 20px;
-  background: var(--champagne-bg);
+  background: var(--ember-bg, rgba(217, 119, 87, 0.08));
   border-radius: 8px;
   display: flex;
   flex-direction: column;
@@ -211,7 +211,7 @@
 
 .promiseRow svg {
   flex-shrink: 0;
-  color: var(--champagne);
+  color: var(--ember);
 }
 
 .promiseRow strong {
@@ -305,7 +305,7 @@
 }
 
 .quota {
-  color: var(--champagne);
+  color: var(--ember);
   font-weight: 500;
 }
 

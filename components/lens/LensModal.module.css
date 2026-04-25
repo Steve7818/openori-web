@@ -57,8 +57,8 @@
 }
 
 .close:hover {
-  border-color: var(--champagne);
-  color: var(--champagne);
+  border-color: var(--ember);
+  color: var(--ember);
 }
 
 .header {
@@ -70,7 +70,7 @@
 .eyebrow {
   font-family: var(--mono);
   font-size: 10px;
-  color: var(--champagne);
+  color: var(--ember);
   letter-spacing: 0.2em;
   text-transform: uppercase;
   font-weight: 500;
@@ -87,7 +87,7 @@
 }
 
 .questionBrand {
-  color: var(--champagne);
+  color: var(--ember);
   font-style: italic;
 }
 
@@ -116,7 +116,7 @@
 
 .cta {
   padding: 40px;
-  background: linear-gradient(135deg, var(--surface) 0%, var(--champagne-bg) 100%);
+  background: linear-gradient(135deg, var(--surface) 0%, var(--ember-bg, rgba(217, 119, 87, 0.08)) 100%);
   border-radius: 12px;
   text-align: center;
   opacity: 0;
@@ -133,7 +133,7 @@
 }
 
 .ctaH3 em {
-  color: var(--champagne);
+  color: var(--ember);
 }
 
 .ctaP {

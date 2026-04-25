@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OpenOri · Lens UI Deck Mockup v1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,300;1,6..72,400;1,6..72,500&family=JetBrains+Mono:wght@300;400;500&family=Noto+Serif+SC:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1a1a;
+    --ink-soft: #1f1f1f;
+    --cream: #f5f0e8;
+    --light: #f0ebe2;
+    --light-50: rgba(240, 235, 226, 0.5);
+    --light-30: rgba(240, 235, 226, 0.3);
+    --light-15: rgba(240, 235, 226, 0.15);
+    --light-08: rgba(240, 235, 226, 0.08);
+    --light-04: rgba(240, 235, 226, 0.04);
+    --ember: #d97757;
+    --ember-faint: rgba(217, 119, 87, 0.04);
+    --ember-soft: rgba(217, 119, 87, 0.15);
+    --serif: 'Newsreader', 'Noto Serif SC', Georgia, serif;
+    --serif-cn: 'Noto Serif SC', 'Newsreader', serif;
+    --mono: 'JetBrains Mono', 'SF Mono', Consolas, monospace;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    background: #0d0d0d;
+    color: var(--light);
+    font-family: var(--serif);
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.5;
+  }
+
+  /* ─────── Stage-level ambient anchor ─────── */
+  /* Large armillary mirror of brand mark — fixed in viewport, does NOT scroll/translate with pages.
+     This is the brand thesis made visual: Ori (logo) stays still while content slides across.
+     Pages are solid black on top, so this logo is visible at the page edges (left/right margin)
+     and acts as the "anchor" the deck rotates around. */
+  .ambient-stage {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .ambient-stage svg {
+    width: 92vw;
+    max-width: 1500px;
+    opacity: 0.08;
+  }
+
+  /* ─────── Page deck wrapper ─────── */
+  .deck {
+    max-width: 1320px;
+    margin: 0 auto;
+    padding: 64px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 80px;
+  }
+
+  .deck-intro {
+    text-align: center;
+    margin-bottom: 16px;
+  }
+  .deck-intro h1 {
+    font-family: var(--serif-cn);
+    font-size: 24px;
+    font-weight: 400;
+    color: var(--light);
+    margin-bottom: 8px;
+  }
+  .deck-intro p {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--light-50);
+    text-transform: uppercase;
+  }
+
+  .page-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--light-30);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    text-align: center;
+  }
+
+  /* ─────── Single deck page (16:10 frame) ─────── */
+  .deck-page {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    background: var(--ink);
+    border: 1px solid var(--light-08);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 24px 64px rgba(0,0,0,0.5);
+    z-index: 2;
+  }
+
+  /* ─────── Top bar (page metadata header) ─────── */
+  .topbar {
+    padding: 18px 32px 18px 24px;
+    border-bottom: 1px solid var(--light-08);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--light-50);
+    text-transform: uppercase;
+    position: relative;
+    z-index: 5;
+    flex-shrink: 0;
+  }
+  .topbar .center {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--light-30);
+  }
+  .topbar .status {
+    color: var(--ember);
+  }
+
+  /* ─────── Bottom bar (metadata only, brand has moved up) ─────── */
+  .bottombar {
+    padding: 16px 32px 16px 32px;
+    border-top: 1px solid var(--light-08);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--light-50);
+    text-transform: uppercase;
+    position: relative;
+    z-index: 5;
+    flex-shrink: 0;
+  }
+
+  /* ─────── Brand stamp (now lives in top bar left) ─────── */
+  .brand-stamp {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .brand-stamp svg {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+  }
+  .brand-stamp .name {
+    font-family: var(--serif);
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 0;
+    color: var(--light);
+    text-transform: none;
+    line-height: 1;
+  }
+  .brand-stamp .name .ori-em {
+    font-style: italic;
+    color: var(--ember);
+  }
+
+  /* ─────── Content area (all pages share) ─────── */
+  .content {
+    flex: 1;
+    padding: 56px 48px;
+    position: relative;
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ════════════════════════════════════════════
+     Page 1 · COVER
+     ════════════════════════════════════════════ */
+  .cover-grid {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1.25fr;
+    gap: 0;
+    align-items: stretch;
+  }
+
+  .cover-col {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 56px 0 0;
+  }
+
+  .cover-col.brand {
+    padding-right: 64px;
+  }
+
+  .cover-col.query {
+    padding-left: 64px;
+  }
+
+  .cover-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    color: var(--ember);
+    text-transform: uppercase;
+    margin-bottom: 32px;
+  }
+
+  .cover-title {
+    font-family: var(--serif-cn);
+    font-size: clamp(48px, 6vw, 84px);
+    font-weight: 400;
+    line-height: 1;
+    color: var(--light);
+    margin-bottom: 32px;
+    letter-spacing: -0.02em;
+  }
+
+  .cover-sub {
+    font-family: var(--serif-cn);
+    font-size: 18px;
+    line-height: 1.6;
+    color: var(--light);
+    font-weight: 300;
+    max-width: 360px;
+  }
+
+  .cover-quote {
+    font-family: var(--serif-cn);
+    font-size: clamp(28px, 3vw, 42px);
+    font-weight: 400;
+    line-height: 1.25;
+    color: var(--light);
+    margin-bottom: 24px;
+    font-style: italic;
+  }
+  .cover-quote::before { content: '“'; color: var(--ember); }
+  .cover-quote::after { content: '”'; color: var(--ember); }
+
+  .cover-desc {
+    font-family: var(--serif-cn);
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--light);
+    font-weight: 300;
+    max-width: 420px;
+  }
+  .cover-desc strong {
+    font-weight: 500;
+    color: var(--ember);
+    font-style: italic;
+    font-family: var(--serif);
+  }
+
+  /* ════════════════════════════════════════════
+     Page 2 · PLATFORM (Kimi sample)
+     ════════════════════════════════════════════ */
+  .platform-content {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    flex: 1;
+  }
+
+  .platform-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--light-08);
+  }
+
+  .platform-logo {
+    width: 56px;
+    height: 56px;
+    background: var(--light-08);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--light-50);
+    letter-spacing: 0.1em;
+  }
+
+  .platform-id {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .platform-parent {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--light-50);
+    text-transform: uppercase;
+  }
+  .platform-name {
+    font-family: var(--serif-cn);
+    font-size: 28px;
+    color: var(--light);
+    font-weight: 500;
+  }
+
+  .platform-stats {
+    margin-left: auto;
+    display: flex;
+    gap: 32px;
+  }
+  .stat {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    text-align: right;
+  }
+  .stat .num {
+    font-family: var(--serif);
+    font-size: 28px;
+    color: var(--ember);
+    font-style: italic;
+    font-weight: 400;
+    line-height: 1;
+  }
+  .stat .num.src {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-style: normal;
+    letter-spacing: 0.04em;
+    line-height: 2.15;
+    color: var(--light);
+  }
+  .stat .label {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    color: var(--light-50);
+    text-transform: uppercase;
+  }
+
+  .action-title {
+    font-family: var(--serif-cn);
+    font-size: clamp(28px, 3.2vw, 42px);
+    font-weight: 500;
+    line-height: 1.25;
+    color: var(--light);
+    max-width: 80%;
+  }
+  .action-title .em {
+    color: var(--ember);
+    font-style: italic;
+    font-family: var(--serif);
+    font-weight: 400;
+  }
+
+  .platform-body {
+    font-family: var(--serif-cn);
+    font-size: 16px;
+    line-height: 1.75;
+    color: var(--light);
+    font-weight: 300;
+    max-width: 720px;
+  }
+  .platform-body p { margin-bottom: 14px; }
+  .platform-body strong {
+    color: var(--ember);
+    font-weight: 500;
+    font-family: var(--serif);
+    font-style: italic;
+  }
+
+  /* ════════════════════════════════════════════
+     Page 8 · ORI FINALE
+     ════════════════════════════════════════════ */
+  .ori-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-width: 820px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .ori-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    color: var(--ember);
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .ori-eyebrow::before {
+    content: '';
+    width: 24px;
+    height: 1px;
+    background: var(--ember);
+  }
+
+  .ori-action-title {
+    font-family: var(--serif-cn);
+    font-size: clamp(34px, 3.8vw, 46px);
+    font-weight: 400;
+    line-height: 1.18;
+    color: var(--light);
+    margin-bottom: 24px;
+    letter-spacing: -0.01em;
+  }
+  .ori-action-title .em {
+    color: var(--ember);
+    font-style: italic;
+    font-family: var(--serif);
+  }
+
+  .ori-rule {
+    width: 60px;
+    height: 1px;
+    background: var(--ember);
+    margin-bottom: 24px;
+  }
+
+  .ori-summary {
+    font-family: var(--serif-cn);
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--light);
+    font-weight: 300;
+    margin-bottom: 28px;
+    max-width: 720px;
+  }
+
+  .ori-evidence {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .ori-evidence-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding-left: 4px;
+  }
+  .ori-evidence-bullet {
+    width: 7px;
+    height: 7px;
+    border: 1px solid var(--ember);
+    transform: rotate(45deg);
+    flex-shrink: 0;
+    margin-top: 10px;
+  }
+  .ori-evidence-text {
+    font-family: var(--serif-cn);
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--light);
+    font-weight: 300;
+  }
+  .ori-evidence-text strong {
+    color: var(--ember);
+    font-weight: 500;
+    font-family: var(--serif);
+    font-style: italic;
+  }
+
+  /* Ori sign-off (bottom of finale, brand echo) */
+  .ori-signoff {
+    margin-top: 28px;
+    padding-top: 18px;
+    border-top: 1px solid var(--light-08);
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    color: var(--light-50);
+  }
+  .ori-signoff .cn {
+    font-family: var(--serif-cn);
+    font-size: 13px;
+    color: var(--light);
+    letter-spacing: 0.02em;
+  }
+  .ori-signoff .sep { color: var(--ember); }
+  .ori-signoff .en {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 13px;
+    color: var(--light);
+    letter-spacing: 0.01em;
+  }
+
+  /* ════════════════════════════════════════════
+     Page 9 · CTA
+     ════════════════════════════════════════════ */
+  .cta-grid {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1.45fr 1fr;
+    gap: 0;
+    align-items: stretch;
+  }
+
+  .cta-col-text {
+    display: flex;
+    flex-direction: column;
+    padding-right: 56px;
+  }
+
+  .cta-col-action {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-left: 56px;
+    text-align: center;
+  }
+
+  .cta-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    color: var(--ember);
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+
+  .cta-title {
+    font-family: var(--serif-cn);
+    font-size: clamp(26px, 2.6vw, 34px);
+    font-weight: 500;
+    line-height: 1.3;
+    color: var(--light);
+    margin-bottom: 28px;
+    letter-spacing: -0.005em;
+  }
+  .cta-title .em {
+    color: var(--ember);
+    font-style: italic;
+    font-family: var(--serif);
+    font-weight: 400;
+  }
+
+  .cta-body {
+    font-family: var(--serif-cn);
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--light);
+    font-weight: 300;
+    margin-bottom: 24px;
+    max-width: 580px;
+  }
+  .cta-body .em {
+    color: var(--ember);
+    font-style: italic;
+    font-family: var(--serif);
+  }
+
+  .cta-deliverable-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--light-50);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .cta-bullets {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .cta-bullet {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    font-family: var(--serif-cn);
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--light);
+    font-weight: 300;
+  }
+  .cta-bullet-mark {
+    width: 6px;
+    height: 6px;
+    border: 1px solid var(--ember);
+    transform: rotate(45deg);
+    flex-shrink: 0;
+    margin-top: 8px;
+  }
+
+  /* Right column: QR + actions */
+  .qr-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+
+  .qr-placeholder {
+    width: 132px;
+    height: 132px;
+    background: var(--cream);
+    border-radius: 4px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+    font-size: 22px;
+    color: var(--ink);
+    letter-spacing: 0.12em;
+  }
+
+  .qr-label {
+    font-family: var(--serif-cn);
+    font-size: 14px;
+    color: var(--light);
+    font-weight: 400;
+    text-align: center;
+    line-height: 1.5;
+    max-width: 260px;
+  }
+  .qr-label .arrow {
+    color: var(--ember);
+    margin-left: 6px;
+    font-family: var(--mono);
+  }
+
+  .cta-secondary {
+    background: transparent;
+    border: 1px solid var(--light-15);
+    color: var(--light-50);
+    padding: 11px 22px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: border-color 200ms, color 200ms;
+  }
+  .cta-secondary:hover {
+    border-color: var(--ember);
+    color: var(--ember);
+  }
+
+  .cta-signoff {
+    margin-top: 36px;
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .cta-signoff .cn {
+    font-family: var(--serif-cn);
+    font-size: 12px;
+    color: var(--light-50);
+    letter-spacing: 0.02em;
+  }
+  .cta-signoff .sep {
+    color: var(--ember);
+    opacity: 0.6;
+    font-family: var(--mono);
+  }
+  .cta-signoff .en {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 12px;
+    color: var(--light-50);
+  }
+
+  /* ─────── Inline brand SVG (used in stamps) ─────── */
+  .mini-mark {
+    flex-shrink: 0;
+  }
+</style>
+</head>
+<body>
+
+<!-- ─────── Stage-level ambient logo (fixed in viewport, does NOT translate with page transitions) ─────── -->
+<div class="ambient-stage" aria-hidden="true">
+  <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <ellipse cx="100" cy="100" rx="76" ry="24" stroke="#f0ebe2" stroke-width="0.6"/>
+    <line x1="68" y1="22" x2="132" y2="178" stroke="#f0ebe2" stroke-width="0.45"/>
+    <ellipse cx="100" cy="100" rx="62" ry="19" stroke="#f0ebe2" stroke-width="0.55" transform="rotate(-23.5 100 100)"/>
+    <circle cx="100" cy="100" r="2.6" fill="#d97757"/>
+  </svg>
+</div>
+
+<div class="deck">
+
+  <div class="deck-intro">
+    <h1>OpenOri · Lens UI Deck v1</h1>
+    <p>4 representative pages — cover · platform · ori finale · cta</p>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       Page 1 · COVER
+       ═══════════════════════════════════════════════════════════ -->
+  <div>
+    <div class="page-label">P. 01 · Cover</div>
+    <div class="deck-page">
+      <div class="topbar">
+        <div class="brand-stamp">
+          <svg class="mini-mark" viewBox="0 0 200 200" fill="none">
+            <ellipse cx="100" cy="100" rx="76" ry="24" stroke="#f0ebe2" stroke-width="6.5"/>
+            <line x1="68" y1="22" x2="132" y2="178" stroke="#f0ebe2" stroke-width="3"/>
+            <ellipse cx="100" cy="100" rx="62" ry="19" stroke="#f0ebe2" stroke-width="4" stroke-opacity="0.88" transform="rotate(-23.5 100 100)"/>
+            <circle cx="100" cy="100" r="9" fill="#d97757"/>
+          </svg>
+          <span class="name">Open<span class="ori-em">Ori</span></span>
+        </div>
+        <span class="center">COVER</span>
+        <span>04 / 25 / 2026</span>
+      </div>
+
+      <div class="content">
+        <div class="cover-grid">
+          <div class="cover-col brand">
+            <div class="cover-label">Brand</div>
+            <h1 class="cover-title">Babycare</h1>
+            <p class="cover-sub">今天我们看它在 6 家主流 AI 眼里是谁。</p>
+          </div>
+          <div class="cover-col query">
+            <div class="cover-label">Query</div>
+            <p class="cover-quote">推荐国产母婴品牌</p>
+            <p class="cover-desc">这道题 6 家 AI 都会答。 答案里有没有提到 <strong>Babycare</strong>,怎么提 <strong>Babycare</strong>,就是品牌的 GEO 信号。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="bottombar">
+        <span>LITE SCAN · BABYCARE</span>
+        <span>P. 01 / 09</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       Page 2 · PLATFORM (Kimi sample, post-scan)
+       ═══════════════════════════════════════════════════════════ -->
+  <div>
+    <div class="page-label">P. 02 · Platform sample (Kimi)</div>
+    <div class="deck-page">
+      <div class="topbar">
+        <div class="brand-stamp">
+          <svg class="mini-mark" viewBox="0 0 200 200" fill="none">
+            <ellipse cx="100" cy="100" rx="76" ry="24" stroke="#f0ebe2" stroke-width="6.5"/>
+            <line x1="68" y1="22" x2="132" y2="178" stroke="#f0ebe2" stroke-width="3"/>
+            <ellipse cx="100" cy="100" rx="62" ry="19" stroke="#f0ebe2" stroke-width="4" stroke-opacity="0.88" transform="rotate(-23.5 100 100)"/>
+            <circle cx="100" cy="100" r="9" fill="#d97757"/>
+          </svg>
+          <span class="name">Open<span class="ori-em">Ori</span></span>
+        </div>
+        <span class="center">06 AI 平台 · 01</span>
+        <span>04 / 25 / 2026</span>
+      </div>
+
+      <div class="content">
+        <div class="platform-content">
+          <div class="platform-header">
+            <div class="platform-logo">K</div>
+            <div class="platform-id">
+              <span class="platform-parent">月之暗面</span>
+              <span class="platform-name">Kimi</span>
+            </div>
+            <div class="platform-stats">
+              <div class="stat">
+                <span class="num">3</span>
+                <span class="label">Mentions</span>
+              </div>
+              <div class="stat">
+                <span class="num">62</span>
+                <span class="label">Deviation</span>
+              </div>
+              <div class="stat">
+                <span class="num">2.8s</span>
+                <span class="label">Latency</span>
+              </div>
+              <div class="stat">
+                <span class="num src">kimi.ai</span>
+                <span class="label">Source</span>
+              </div>
+            </div>
+          </div>
+
+          <h2 class="action-title">Kimi 把 Babycare 当作 <span class="em">"高端原创设计"</span> 品牌, 但漏了核心母婴品类。</h2>
+
+          <div class="platform-body">
+            <p>询问"推荐国产母婴品牌"时,Kimi 给出 8 个推荐,Babycare 排在 <strong>第 3 位</strong>,描述聚焦在"原创设计、极简风格、年轻父母审美"。</p>
+            <p>但与 Babycare 真实定位对照,Kimi 的描述偏向"生活方式品牌",忽略了核心品类心智(婴儿用品全品类、奶粉、纸尿裤)。这是 <strong>62/100 的偏离度</strong> 来源。</p>
+            <p>引用源主要来自小红书、知乎,品牌官网未被引用。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="bottombar">
+        <span>LITE SCAN · BABYCARE</span>
+        <span>P. 02 / 09</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       Page 8 · ORI FINALE (action title + bullets, McKinsey body slide)
+       ═══════════════════════════════════════════════════════════ -->
+  <div>
+    <div class="page-label">P. 08 · Ori Finale</div>
+    <div class="deck-page">
+      <div class="topbar">
+        <div class="brand-stamp">
+          <svg class="mini-mark" viewBox="0 0 200 200" fill="none">
+            <ellipse cx="100" cy="100" rx="76" ry="24" stroke="#f0ebe2" stroke-width="6.5"/>
+            <line x1="68" y1="22" x2="132" y2="178" stroke="#f0ebe2" stroke-width="3"/>
+            <ellipse cx="100" cy="100" rx="62" ry="19" stroke="#f0ebe2" stroke-width="4" stroke-opacity="0.88" transform="rotate(-23.5 100 100)"/>
+            <circle cx="100" cy="100" r="9" fill="#d97757"/>
+          </svg>
+          <span class="name">Open<span class="ori-em">Ori</span></span>
+        </div>
+        <span class="center">FINAL READ · BY ORI</span>
+        <span>04 / 25 / 2026</span>
+      </div>
+
+      <div class="content">
+        <div class="ori-content">
+          <div class="ori-eyebrow">Ori 给你的 read</div>
+
+          <h2 class="ori-action-title">6 家 AI 都把 Babycare 描述为 <span class="em">"设计感品牌"</span>, 但只有 2 家真正提到核心品类。</h2>
+
+          <div class="ori-rule"></div>
+
+          <p class="ori-summary">这是品牌 GEO 心智的偏离 — 用户在 AI 上问"母婴品牌",答案给的是"潮牌"。短期影响转化漏斗,长期影响品类心智占领。</p>
+
+          <div class="ori-evidence">
+            <div class="ori-evidence-item">
+              <span class="ori-evidence-bullet"></span>
+              <span class="ori-evidence-text"><strong>豆包 + 文心</strong> 提到了"奶粉、纸尿裤、推车"等核心品类,但仅占 6 家中的 1/3。</span>
+            </div>
+            <div class="ori-evidence-item">
+              <span class="ori-evidence-bullet"></span>
+              <span class="ori-evidence-text"><strong>Kimi、DeepSeek、千问、智谱</strong> 共同把 Babycare 归类为"原创设计 / 生活方式 / 年轻父母"标签 — 这是小红书 SEO 反哺到 AI 训练的结果。</span>
+            </div>
+            <div class="ori-evidence-item">
+              <span class="ori-evidence-bullet"></span>
+              <span class="ori-evidence-text">品牌 <strong>官网内容</strong>从未被任何 AI 引用,核心 GEO 修复点 = 把官网做成 AI 可读的"权威源"。</span>
+            </div>
+          </div>
+
+          <div class="ori-signoff">
+            <span class="cn">成为答案的答案</span>
+            <span class="sep">·</span>
+            <span class="en">The answer behind the answers</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="bottombar">
+        <span>LITE SCAN · BABYCARE</span>
+        <span>P. 08 / 09</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       Page 9 · CTA (next step)
+       ═══════════════════════════════════════════════════════════ -->
+  <div>
+    <div class="page-label">P. 09 · CTA</div>
+    <div class="deck-page">
+      <div class="topbar">
+        <div class="brand-stamp">
+          <svg class="mini-mark" viewBox="0 0 200 200" fill="none">
+            <ellipse cx="100" cy="100" rx="76" ry="24" stroke="#f0ebe2" stroke-width="6.5"/>
+            <line x1="68" y1="22" x2="132" y2="178" stroke="#f0ebe2" stroke-width="3"/>
+            <ellipse cx="100" cy="100" rx="62" ry="19" stroke="#f0ebe2" stroke-width="4" stroke-opacity="0.88" transform="rotate(-23.5 100 100)"/>
+            <circle cx="100" cy="100" r="9" fill="#d97757"/>
+          </svg>
+          <span class="name">Open<span class="ori-em">Ori</span></span>
+        </div>
+        <span class="center">下一步</span>
+        <span>04 / 25 / 2026</span>
+      </div>
+
+      <div class="content">
+        <div class="cta-grid">
+          <div class="cta-col-text">
+            <div class="cta-eyebrow">由 Ori 呈现</div>
+
+            <h2 class="cta-title">Lite 报告已完成。<br>下一步 — Ori 调度全球顶尖 <span class="em">AI 架构</span>,<br>和您进军本时代最大的品牌战场。</h2>
+
+            <p class="cta-body">您刚看到的 Lite Scan,Ori 直接调了 6 大平台的 API。但 AI 在 APP 和 Web 上呈现的版本不一样,用户在 ChatGPT App 看到的、豆包 Web 看到的、小红书 AI 看到的,差异巨大。</p>
+
+            <div class="cta-deliverable-label">— 全量报告会展开</div>
+
+            <div class="cta-bullets">
+              <div class="cta-bullet">
+                <span class="cta-bullet-mark"></span>
+                <span>双端 × 6 平台真实回答对照</span>
+              </div>
+              <div class="cta-bullet">
+                <span class="cta-bullet-mark"></span>
+                <span>行业 Top 5 对手品牌声量占比</span>
+              </div>
+              <div class="cta-bullet">
+                <span class="cta-bullet-mark"></span>
+                <span>海外 3 大平台(ChatGPT / Claude / Perplexity)同题对照</span>
+              </div>
+              <div class="cta-bullet">
+                <span class="cta-bullet-mark"></span>
+                <span>AI 偏离度根因 + 修复路径</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="cta-col-action">
+            <div class="qr-block">
+              <div class="qr-placeholder">QR</div>
+              <span class="qr-label">扫码添加 OpenOri 团队<br>让 AI 为您说话 <span class="arrow">→</span></span>
+            </div>
+
+            <button class="cta-secondary">分享本次 Ori 诊断报告</button>
+
+            <div class="cta-signoff">
+              <span class="cn">成为答案的答案</span>
+              <span class="sep">·</span>
+              <span class="en">The answer behind the answers</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bottombar">
+        <span>LITE SCAN · BABYCARE</span>
+        <span>P. 09 / 09</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
