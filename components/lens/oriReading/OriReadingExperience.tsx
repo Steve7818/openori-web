@@ -19,6 +19,26 @@ interface OriReadingExperienceProps {
   onOpenQR: () => void;
 }
 
+const PLATFORM_DOMAINS: Record<string, string> = {
+  kimi: 'KIMI.AI',
+  deepseek: 'DEEPSEEK.COM',
+  ernie: 'YIYAN.BAIDU.COM',
+  qwen: 'TONGYI.ALIYUN.COM',
+  doubao: 'DOUBAO.COM',
+  zhipu: 'ZHIPUAI.CN',
+};
+
+function splitOriReading(text: string | null): { actionTitle: string; body: string } {
+  if (!text) return { actionTitle: '', body: '' };
+  const paragraphs = text.split(/\n\n+/).filter(p => p.trim());
+  if (paragraphs.length === 0) return { actionTitle: '', body: '' };
+  if (paragraphs.length === 1) return { actionTitle: '', body: paragraphs[0] };
+  return {
+    actionTitle: paragraphs[0],
+    body: paragraphs.slice(1).join('\n\n'),
+  };
+}
+
 export default function OriReadingExperience({
   panels,
   oriReading,
@@ -74,6 +94,7 @@ export default function OriReadingExperience({
               <SlideContent
                 slide={slide}
                 idx={i}
+                totalSlides={totalSlides}
                 panels={panels}
                 oriReading={oriReading}
                 status={status}
@@ -124,6 +145,7 @@ export default function OriReadingExperience({
 interface SlideContentProps {
   slide: Slide;
   idx: number;
+  totalSlides: number;
   panels: PanelsState;
   oriReading: string | null;
   status: string;
@@ -131,31 +153,53 @@ interface SlideContentProps {
   onScanAgain: () => void;
 }
 
-function SlideContent({ slide, idx, panels, oriReading, status, onOpenQR, onScanAgain }: SlideContentProps) {
+function SlideContent({ slide, idx, totalSlides, panels, oriReading, status, onOpenQR, onScanAgain }: SlideContentProps) {
+  const currentDate = new Date().toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' }).replace(/\//g, ' / ');
+
   if (slide.type === 'cover') {
+    const footerSource = `OPENORI LITE SCAN · ${currentDate}`;
+
     return (
-      <div className={styles.pageInner}>
-        <div className={styles.cover}>
-          <div className={styles.coverMeta}>
-            // ori · 初步扫描
+      <>
+        <div className={styles.slideTopBar}>
+          <span><span className={styles.topNum}>01</span> / 07</span>
+          <span>{currentDate}</span>
+        </div>
+
+        <div className={styles.coverGrid}>
+          <div className={styles.coverLeft}>
+            <div>
+              <div className={styles.coverLabel}>BRAND</div>
+              <h1 className={styles.coverBrand}>{slide.brand}</h1>
+            </div>
+            <p className={styles.coverTagline}>
+              今天我们看它在 6 家主流 AI 眼里是谁。
+            </p>
           </div>
-          <h1>
-            读一遍你的品牌,在 6 家 AI 里的样子
-          </h1>
-          <p className={styles.coverSub}>
-            用 6 家主流 AI 的真实回答,看一次「{slide.brand}」在 AI 眼里的认知。读完 6 家,OpenOri 在最后说几句。
-          </p>
-          <div className={styles.coverMeta}>
-            品牌<span className={styles.coverMetaVal}>{slide.brand}</span>
-          </div>
-          <div className={styles.coverMeta}>
-            问题<span className={styles.coverMetaVal}>{slide.question}</span>
-          </div>
-          <div className={styles.coverHint}>
-            按 <span className={styles.kbd}>→</span> 开始
+          <div className={styles.coverRight}>
+            <div className={styles.coverQueryLabel}>QUERY</div>
+            <p className={styles.coverQuery}>"{slide.question}"</p>
+            <p className={styles.coverQueryMeta}>
+              这道题 6 家 AI 都会答。<br/>
+              答案里有没有提到{slide.brand},怎么提{slide.brand},<br/>
+              就是品牌的 GEO 信号。
+            </p>
           </div>
         </div>
-      </div>
+
+        <div className={styles.pageSignature}>
+          <div className={styles.signatureLine} />
+          <div className={styles.signatureName}>
+            <span className={styles.signatureOpen}>Open</span>
+            <span className={styles.signatureOri}>Ori</span>
+          </div>
+        </div>
+
+        <div className={styles.pageFooter}>
+          <span>{footerSource}</span>
+          <span>P. {String(idx + 1).padStart(2, '0')} / {String(totalSlides).padStart(2, '0')}</span>
+        </div>
+      </>
     );
   }
 
@@ -165,38 +209,46 @@ function SlideContent({ slide, idx, panels, oriReading, status, onOpenQR, onScan
     const panelStatus = panel?.status || 'waiting';
     const isLive = panelStatus === 'streaming';
     const isDone = panelStatus === 'done';
-    const pageNum = String(idx).padStart(2, '0');
     const logoPath = slide.logo;
+
+    const statusLabel = panelStatus === 'waiting' ? '等待中' : panelStatus === 'streaming' ? 'LIVE' : panelStatus === 'done' ? '已完成' : '出错';
+    const platformDomain = PLATFORM_DOMAINS[slide.platformId] || '';
+    const footerSource = `SOURCE: ${platformDomain} · API LAYER · ${currentDate}`;
 
     return (
       <>
-        <div className={styles.topRight}>
-          <div className={styles.pageIndex}>
-            <span className={styles.pageNum}>{pageNum}</span> / 07
-          </div>
-          <div className={`${styles.streamStatus} ${isLive ? styles.streamStatusLive : ''}`}>
-            {panelStatus === 'waiting' ? '等待中' : panelStatus === 'streaming' ? 'LIVE' : panelStatus === 'done' ? '已完成' : '出错'}
-          </div>
+        <div className={styles.slideTopBar}>
+          <span>
+            <span className={styles.topNum}>{String(idx + 1).padStart(2, '0')}</span> / 07
+          </span>
+          <span>{statusLabel}</span>
         </div>
-        <div className={styles.headerFixed}>
+
+        <div className={styles.aiHeader}>
           {logoPath && (
             <div className={styles.logoChip}>
-              <img src={logoPath} alt={slide.brand} className={styles.pgLogo} />
+              <img src={logoPath} alt={slide.brand} className={styles.logoImg} />
             </div>
           )}
-          <div className={styles.headerText}>
+          <div className={styles.headerCenter}>
             <div className={styles.eyebrow}>{slide.parent}</div>
             <div className={styles.brandName}>{slide.brand}</div>
-            <div className={styles.brandMeta}>
-              {panel?.latency != null && `响应 ${(panel.latency / 1000).toFixed(1)} 秒`}
-              {panel?.text && panel?.latency != null && ' · '}
-              {panel?.text && `${panel.text.length} 字`}
-              {(panel?.latency == null && !panel?.text) && '等待中'}
-            </div>
+          </div>
+          <div className={styles.headerRight}>
+            {panel?.latency != null && (
+              <div className={styles.headerStat}>响应 {(panel.latency / 1000).toFixed(1)} 秒</div>
+            )}
+            {panel?.text && (
+              <div>{panel.text.length} 字</div>
+            )}
+            {(panel?.latency == null && !panel?.text) && (
+              <div>等待中</div>
+            )}
           </div>
         </div>
+
         <div className={styles.contentArea}>
-          <div className={`${styles.readColumn} ${isDone ? styles.readColumnDone : ''}`}>
+          <div className={styles.readColumn}>
             <ReactMarkdown
               remarkPlugins={[remarkGfm]}
               components={{
@@ -216,70 +268,107 @@ function SlideContent({ slide, idx, panels, oriReading, status, onOpenQR, onScan
             >
               {text}
             </ReactMarkdown>
-            {!isDone && <span className={styles.cursor} />}
           </div>
+        </div>
+
+        <div className={styles.pageSignature}>
+          <div className={styles.signatureLine} />
+          <div className={styles.signatureName}>
+            <span className={styles.signatureOpen}>Open</span>
+            <span className={styles.signatureOri}>Ori</span>
+          </div>
+        </div>
+
+        <div className={styles.pageFooter}>
+          <span>{footerSource}</span>
+          <span>P. {String(idx + 1).padStart(2, '0')} / {String(totalSlides).padStart(2, '0')}</span>
         </div>
       </>
     );
   }
 
   if (slide.type === 'ori') {
-    const text = oriReading || '';
-    const isDone = status === 'done';
+    const { actionTitle: actionTitleFromOriReading, body: bodyTextFromOriReading } = splitOriReading(oriReading);
+    const footerSource = `SOURCE: 6 AI MODELS · API LAYER · ${currentDate} · OPENORI LITE SCAN`;
 
     return (
       <>
-        <div className={styles.topRight}>
-          <div className={styles.pageIndex}>
-            <span className={styles.pageNum}>07</span> / 07
-          </div>
-          <div className={`${styles.streamStatus} ${!isDone ? styles.streamStatusLive : ''}`}>
-            {isDone ? '已完成' : '落笔中'}
-          </div>
+        <div className={styles.slideTopBar}>
+          <span><span className={styles.topNum}>07</span> / 07</span>
+          <span style={{ color: '#C8A45E' }}>FINAL READ · BY ORI</span>
         </div>
-        <div className={styles.headerFixed}>
-          <div className={`${styles.logoChip} ${styles.logoChipOri}`}>
-            <span>O</span>
-          </div>
-          <div className={styles.headerText}>
-            <div className={`${styles.eyebrow} ${styles.eyebrowOri}`}>第 7 家 · Ori 的判断</div>
-            <div className={`${styles.brandName} ${styles.brandNameOri}`}>OpenOri</div>
-            <div className={styles.brandMeta}>
-              {oriReading ? `${oriReading.length} 字` : '落笔中'}
+
+        {oriReading ? (
+          <>
+            <div className={styles.oriActionTitle}>
+              <ReactMarkdown
+                remarkPlugins={[remarkGfm]}
+                components={{
+                  p: ({children}) => <>{children}</>,
+                  strong: ({children}) => <strong>{children}</strong>,
+                  em: ({children}) => <em>{children}</em>,
+                }}
+              >
+                {actionTitleFromOriReading}
+              </ReactMarkdown>
             </div>
+            <div className={styles.oriRule} />
+            <div className={styles.oriBody}>
+              <div className={styles.oriBodyText}>
+                <ReactMarkdown
+                  remarkPlugins={[remarkGfm]}
+                  components={{
+                    p: ({children}) => <p>{children}</p>,
+                    strong: ({children}) => <strong>{children}</strong>,
+                    em: ({children}) => <em>{children}</em>,
+                    ol: ({children}) => <>{children}</>,
+                    ul: ({children}) => <>{children}</>,
+                    li: ({children}) => <p>{children}</p>,
+                    h1: ({children}) => <p><strong>{children}</strong></p>,
+                    h2: ({children}) => <p><strong>{children}</strong></p>,
+                    h3: ({children}) => <p><strong>{children}</strong></p>,
+                    code: ({children}) => <code>{children}</code>,
+                    pre: ({children}) => <>{children}</>,
+                    a: ({href, children}) => <a href={href} target="_blank" rel="noopener noreferrer">{children}</a>,
+                  }}
+                >
+                  {bodyTextFromOriReading}
+                </ReactMarkdown>
+              </div>
+            </div>
+          </>
+        ) : (
+          <div className={styles.oriWaiting}>Ori 正在整理她的观察</div>
+        )}
+
+        <div className={styles.pageSignature}>
+          <div className={styles.signatureLine} />
+          <div className={styles.signatureName}>
+            <span className={styles.signatureOpen}>Open</span>
+            <span className={styles.signatureOri}>Ori</span>
           </div>
         </div>
-        <div className={styles.contentArea}>
-          <div className={`${styles.readColumn} ${styles.readColumnOri} ${isDone ? styles.readColumnDone : ''}`}>
-            <ReactMarkdown
-              remarkPlugins={[remarkGfm]}
-              components={{
-                p: ({children}) => <p>{children}</p>,
-                strong: ({children}) => <strong>{children}</strong>,
-                em: ({children}) => <em>{children}</em>,
-                ol: ({children}) => <>{children}</>,
-                ul: ({children}) => <>{children}</>,
-                li: ({children}) => <p>{children}</p>,
-                h1: ({children}) => <p><strong>{children}</strong></p>,
-                h2: ({children}) => <p><strong>{children}</strong></p>,
-                h3: ({children}) => <p><strong>{children}</strong></p>,
-                code: ({children}) => <code>{children}</code>,
-                pre: ({children}) => <>{children}</>,
-                a: ({href, children}) => <a href={href} target="_blank" rel="noopener noreferrer">{children}</a>,
-              }}
-            >
-              {text || 'Ori 正在整理观察...'}
-            </ReactMarkdown>
-            {!isDone && text && <span className={styles.cursor} />}
-          </div>
+
+        <div className={styles.pageFooter}>
+          <span>{footerSource}</span>
+          <span>P. {String(idx + 1).padStart(2, '0')} / {String(totalSlides).padStart(2, '0')}</span>
         </div>
       </>
     );
   }
 
   if (slide.type === 'cta') {
+    const footerSource = `OPENORI LITE SCAN · ${currentDate}`;
+
     return (
-      <div className={styles.pageInner}>
+      <>
+        <div className={styles.slideTopBar}>
+          <span>
+            <span className={styles.topNum}>{String(idx + 1).padStart(2, '0')}</span> / 07
+          </span>
+          <span>{currentDate}</span>
+        </div>
+
         <div className={styles.cta}>
           <div className={styles.coverMeta}>
             // 想继续跟 ori 聊?
@@ -299,7 +388,20 @@ function SlideContent({ slide, idx, panels, oriReading, status, onOpenQR, onScan
             </button>
           </div>
         </div>
-      </div>
+
+        <div className={styles.pageSignature}>
+          <div className={styles.signatureLine} />
+          <div className={styles.signatureName}>
+            <span className={styles.signatureOpen}>Open</span>
+            <span className={styles.signatureOri}>Ori</span>
+          </div>
+        </div>
+
+        <div className={styles.pageFooter}>
+          <span>{footerSource}</span>
+          <span>P. {String(idx + 1).padStart(2, '0')} / {String(totalSlides).padStart(2, '0')}</span>
+        </div>
+      </>
     );
   }
 
