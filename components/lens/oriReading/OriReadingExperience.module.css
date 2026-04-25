@@ -175,7 +175,7 @@
 
 .coverDivider {
   width: 1px;
-  background: var(--ember-soft, rgba(217, 119, 87, 0.15));
+  background: var(--ember-soft);
 }
 
 .coverLabel {
@@ -753,7 +753,7 @@
 }
 
 .dotVisited:not(.dotActive) {
-  background: var(--ember-soft, rgba(217, 119, 87, 0.6));
+  background: var(--ember-soft);
 }
 
 .arrows {
