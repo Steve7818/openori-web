@@ -5,7 +5,7 @@ const LOGOS = ['蚂蚁集团', '蚂蚁金服', '哈啰出行', '宁德时代'];
 export default function TrustBand() {
   return (
     <div className={styles.trust}>
-      <span className={styles.label}>— 生态合作</span>
+      <span className={styles.label}>生态合作</span>
       <div className={styles.marquee}>
         <div className={styles.track}>
           {/* Set 1 */}

@@ -147,16 +147,17 @@
 .suggestions {
   display: flex;
   flex-direction: column;
+  gap: 4px;
 }
 
 .suggestion {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 14px;
-  padding: 14px 6px;
+  padding: 16px 6px;
   background: transparent;
   border: none;
-  border-bottom: 1px solid var(--light-08);
   cursor: pointer;
   text-align: left;
   width: 100%;
@@ -164,6 +165,25 @@
   font-size: 15px;
   color: var(--light);
   transition: color 250ms, padding-left 250ms;
+}
+
+.suggestion::after {
+  content: '';
+  position: absolute;
+  left: 6px;
+  right: 6px;
+  bottom: 0;
+  height: 1px;
+  background: var(--ember);
+  opacity: 0;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: opacity 250ms, transform 350ms ease-out;
+}
+
+.suggestion:hover:not(:disabled)::after {
+  opacity: 0.5;
+  transform: scaleX(1);
 }
 
 .suggestion:hover:not(:disabled) {

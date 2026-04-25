@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OpenOri · Hero Mockup v1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,300;1,6..72,400;1,6..72,500&family=JetBrains+Mono:wght@300;400;500&family=Noto+Serif+SC:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1a1a;
+    --ink-soft: #2a2a2a;
+    --cream: #f5f0e8;
+    --light: #f0ebe2;
+    --light-50: rgba(240, 235, 226, 0.5);
+    --light-30: rgba(240, 235, 226, 0.3);
+    --light-15: rgba(240, 235, 226, 0.15);
+    --light-08: rgba(240, 235, 226, 0.08);
+    --ember: #d97757;
+    --ember-soft: rgba(217, 119, 87, 0.6);
+    --ember-faint: rgba(217, 119, 87, 0.15);
+    --serif: 'Newsreader', 'Noto Serif SC', Georgia, serif;
+    --serif-cn: 'Noto Serif SC', 'Newsreader', serif;
+    --mono: 'JetBrains Mono', 'SF Mono', Consolas, monospace;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    background: var(--ink);
+    color: var(--light);
+    font-family: var(--serif);
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.5;
+    overflow-x: hidden;
+  }
+
+  /* ─────────────────────────────────────────────
+     Page-enter stagger animations
+     ───────────────────────────────────────────── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes slideInRight {
+    from { opacity: 0; transform: translateX(20px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  /* ─────────────────────────────────────────────
+     Brand motion: ecliptic rotation + ember pulse
+     ───────────────────────────────────────────── */
+  @keyframes eclipticSpin {
+    from { transform: rotate(-23.5deg); }
+    to { transform: rotate(336.5deg); }
+  }
+  @keyframes eclipticSpinSlow {
+    from { transform: rotate(-23.5deg); }
+    to { transform: rotate(336.5deg); }
+  }
+  @keyframes emberPulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.85; transform: scale(1.1); }
+  }
+  @keyframes liveDot {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  /* ─────────────────────────────────────────────
+     Page container
+     ───────────────────────────────────────────── */
+  .page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Ambient armillary background — full mirror of logo, low opacity, motion lives here */
+  .ambient {
+    position: absolute;
+    top: 50%;
+    left: 43%;
+    width: 90vw;
+    height: 90vw;
+    max-width: 1200px;
+    max-height: 1200px;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    opacity: 1;
+    z-index: 0;
+  }
+  .ambient .ecliptic-bg {
+    transform-origin: 100px 100px;
+    animation: eclipticSpinSlow 60s linear infinite;
+  }
+  .ambient .ember-bg {
+    transform-origin: 100px 100px;
+    animation: emberPulse 6s ease-in-out infinite;
+  }
+
+  /* ─────────────────────────────────────────────
+     Top bar
+     ───────────────────────────────────────────── */
+  .topbar {
+    position: relative;
+    z-index: 10;
+    padding: 32px 56px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    opacity: 0;
+    animation: fadeIn 600ms ease-out 0ms forwards;
+  }
+
+  .brand-lockup {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .brand-mark {
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+  }
+
+  .brand-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    line-height: 1;
+  }
+
+  .wordmark {
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    color: var(--light);
+    line-height: 1.1;
+  }
+  .wordmark .ori {
+    font-style: italic;
+    color: var(--ember);
+  }
+
+  .brand-tagline {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    color: var(--light-50);
+    line-height: 1;
+    margin-top: 4px;
+  }
+  .brand-tagline .cn {
+    font-family: var(--serif-cn);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    color: var(--light-50);
+  }
+  .brand-tagline .sep {
+    color: var(--light-30);
+  }
+  .brand-tagline .en {
+    font-style: italic;
+    font-family: var(--serif);
+    font-size: 11px;
+    letter-spacing: 0.02em;
+  }
+
+  .nav {
+    display: flex;
+    gap: 32px;
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--light-50);
+  }
+  .nav a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 200ms;
+  }
+  .nav a:hover { color: var(--light); }
+
+  /* ─────────────────────────────────────────────
+     Hero main grid
+     ───────────────────────────────────────────── */
+  .hero {
+    flex: 1;
+    position: relative;
+    z-index: 5;
+    padding: 40px 56px 56px;
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 80px;
+    align-items: start;
+  }
+
+  /* Left column */
+  .left { max-width: 640px; }
+
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.18em;
+    color: var(--ember);
+    text-transform: uppercase;
+    margin-bottom: 36px;
+    opacity: 0;
+    animation: fadeUp 700ms ease-out 200ms forwards;
+  }
+  .eyebrow .cn {
+    color: var(--ember);
+    text-transform: none;
+    letter-spacing: 0.05em;
+    font-family: var(--serif-cn);
+    font-size: 13px;
+    margin-right: 14px;
+  }
+  .eyebrow .dot {
+    color: var(--light-30);
+    margin: 0 4px;
+  }
+
+  .h1 {
+    font-family: var(--serif-cn);
+    font-size: clamp(48px, 6.5vw, 92px);
+    font-weight: 400;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--light);
+    margin-bottom: 44px;
+    opacity: 0;
+    animation: fadeUp 800ms ease-out 400ms forwards;
+  }
+  .h1 .em {
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 400;
+    color: var(--ember);
+  }
+
+  .sub {
+    font-family: var(--serif-cn);
+    font-size: 19px;
+    font-weight: 300;
+    line-height: 1.65;
+    color: var(--light);
+    max-width: 560px;
+    opacity: 0;
+    animation: fadeUp 800ms ease-out 600ms forwards;
+  }
+  .sub .line { display: block; }
+  .sub .em-light {
+    color: var(--light);
+  }
+  .sub .num {
+    font-family: var(--mono);
+    font-weight: 400;
+    color: var(--ember);
+    font-size: 18px;
+  }
+  .sub .dash {
+    color: var(--light-30);
+    margin: 0 4px;
+  }
+
+  /* Trust band — label on top, logos circling */
+  .trust {
+    margin-top: 88px;
+    padding-top: 0;
+    opacity: 0;
+    animation: fadeUp 800ms ease-out 900ms forwards;
+  }
+  .trust-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--light-50);
+    display: block;
+    margin-bottom: 24px;
+    text-align: left;
+  }
+
+  .trust-marquee {
+    overflow: hidden;
+    position: relative;
+    /* fade edges so loop seam isn't jarring */
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+            mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+  }
+  .trust-track {
+    display: flex;
+    gap: 36px;
+    align-items: center;
+    width: max-content;
+    animation: marquee 28s linear infinite;
+  }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  .trust-logo {
+    /* placeholder logo style */
+    font-family: var(--serif-cn);
+    font-size: 15px;
+    color: var(--light);
+    opacity: 0.85;
+    padding: 8px 18px;
+    border: 1px solid var(--light-15);
+    border-radius: 2px;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    /* grayscale hint */
+    filter: grayscale(1);
+  }
+  .trust-suffix {
+    font-family: var(--serif-cn);
+    color: var(--light-50);
+    font-size: 14px;
+    padding: 0 12px;
+  }
+
+  /* ─────────────────────────────────────────────
+     Right column: AI ask box (Option A · conversational)
+     ───────────────────────────────────────────── */
+  .askbox {
+    position: sticky;
+    top: 32px;
+    background: transparent;
+    opacity: 0;
+    animation: slideInRight 800ms ease-out 700ms forwards;
+  }
+
+  .askbox-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+  }
+  .askbox-eyebrow {
+    font-family: var(--serif-cn);
+    font-size: 18px;
+    font-weight: 400;
+    color: var(--light);
+    letter-spacing: 0.01em;
+  }
+  .askbox-eyebrow .ai {
+    color: var(--ember);
+    font-style: italic;
+    font-family: var(--serif);
+  }
+  .askbox-live {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    color: var(--ember);
+  }
+  .askbox-live .dot {
+    width: 6px;
+    height: 6px;
+    background: var(--ember);
+    border-radius: 50%;
+    animation: liveDot 2s ease-in-out infinite;
+  }
+
+  /* Form: textarea + submit button (ChatGPT-style) */
+  .askbox-form {
+    position: relative;
+    border: 1px solid var(--light-15);
+    border-radius: 8px;
+    background: rgba(240, 235, 226, 0.025);
+    transition: border-color 250ms, background 250ms;
+    margin-bottom: 28px;
+  }
+  .askbox-form:hover {
+    border-color: var(--light-30);
+  }
+  .askbox-form:focus-within {
+    border-color: var(--ember);
+    background: rgba(217, 119, 87, 0.04);
+  }
+
+  .askbox-input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    padding: 20px 60px 56px 22px;
+    font-family: var(--serif-cn);
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--light);
+    resize: none;
+    min-height: 120px;
+    box-sizing: border-box;
+  }
+  .askbox-input::placeholder {
+    color: var(--light-30);
+    font-style: italic;
+  }
+
+  .askbox-submit {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--ember);
+    border: none;
+    color: var(--cream);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 150ms, box-shadow 200ms;
+  }
+  .askbox-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(217, 119, 87, 0.35);
+  }
+  .askbox-submit:active {
+    transform: translateY(0);
+  }
+  .askbox-submit svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  /* Counter inside form (bottom-left of textarea) */
+  .askbox-meta {
+    position: absolute;
+    bottom: 18px;
+    left: 22px;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--light-30);
+  }
+
+  /* Quick prompts list */
+  .askbox-suggestions-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--light-50);
+    display: block;
+    margin-bottom: 16px;
+  }
+  .askbox-suggestions {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .suggestion {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 6px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    width: 100%;
+    font-family: var(--serif-cn);
+    font-size: 15px;
+    color: var(--light);
+    transition: color 250ms, padding-left 250ms;
+    position: relative;
+  }
+  .suggestion::after {
+    content: '';
+    position: absolute;
+    left: 6px;
+    right: 6px;
+    bottom: 0;
+    height: 1px;
+    background: var(--ember);
+    opacity: 0;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: opacity 250ms, transform 350ms ease-out;
+  }
+  .suggestion:hover {
+    color: var(--ember);
+    padding-left: 14px;
+  }
+  .suggestion:hover::after {
+    opacity: 0.5;
+    transform: scaleX(1);
+  }
+  .suggestion .bullet {
+    color: var(--ember);
+    font-size: 8px;
+    line-height: 1;
+    transition: transform 250ms;
+  }
+  .suggestion:hover .bullet {
+    transform: rotate(45deg);
+  }
+  .suggestion-text {
+    flex: 1;
+  }
+  .suggestion-industry {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--light-50);
+    letter-spacing: 0.04em;
+    margin-right: 4px;
+  }
+  .suggestion .arrow {
+    color: var(--light-30);
+    font-family: var(--mono);
+    font-size: 14px;
+    transition: color 250ms, transform 250ms;
+  }
+  .suggestion:hover .arrow {
+    color: var(--ember);
+    transform: translateX(6px);
+  }
+
+  /* ─────────────────────────────────────────────
+     Footer band (PPT-style metadata)
+     ───────────────────────────────────────────── */
+  .footer-band {
+    position: relative;
+    z-index: 5;
+    padding: 24px 56px;
+    border-top: 1px solid var(--light-15);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--light-50);
+    opacity: 0;
+    animation: fadeIn 800ms ease-out 1100ms forwards;
+  }
+  .footer-band .right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: color 200ms;
+  }
+  .footer-band .right:hover { color: var(--light); }
+
+  /* ─────────────────────────────────────────────
+     Mobile breakpoint
+     ───────────────────────────────────────────── */
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; gap: 48px; padding: 24px 32px 48px; }
+    .topbar { padding: 24px 32px; }
+    .footer-band { padding: 20px 32px; }
+    .h1 { font-size: 56px; }
+    .nav { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- Ambient armillary background — full mirror of brand mark -->
+  <div class="ambient">
+    <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" fill="none" stroke-linecap="round">
+      <!-- Equator (horizontal large ellipse) — depth ambient -->
+      <ellipse cx="100" cy="100" rx="76" ry="24" stroke="#f0ebe2" stroke-opacity="0.07" stroke-width="0.55"/>
+      <!-- Gnomon (tilted axis line) -->
+      <line x1="68" y1="22" x2="132" y2="178" stroke="#f0ebe2" stroke-opacity="0.07" stroke-width="0.35"/>
+      <!-- Ecliptic ring (rotating) -->
+      <g class="ecliptic-bg">
+        <ellipse cx="100" cy="100" rx="62" ry="19" stroke="#f0ebe2" stroke-opacity="0.07" stroke-width="0.45" transform="rotate(-23.5 100 100)"/>
+      </g>
+      <!-- Ember (focal anchor — divides left/right, brand signature) -->
+      <circle class="ember-bg" cx="100" cy="100" r="3" fill="#d97757" fill-opacity="0.5"/>
+    </svg>
+  </div>
+
+  <!-- Top bar: logo + minimal nav -->
+  <header class="topbar">
+    <div class="brand-lockup">
+      <div class="brand-mark">
+        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" fill="none">
+          <!-- Equator -->
+          <ellipse cx="100" cy="100" rx="76" ry="24" stroke="#f0ebe2" stroke-width="6.5"/>
+          <!-- Gnomon -->
+          <line x1="68" y1="22" x2="132" y2="178" stroke="#f0ebe2" stroke-width="3"/>
+          <!-- Ecliptic (static) -->
+          <ellipse cx="100" cy="100" rx="62" ry="19" stroke="#f0ebe2" stroke-width="4" stroke-opacity="0.88" transform="rotate(-23.5 100 100)"/>
+          <!-- Ember -->
+          <circle cx="100" cy="100" r="9" fill="#d97757"/>
+        </svg>
+      </div>
+      <div class="brand-text">
+        <span class="wordmark">Open<span class="ori">Ori</span></span>
+        <div class="brand-tagline">
+          <span class="cn">成为答案的答案</span>
+          <span class="sep">·</span>
+          <span class="en">The answer behind the answers</span>
+        </div>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="#approach">方法</a>
+      <a href="#cases">案例</a>
+      <a href="#about">关于</a>
+      <a href="#contact">联系</a>
+    </nav>
+  </header>
+
+  <!-- Hero main -->
+  <main class="hero">
+    <div class="left">
+      <h1 class="h1">
+        世界在换一种<br>
+        方式找<span class="em">答案</span>
+      </h1>
+
+      <p class="sub">
+        <span class="line">从 GEO 起步,跨入 AI-原生战略咨询。</span>
+        <span class="line">覆盖国内 <span class="num">6</span> 大 + 海外 <span class="num">3</span> 大 AI 平台,API、APP、Web 三端。</span>
+        <span class="line">输出涵盖品牌、对手、行业、海外的战略研报。</span>
+      </p>
+
+      <!-- Trust band -->
+      <div class="trust">
+        <span class="trust-label">生态合作</span>
+        <div class="trust-marquee">
+          <div class="trust-track">
+            <!-- Set 1 -->
+            <span class="trust-logo">蚂蚁集团</span>
+            <span class="trust-logo">蚂蚁金服</span>
+            <span class="trust-logo">哈啰出行</span>
+            <span class="trust-logo">宁德时代</span>
+            <!-- Set 2 (mirror for seamless loop) -->
+            <span class="trust-logo">蚂蚁集团</span>
+            <span class="trust-logo">蚂蚁金服</span>
+            <span class="trust-logo">哈啰出行</span>
+            <span class="trust-logo">宁德时代</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: AI ask box (conversational input, Option A) -->
+    <aside class="askbox">
+      <div class="askbox-header">
+        <h2 class="askbox-eyebrow">问 <span class="ai">Ori</span> 一个问题</h2>
+        <div class="askbox-live">
+          <span class="dot"></span>
+          <span>LIVE</span>
+        </div>
+      </div>
+
+      <form class="askbox-form" onsubmit="event.preventDefault();">
+        <textarea
+          class="askbox-input"
+          placeholder="例: 推荐母婴品牌时,AI 会提到 Babycare 吗?"
+          rows="3"
+        ></textarea>
+        <span class="askbox-meta">扫描 6 大平台</span>
+        <button type="submit" class="askbox-submit" aria-label="提交">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M5 12h14M19 12l-6-6M19 12l-6 6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </form>
+
+      <span class="askbox-suggestions-label">快速试</span>
+      <div class="askbox-suggestions">
+        <button class="suggestion" type="button">
+          <span class="bullet">◇</span>
+          <span class="suggestion-text">
+            <span class="suggestion-industry">母婴</span>Babycare 国产母婴品牌推荐
+          </span>
+          <span class="arrow">→</span>
+        </button>
+        <button class="suggestion" type="button">
+          <span class="bullet">◇</span>
+          <span class="suggestion-text">
+            <span class="suggestion-industry">运动</span>Lululemon 瑜伽裤如何选
+          </span>
+          <span class="arrow">→</span>
+        </button>
+        <button class="suggestion" type="button">
+          <span class="bullet">◇</span>
+          <span class="suggestion-text">
+            <span class="suggestion-industry">新能源</span>比亚迪 家用车选购建议
+          </span>
+          <span class="arrow">→</span>
+        </button>
+      </div>
+    </aside>
+  </main>
+
+</div>
+
+</body>
+</html>

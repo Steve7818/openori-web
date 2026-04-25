@@ -73,7 +73,7 @@ export default function AskBox({ onSubmit, isLoading }: AskBoxProps) {
         </button>
       </form>
 
-      <span className={styles.suggestionsLabel}>— 快速试</span>
+      <span className={styles.suggestionsLabel}>快速试</span>
       <div className={styles.suggestions}>
         {QUICK_PROMPTS.map((prompt, idx) => (
           <button

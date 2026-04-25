@@ -43,7 +43,7 @@
   z-index: 5;
   padding: 40px 56px 56px;
   display: grid;
-  grid-template-columns: 1fr 1.2fr;
+  grid-template-columns: 1fr 1.4fr;
   gap: 80px;
   align-items: start;
 }
