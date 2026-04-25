@@ -89,22 +89,25 @@ export function useLensStream(): UseLensStreamResult {
           if (done) break;
 
           buffer += decoder.decode(value, { stream: true });
-          const lines = buffer.split('\n');
-          buffer = lines.pop() || '';
+          const events = buffer.split('\n\n');
+          buffer = events.pop() || '';
 
-          for (const line of lines) {
-            if (!line.startsWith('data: ')) continue;
+          for (const event of events) {
+            const lines = event.split('\n').filter(l => l.startsWith('data: '));
+            if (lines.length === 0) continue;
 
-            try {
-              const event = JSON.parse(line.substring(6));
-              handleEvent(event, sessionId, setPanels, setStatus, setOriReading, () => {
-                if (!firstTokenReceived) {
-                  firstTokenReceived = true;
-                  trackEvent(sessionId, 'lens_first_token');
-                }
-              });
-            } catch (e) {
-              console.warn('Failed to parse SSE event:', line, e);
+            for (const line of lines) {
+              try {
+                const data = JSON.parse(line.substring(6));
+                handleEvent(data, sessionId, setPanels, setStatus, setOriReading, () => {
+                  if (!firstTokenReceived) {
+                    firstTokenReceived = true;
+                    trackEvent(sessionId, 'lens_first_token');
+                  }
+                });
+              } catch (e) {
+                console.warn('Failed to parse SSE event:', line, e);
+              }
             }
           }
         }
