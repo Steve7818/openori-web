@@ -22,25 +22,10 @@ interface OriReadingExperienceProps {
   initialPage?: number;
 }
 
-function splitOriReading(text: string | null): { actionTitle: string; summary: string; bullets: string[] } {
-  if (!text) return { actionTitle: '', summary: '', bullets: [] };
-  const paragraphs = text.split(/\n\n+/).filter(p => p.trim());
-  if (paragraphs.length === 0) return { actionTitle: '', summary: '', bullets: [] };
-
-  // First paragraph = action title
-  const actionTitle = (paragraphs[0] || '').slice(0, 30);
-
-  // Second paragraph = summary
-  const summary = (paragraphs[1] || '').slice(0, 80);
-
-  // Remaining paragraphs = bullets (max 3, each ≤50 chars)
-  const bullets = paragraphs.slice(2, 5).map(b => {
-    // Strip leading bullet markers like "- ", "• ", "* "
-    const cleaned = b.replace(/^[-•*]\s*/, '');
-    return cleaned.slice(0, 50);
-  });
-
-  return { actionTitle, summary, bullets };
+function splitOriReading(text: string | null): { paragraphs: string[] } {
+  if (!text) return { paragraphs: [] };
+  const paragraphs = text.split(/\n\n+/).map(p => p.trim()).filter(Boolean);
+  return { paragraphs };
 }
 
 
@@ -341,51 +326,34 @@ function SlideContent({ slide, idx, totalSlides, panels, oriReading, status, bra
 
   /* ──── P.08 ORI FINALE ──── */
   if (slide.type === 'ori') {
-    const { actionTitle, summary, bullets } = splitOriReading(oriReading);
+    const { paragraphs } = splitOriReading(oriReading);
 
     return (
       <>
         <TopBar idx={idx} totalSlides={totalSlides} />
 
         <div className={styles.content}>
-          {oriReading ? (
+          {oriReading && paragraphs.length > 0 ? (
             <div className={styles.oriContent}>
               <div className={styles.oriEyebrow}>Ori 给你的 read</div>
 
-              <h2 className={styles.oriActionTitle}>
-                <ReactMarkdown
-                  remarkPlugins={[remarkGfm]}
-                  components={{
-                    p: ({children}) => <>{children}</>,
-                    strong: ({children}) => <span className={styles.em}>{children}</span>,
-                    em: ({children}) => <span className={styles.em}>{children}</span>,
-                  }}
-                >
-                  {actionTitle}
-                </ReactMarkdown>
-              </h2>
-
-              <div className={styles.oriRule} />
-
-              <p className={styles.oriSummary}>{summary}</p>
-
-              <div className={styles.oriEvidence}>
-                {bullets.map((bullet, i) => (
-                  <div key={i} className={styles.oriEvidenceItem}>
-                    <span className={styles.oriEvidenceBullet} />
-                    <span className={styles.oriEvidenceText}>
-                      <ReactMarkdown
-                        remarkPlugins={[remarkGfm]}
-                        components={{
-                          p: ({children}) => <>{children}</>,
-                          strong: ({children}) => <strong>{children}</strong>,
-                          em: ({children}) => <em>{children}</em>,
-                        }}
-                      >
-                        {bullet}
-                      </ReactMarkdown>
-                    </span>
-                  </div>
+              <div className={styles.oriBody}>
+                {paragraphs.map((para, i) => (
+                  <p
+                    key={i}
+                    className={i === 0 ? styles.oriOpening : styles.oriBodyPara}
+                  >
+                    <ReactMarkdown
+                      remarkPlugins={[remarkGfm]}
+                      components={{
+                        p: ({children}) => <>{children}</>,
+                        strong: ({children}) => <strong>{children}</strong>,
+                        em: ({children}) => <em>{children}</em>,
+                      }}
+                    >
+                      {para}
+                    </ReactMarkdown>
+                  </p>
                 ))}
               </div>
 
