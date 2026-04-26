@@ -22,8 +22,8 @@ export default function HeroSection({ initialLensDebug = false, initialPage = 1 
   const shouldOpenModal = initialLensDebug && process.env.NEXT_PUBLIC_LENS_DEBUG === '1';
 
   const [isModalOpen, setIsModalOpen] = useState(shouldOpenModal);
-  const [brand, setBrand] = useState(shouldOpenModal ? 'Babycare' : '');
-  const [question, setQuestion] = useState(shouldOpenModal ? '推荐国产母婴品牌' : '');
+  const [brand, setBrand] = useState('');
+  const [question, setQuestion] = useState('');
   const [dailyRemaining, setDailyRemaining] = useState(2);
   const { panels, status, error, oriReading, start } = useLensStream();
   const sessionReady = useRef<Promise<string | null>>(null!);

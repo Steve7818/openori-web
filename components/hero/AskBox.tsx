@@ -33,9 +33,13 @@ export default function AskBox({ onSubmit, isLoading }: AskBoxProps) {
     e.preventDefault();
     if (!input.trim() || isLoading) return;
 
-    // Parse input to extract brand and question
-    // For now, use a simple heuristic or default
-    onSubmit('Babycare', input.trim());
+    // Simple heuristic: first word is brand, rest is question
+    const trimmed = input.trim();
+    const firstSpaceIdx = trimmed.indexOf(' ');
+    const brand = firstSpaceIdx > 0 ? trimmed.substring(0, firstSpaceIdx) : trimmed;
+    const question = firstSpaceIdx > 0 ? trimmed.substring(firstSpaceIdx + 1) : trimmed;
+
+    onSubmit(brand, question);
   };
 
   const handleQuickPrompt = (prompt: typeof QUICK_PROMPTS[0]) => {

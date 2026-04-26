@@ -548,6 +548,24 @@
   color: var(--ember, #d97757);
 }
 
+.oriDisclaimer {
+  max-width: 720px;
+  margin: 32px auto 0 auto;
+  padding-top: 22px;
+  border-top: 1px solid var(--light-12, rgba(240, 235, 226, 0.12));
+  font-family: var(--sans, 'Inter', sans-serif);
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--light-50, rgba(240, 235, 226, 0.50));
+  font-weight: 300;
+  letter-spacing: 0.01em;
+}
+
+.oriDisclaimer strong {
+  color: var(--light-65, rgba(240, 235, 226, 0.65));
+  font-weight: 500;
+}
+
 .oriEvidence {
   display: flex;
   flex-direction: column;
@@ -920,4 +938,138 @@
 @keyframes toastIn {
   from { opacity: 0; transform: translateX(-50%) translateY(8px); }
   to { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+/* ═══════════════════════════════════════════
+   P.09 · COMPARE TABLE
+   ═══════════════════════════════════════════ */
+
+.compareTable {
+  border-top: 1px solid var(--light-20, rgba(240, 235, 226, 0.20));
+  border-bottom: 1px solid var(--light-20, rgba(240, 235, 226, 0.20));
+  margin-bottom: 24px;
+}
+
+.compareRow {
+  display: grid;
+  grid-template-columns: 1fr 110px 110px;
+  gap: 24px;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--light-08, rgba(240, 235, 226, 0.08));
+  align-items: baseline;
+}
+
+.compareRow:last-child {
+  border-bottom: none;
+}
+
+.compareHeader {
+  border-bottom: 1px solid var(--light-20, rgba(240, 235, 226, 0.20));
+  padding-bottom: 12px;
+  margin-bottom: 4px;
+}
+
+.compareStageDivider {
+  padding: 6px 0 4px 0;
+  border-bottom: none;
+}
+
+.compareStageLabel {
+  grid-column: 1 / -1;
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 9px;
+  letter-spacing: 0.25em;
+  color: var(--light-30, rgba(240, 235, 226, 0.30));
+  text-transform: uppercase;
+}
+
+.compareLabel {
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  color: var(--light-50, rgba(240, 235, 226, 0.50));
+  text-transform: uppercase;
+}
+
+.compareCol {
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.compareColLite {
+  color: var(--light-50, rgba(240, 235, 226, 0.50));
+}
+
+.compareColPro {
+  color: var(--ember, #d97757);
+}
+
+.compareColSub {
+  display: block;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  color: var(--light-30, rgba(240, 235, 226, 0.30));
+  margin-top: 4px;
+  font-weight: 400;
+}
+
+.compareColPro .compareColSub {
+  color: rgba(217, 119, 87, 0.65);
+}
+
+.compareCellLabel {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--light-90, rgba(240, 235, 226, 0.92));
+}
+
+.compareShort {
+  font-weight: 500;
+}
+
+.compareDesc {
+  color: var(--light-65, rgba(240, 235, 226, 0.65));
+  font-size: 13px;
+}
+
+.compareDash {
+  color: var(--light-30, rgba(240, 235, 226, 0.30));
+  margin: 0 6px;
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+}
+
+.compareCellValue {
+  text-align: center;
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 16px;
+}
+
+.compareCheck {
+  color: var(--ember, #d97757);
+}
+
+.compareCross {
+  color: var(--light-30, rgba(240, 235, 226, 0.30));
+}
+
+/* P.09 · CTA Slogan */
+
+.ctaSlogan {
+  margin-top: 28px;
+  font-family: 'Noto Serif SC', 'Newsreader', serif;
+  font-size: 17px;
+  line-height: 1.7;
+  color: var(--light-90, rgba(240, 235, 226, 0.92));
+}
+
+.ctaSloganLine1 {
+  font-weight: 400;
+}
+
+.ctaSloganLine2 {
+  color: var(--light-65, rgba(240, 235, 226, 0.65));
+  font-size: 15px;
 }

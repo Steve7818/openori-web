@@ -341,20 +341,28 @@ function SlideContent({ slide, idx, totalSlides, panels, oriReading, status, bra
               <div className={styles.oriMemoHead}>By Ori · GEO Analyst</div>
 
               <div className={styles.oriBody}>
-                {paragraphs.map((para, i) => (
-                  <p key={i} className={styles.oriBodyPara}>
-                    <ReactMarkdown
-                      remarkPlugins={[remarkGfm]}
-                      components={{
-                        p: ({children}) => <>{children}</>,
-                        strong: ({children}) => <strong>{children}</strong>,
-                        em: ({children}) => <em>{children}</em>,
-                      }}
-                    >
-                      {para}
-                    </ReactMarkdown>
-                  </p>
-                ))}
+                {paragraphs.map((para, i) => {
+                  // 识别 disclaimer 段:以 "Lite 即时报告" 开头,或前一段是 "——" 横线分隔
+                  const isDisclaimer = para.startsWith('Lite 即时报告') ||
+                                       para.startsWith('——') && i === paragraphs.length - 1;
+                  // 跳过纯横线段(——),它的语义已经被 .oriDisclaimer border-top 替代
+                  if (para.trim() === '——' || para.trim() === '---') return null;
+
+                  return (
+                    <p key={i} className={isDisclaimer ? styles.oriDisclaimer : styles.oriBodyPara}>
+                      <ReactMarkdown
+                        remarkPlugins={[remarkGfm]}
+                        components={{
+                          p: ({children}) => <>{children}</>,
+                          strong: ({children}) => <strong>{children}</strong>,
+                          em: ({children}) => <em>{children}</em>,
+                        }}
+                      >
+                        {para}
+                      </ReactMarkdown>
+                    </p>
+                  );
+                })}
               </div>
             </div>
           ) : (
@@ -384,25 +392,115 @@ function SlideContent({ slide, idx, totalSlides, panels, oriReading, status, bra
                 和您进军本时代最大的品牌战场。
               </h2>
 
-              <div className={styles.ctaDeliverableLabel}>— 全量报告会展开</div>
+              <div className={styles.compareTable}>
+                <div className={`${styles.compareRow} ${styles.compareHeader}`}>
+                  <div className={styles.compareLabel}>交付清单</div>
+                  <div className={`${styles.compareCol} ${styles.compareColLite}`}>
+                    LITE
+                    <span className={styles.compareColSub}>初步报告</span>
+                  </div>
+                  <div className={`${styles.compareCol} ${styles.compareColPro}`}>
+                    PRO
+                    <span className={styles.compareColSub}>全量诊断</span>
+                  </div>
+                </div>
 
-              <div className={styles.ctaBullets}>
-                <div className={styles.ctaBullet}>
-                  <span className={styles.ctaBulletMark} />
-                  <span>双端 × 6 平台真实回答对照</span>
+                <div className={styles.compareRow}>
+                  <div className={styles.compareCellLabel}>
+                    <span className={styles.compareShort}>6 大中文 AI 平台</span>
+                    <span className={styles.compareDash}>──</span>
+                    <span className={styles.compareDesc}>API 直采</span>
+                  </div>
+                  <div className={`${styles.compareCellValue} ${styles.compareCheck}`}>✓</div>
+                  <div className={`${styles.compareCellValue} ${styles.compareCheck}`}>✓</div>
                 </div>
-                <div className={styles.ctaBullet}>
-                  <span className={styles.ctaBulletMark} />
-                  <span>行业 Top 5 对手品牌声量占比</span>
+
+                <div className={styles.compareRow}>
+                  <div className={styles.compareCellLabel}>
+                    <span className={styles.compareShort}>可见度判断</span>
+                    <span className={styles.compareDash}>──</span>
+                    <span className={styles.compareDesc}>by Ori</span>
+                  </div>
+                  <div className={`${styles.compareCellValue} ${styles.compareCheck}`}>✓</div>
+                  <div className={`${styles.compareCellValue} ${styles.compareCheck}`}>✓</div>
                 </div>
-                <div className={styles.ctaBullet}>
-                  <span className={styles.ctaBulletMark} />
-                  <span>海外 3 大平台(ChatGPT / Claude / Perplexity)同题对照</span>
+
+                <div className={`${styles.compareRow} ${styles.compareStageDivider}`}>
+                  <div className={styles.compareStageLabel}>— 数据广度</div>
                 </div>
-                <div className={styles.ctaBullet}>
-                  <span className={styles.ctaBulletMark} />
-                  <span>AI 偏离度根因 + 修复路径</span>
+
+                <div className={styles.compareRow}>
+                  <div className={styles.compareCellLabel}>
+                    <span className={styles.compareShort}>C 端真实呈现</span>
+                    <span className={styles.compareDash}>──</span>
+                    <span className={styles.compareDesc}>6 大市占率最高 AI 平台 App + 网页端真实呈现</span>
+                  </div>
+                  <div className={`${styles.compareCellValue} ${styles.compareCross}`}>✗</div>
+                  <div className={`${styles.compareCellValue} ${styles.compareCheck}`}>✓</div>
                 </div>
+
+                <div className={styles.compareRow}>
+                  <div className={styles.compareCellLabel}>
+                    <span className={styles.compareShort}>全竞品画像</span>
+                    <span className={styles.compareDash}>──</span>
+                    <span className={styles.compareDesc}>行业 Top 5 卡位报告</span>
+                  </div>
+                  <div className={`${styles.compareCellValue} ${styles.compareCross}`}>✗</div>
+                  <div className={`${styles.compareCellValue} ${styles.compareCheck}`}>✓</div>
+                </div>
+
+                <div className={styles.compareRow}>
+                  <div className={styles.compareCellLabel}>
+                    <span className={styles.compareShort}>海外主流平台</span>
+                    <span className={styles.compareDash}>──</span>
+                    <span className={styles.compareDesc}>Claude / ChatGPT / Gemini / Grok / Perplexity 同台诊断</span>
+                  </div>
+                  <div className={`${styles.compareCellValue} ${styles.compareCross}`}>✗</div>
+                  <div className={`${styles.compareCellValue} ${styles.compareCheck}`}>✓</div>
+                </div>
+
+                <div className={`${styles.compareRow} ${styles.compareStageDivider}`}>
+                  <div className={styles.compareStageLabel}>— 诊断深度</div>
+                </div>
+
+                <div className={styles.compareRow}>
+                  <div className={styles.compareCellLabel}>
+                    <span className={styles.compareShort}>持续监测</span>
+                    <span className={styles.compareDash}>──</span>
+                    <span className={styles.compareDesc}>7×24h 循环对撞结果</span>
+                  </div>
+                  <div className={`${styles.compareCellValue} ${styles.compareCross}`}>✗</div>
+                  <div className={`${styles.compareCellValue} ${styles.compareCheck}`}>✓</div>
+                </div>
+
+                <div className={styles.compareRow}>
+                  <div className={styles.compareCellLabel}>
+                    <span className={styles.compareShort}>AI 偏差值优化</span>
+                    <span className={styles.compareDash}>──</span>
+                    <span className={styles.compareDesc}>以目标为核心计算 GEO 偏差值</span>
+                  </div>
+                  <div className={`${styles.compareCellValue} ${styles.compareCross}`}>✗</div>
+                  <div className={`${styles.compareCellValue} ${styles.compareCheck}`}>✓</div>
+                </div>
+
+                <div className={`${styles.compareRow} ${styles.compareStageDivider}`}>
+                  <div className={styles.compareStageLabel}>— 执行落地</div>
+                </div>
+
+                <div className={styles.compareRow}>
+                  <div className={styles.compareCellLabel}>
+                    <span className={styles.compareShort}>GEO 优化</span>
+                    <span className={styles.compareDash}>──</span>
+                    <span className={styles.compareDesc}>Ori 调度落地,改写 AI 答案</span>
+                  </div>
+                  <div className={`${styles.compareCellValue} ${styles.compareCross}`}>✗</div>
+                  <div className={`${styles.compareCellValue} ${styles.compareCheck}`}>✓</div>
+                </div>
+              </div>
+
+              <div className={styles.ctaSlogan}>
+                <div className={styles.ctaSloganLine1}>别家交付 dashboard。OpenOri 交付判断。</div>
+                <div className={styles.ctaSloganLine2}>AI 持续进化,您的品牌持续受益。</div>
               </div>
             </div>
 
@@ -426,12 +524,6 @@ function SlideContent({ slide, idx, totalSlides, panels, oriReading, status, bra
               <button className={styles.ctaSecondary} onClick={onShareLink}>
                 分享本次 Ori 诊断报告
               </button>
-
-              <div className={styles.ctaSignoff}>
-                <span className={styles.ctaSignoffCn}>成为答案的答案</span>
-                <span className={styles.ctaSignoffSep}>·</span>
-                <span className={styles.ctaSignoffEn}>The answer behind the answers</span>
-              </div>
             </div>
           </div>
         </div>
