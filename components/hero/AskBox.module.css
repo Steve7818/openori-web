@@ -1,234 +1,282 @@
-.askbox {
+/* ============================================
+   ASKBOX v3.6 — Editorial style
+   ============================================ */
+
+.askboxWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 14px;
   position: sticky;
   top: 32px;
-  background: transparent;
   opacity: 0;
   animation: slideInRight 800ms ease-out 700ms forwards;
 }
 
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 18px;
+.askbox {
+  width: 540px;
+  background: linear-gradient(180deg, rgba(40, 40, 40, 0.4) 0%, rgba(26, 26, 26, 0.6) 100%);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--light-12, rgba(240, 235, 226, 0.12));
+  border-radius: 4px;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
 }
 
-.eyebrow {
-  font-family: var(--font-noto-serif-sc), var(--font-newsreader), serif;
-  font-size: 18px;
-  font-weight: 400;
-  color: var(--light);
-  letter-spacing: 0.01em;
+/* subtle ember glow on top edge */
+.askbox::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(217, 119, 87, 0.65) 50%, transparent 100%);
+  opacity: 0.6;
 }
 
-.ai {
-  color: var(--ember);
-  font-style: italic;
-  font-family: var(--font-newsreader), Georgia, serif;
-}
-
-.live {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-family: var(--font-jetbrains-mono), 'SF Mono', Consolas, monospace;
+.askboxEyebrow {
+  padding: 18px 28px 0 28px;
+  font-family: var(--mono, 'JetBrains Mono', monospace);
   font-size: 10px;
-  letter-spacing: 0.18em;
-  color: var(--ember);
+  letter-spacing: 0.28em;
+  color: var(--ember, #d97757);
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.dot {
+.askboxEyebrow::before {
+  content: '';
+  width: 14px;
+  height: 1px;
+  background: var(--ember, #d97757);
+}
+
+.liveDot {
   width: 6px;
   height: 6px;
-  background: var(--ember);
   border-radius: 50%;
-  animation: liveDot 2s ease-in-out infinite;
+  background: var(--ember, #d97757);
+  animation: pulse 2s ease-in-out infinite;
+  margin-left: auto;
 }
 
-.form {
+@keyframes pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+
+/* Field group */
+.fieldGroup {
+  padding: 18px 28px;
+  border-bottom: 1px solid var(--light-08, rgba(240, 235, 226, 0.08));
   position: relative;
-  border: 1px solid var(--light-15);
-  border-radius: 8px;
-  background: rgba(240, 235, 226, 0.025);
-  transition: border-color 250ms, background 250ms;
-  margin-bottom: 28px;
 }
 
-.form:hover {
-  border-color: var(--light-30);
+.fieldGroup:last-of-type {
+  border-bottom: none;
 }
 
-.form:focus-within {
-  border-color: var(--ember);
-  background: rgba(217, 119, 87, 0.04);
+.fieldLabel {
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 9.5px;
+  letter-spacing: 0.32em;
+  color: var(--light-50, rgba(240, 235, 226, 0.50));
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.input {
+.fieldLabel::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--light-08, rgba(240, 235, 226, 0.08));
+}
+
+.fieldInput {
   width: 100%;
   background: transparent;
   border: none;
   outline: none;
-  padding: 20px 60px 56px 22px;
-  font-family: var(--font-noto-serif-sc), var(--font-newsreader), serif;
-  font-size: 16px;
-  line-height: 1.6;
-  color: var(--light);
+  color: var(--light, #f0ebe2);
+  font-family: var(--serif, 'Noto Serif SC', 'Newsreader', serif);
+  font-size: 22px;
+  line-height: 1.4;
+  font-weight: 400;
+  letter-spacing: 0;
   resize: none;
-  min-height: 120px;
-  box-sizing: border-box;
+  padding: 0;
 }
 
-.input::placeholder {
-  color: var(--light-30);
+.fieldInput::placeholder {
+  color: var(--light-30, rgba(240, 235, 226, 0.30));
   font-style: italic;
 }
 
-.input:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
+.fieldInput:focus {
+  outline: none;
 }
 
-.submit {
-  position: absolute;
-  bottom: 12px;
-  right: 12px;
-  width: 36px;
-  height: 36px;
+.fieldInput.brand {
+  font-size: 24px;
+  font-weight: 500;
+}
+
+.fieldInput.question {
+  font-size: 18px;
+  line-height: 1.55;
+  min-height: 56px;
+}
+
+/* Footer with platforms + submit */
+.askboxFooter {
+  padding: 16px 28px 18px 28px;
+  background: var(--ink-2, #232323);
+  border-top: 1px solid var(--light-08, rgba(240, 235, 226, 0.08));
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.platformsRow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  color: var(--light-50, rgba(240, 235, 226, 0.50));
+  text-transform: uppercase;
+}
+
+.scanLabel {
+  color: var(--ember, #d97757);
+}
+
+.platformDots {
+  display: flex;
+  gap: 4px;
+}
+
+.platformDot {
+  width: 5px;
+  height: 5px;
   border-radius: 50%;
-  background: var(--ember);
+  background: var(--light-30, rgba(240, 235, 226, 0.30));
+}
+
+.platformDot.active {
+  background: var(--ember, #d97757);
+}
+
+.submitBtn {
+  background: var(--light, #f0ebe2);
+  color: var(--ink, #1a1a1a);
   border: none;
-  color: var(--cream);
+  border-radius: 999px;
+  width: 44px;
+  height: 44px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 150ms, box-shadow 200ms;
+  font-size: 18px;
+  line-height: 1;
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  transition: all 0.2s;
+  flex-shrink: 0;
 }
 
-.submit:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(217, 119, 87, 0.35);
+.submitBtn:hover {
+  background: var(--ember, #d97757);
+  color: var(--light, #f0ebe2);
+  transform: translateX(2px);
 }
 
-.submit:active:not(:disabled) {
-  transform: translateY(0);
-}
-
-.submit:disabled {
-  opacity: 0.6;
+.submitBtn:disabled {
+  background: var(--light-20, rgba(240, 235, 226, 0.20));
+  color: var(--light-50, rgba(240, 235, 226, 0.50));
   cursor: not-allowed;
 }
 
-.submit svg {
-  width: 18px;
-  height: 18px;
-}
-
-.meta {
-  position: absolute;
-  bottom: 18px;
-  left: 22px;
-  font-family: var(--font-jetbrains-mono), 'SF Mono', Consolas, monospace;
-  font-size: 10px;
-  letter-spacing: 0.12em;
-  color: var(--light-30);
-}
-
-.suggestionsLabel {
-  font-family: var(--font-jetbrains-mono), 'SF Mono', Consolas, monospace;
-  font-size: 10px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--light-50);
-  display: block;
-  margin-bottom: 16px;
-}
-
-.suggestions {
+/* Quick suggestions below askbox */
+.quickSuggestions {
+  width: 540px;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 1px;
+  background: var(--light-08, rgba(240, 235, 226, 0.08));
+  border: 1px solid var(--light-08, rgba(240, 235, 226, 0.08));
+  border-radius: 4px;
+  overflow: hidden;
 }
 
-.suggestion {
-  position: relative;
+.quickRow {
   display: flex;
   align-items: center;
-  gap: 14px;
-  padding: 16px 6px;
-  background: transparent;
-  border: none;
+  gap: 18px;
+  padding: 14px 24px;
+  background: var(--ink, #1a1a1a);
   cursor: pointer;
+  transition: background 0.2s;
+  border: none;
   text-align: left;
   width: 100%;
-  font-family: var(--font-noto-serif-sc), var(--font-newsreader), serif;
-  font-size: 15px;
-  color: var(--light);
-  transition: color 250ms, padding-left 250ms;
 }
 
-.suggestion::after {
-  content: '';
-  position: absolute;
-  left: 6px;
-  right: 6px;
-  bottom: 0;
-  height: 1px;
-  background: var(--ember);
-  opacity: 0;
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: opacity 250ms, transform 350ms ease-out;
+.quickRow:hover {
+  background: var(--ink-2, #232323);
 }
 
-.suggestion:hover:not(:disabled)::after {
-  opacity: 0.5;
-  transform: scaleX(1);
+.quickRow:hover .quickArrow {
+  color: var(--ember, #d97757);
+  transform: translateX(4px);
 }
 
-.suggestion:hover:not(:disabled) {
-  color: var(--ember);
-  padding-left: 14px;
-}
-
-.suggestion:disabled {
-  opacity: 0.6;
+.quickRow:disabled {
   cursor: not-allowed;
+  opacity: 0.5;
 }
 
-.bullet {
-  color: var(--ember);
-  font-size: 8px;
-  line-height: 1;
-  transition: transform 250ms;
+.quickCat {
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  color: var(--ember, #d97757);
+  text-transform: uppercase;
+  width: 60px;
+  flex-shrink: 0;
 }
 
-.suggestion:hover:not(:disabled) .bullet {
-  transform: rotate(45deg);
+.quickBrand {
+  font-family: var(--serif, 'Noto Serif SC', 'Newsreader', serif);
+  font-size: 16px;
+  color: var(--light, #f0ebe2);
+  font-weight: 500;
+  flex-shrink: 0;
+  min-width: 100px;
 }
 
-.suggestionText {
+.quickQuestion {
+  font-family: var(--sans, 'Inter', 'PingFang SC', sans-serif);
+  font-size: 13px;
+  color: var(--light-65, rgba(240, 235, 226, 0.65));
   flex: 1;
+  line-height: 1.5;
 }
 
-.industry {
-  font-family: var(--font-jetbrains-mono), 'SF Mono', Consolas, monospace;
-  font-size: 11px;
-  color: var(--light-50);
-  letter-spacing: 0.04em;
-  margin-right: 4px;
-}
-
-.arrow {
-  color: var(--light-30);
-  font-family: var(--font-jetbrains-mono), 'SF Mono', Consolas, monospace;
-  font-size: 14px;
-  transition: color 250ms, transform 250ms;
-}
-
-.suggestion:hover:not(:disabled) .arrow {
-  color: var(--ember);
-  transform: translateX(6px);
+.quickArrow {
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  color: var(--light-50, rgba(240, 235, 226, 0.50));
+  transition: all 0.2s;
+  flex-shrink: 0;
 }
 
 @keyframes slideInRight {
@@ -239,14 +287,5 @@
   to {
     opacity: 1;
     transform: translateX(0);
-  }
-}
-
-@keyframes liveDot {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.4;
   }
 }

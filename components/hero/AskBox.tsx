@@ -12,90 +12,103 @@ const QUICK_PROMPTS = [
   {
     industry: '母婴',
     brand: 'Babycare',
-    query: '国产母婴品牌推荐',
+    query: '给宝宝买纸尿裤选什么牌子?',
   },
   {
     industry: '运动',
     brand: 'Lululemon',
-    query: '瑜伽裤如何选',
+    query: '我想买一套瑜伽 outfit 有什么推荐?',
   },
   {
     industry: '新能源',
     brand: '比亚迪',
-    query: '家用车选购建议',
+    query: '家用 SUV 想要 20 万以内推荐什么?',
   },
 ];
 
 export default function AskBox({ onSubmit, isLoading }: AskBoxProps) {
-  const [input, setInput] = useState('');
+  const [brand, setBrand] = useState('');
+  const [question, setQuestion] = useState('');
+
+  const canSubmit = brand.trim().length >= 2 && question.trim().length >= 4 && !isLoading;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!input.trim() || isLoading) return;
-
-    // Simple heuristic: first word is brand, rest is question
-    const trimmed = input.trim();
-    const firstSpaceIdx = trimmed.indexOf(' ');
-    const brand = firstSpaceIdx > 0 ? trimmed.substring(0, firstSpaceIdx) : trimmed;
-    const question = firstSpaceIdx > 0 ? trimmed.substring(firstSpaceIdx + 1) : trimmed;
-
-    onSubmit(brand, question);
+    if (!canSubmit) return;
+    onSubmit(brand.trim(), question.trim());
   };
 
-  const handleQuickPrompt = (prompt: typeof QUICK_PROMPTS[0]) => {
-    const fullQuery = `${prompt.brand} ${prompt.query}`;
-    setInput(fullQuery);
-    onSubmit(prompt.brand, fullQuery);
+  const handleQuickSelect = (b: string, q: string) => {
+    setBrand(b);
+    setQuestion(q);
+    onSubmit(b, q);
   };
 
   return (
-    <aside className={styles.askbox}>
-      <div className={styles.header}>
-        <h2 className={styles.eyebrow}>
-          问 <span className={styles.ai}>Ori</span> 一个问题
-        </h2>
-        <div className={styles.live}>
-          <span className={styles.dot}></span>
-          <span>LIVE</span>
+    <div className={styles.askboxWrapper}>
+      <div className={styles.askbox}>
+        <div className={styles.askboxEyebrow}>
+          问 Ori 一个问题
+          <span className={styles.liveDot}></span>
         </div>
+
+        <form onSubmit={handleSubmit}>
+          <div className={styles.fieldGroup}>
+            <div className={styles.fieldLabel}>品牌</div>
+            <input
+              type="text"
+              className={`${styles.fieldInput} ${styles.brand}`}
+              value={brand}
+              onChange={(e) => setBrand(e.target.value)}
+              placeholder="Lululemon"
+              disabled={isLoading}
+            />
+          </div>
+
+          <div className={styles.fieldGroup}>
+            <div className={styles.fieldLabel}>问题</div>
+            <textarea
+              className={`${styles.fieldInput} ${styles.question}`}
+              value={question}
+              onChange={(e) => setQuestion(e.target.value)}
+              placeholder="我想买一套瑜伽 outfit 有什么推荐?"
+              rows={2}
+              disabled={isLoading}
+            />
+          </div>
+
+          <div className={styles.askboxFooter}>
+            <div className={styles.platformsRow}>
+              <span className={styles.scanLabel}>扫描 6 大平台</span>
+              <div className={styles.platformDots}>
+                {[...Array(6)].map((_, i) => (
+                  <span key={i} className={`${styles.platformDot} ${styles.active}`} />
+                ))}
+              </div>
+            </div>
+            <button type="submit" className={styles.submitBtn} disabled={!canSubmit}>
+              →
+            </button>
+          </div>
+        </form>
       </div>
 
-      <form className={styles.form} onSubmit={handleSubmit}>
-        <textarea
-          className={styles.input}
-          placeholder="例: 推荐母婴品牌时,AI 会提到 Babycare 吗?"
-          rows={3}
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          disabled={isLoading}
-        />
-        <span className={styles.meta}>扫描 6 大平台</span>
-        <button type="submit" className={styles.submit} aria-label="提交" disabled={isLoading}>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-            <path d="M5 12h14M19 12l-6-6M19 12l-6 6" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        </button>
-      </form>
-
-      <span className={styles.suggestionsLabel}>快速试</span>
-      <div className={styles.suggestions}>
+      <div className={styles.quickSuggestions}>
         {QUICK_PROMPTS.map((prompt, idx) => (
           <button
             key={idx}
-            className={styles.suggestion}
             type="button"
-            onClick={() => handleQuickPrompt(prompt)}
+            className={styles.quickRow}
+            onClick={() => handleQuickSelect(prompt.brand, prompt.query)}
             disabled={isLoading}
           >
-            <span className={styles.bullet}>◇</span>
-            <span className={styles.suggestionText}>
-              <span className={styles.industry}>{prompt.industry}</span>
-              {prompt.brand} {prompt.query}
-            </span>
-            <span className={styles.arrow}>→</span>
+            <span className={styles.quickCat}>{prompt.industry}</span>
+            <span className={styles.quickBrand}>{prompt.brand}</span>
+            <span className={styles.quickQuestion}>{prompt.query}</span>
+            <span className={styles.quickArrow}>→</span>
           </button>
         ))}
       </div>
-    </aside>
+    </div>
   );
 }
