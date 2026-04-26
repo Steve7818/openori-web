@@ -665,31 +665,24 @@
    P.09 · CTA
    ═══════════════════════════════════════════ */
 .ctaGrid {
-  flex: 1;
   display: grid;
-  grid-template-columns: 1.45fr auto 1fr;
-  gap: 0;
-  align-items: stretch;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 80px;
+  height: 100%;
+  min-height: 0;
 }
 
-.ctaColText {
+/* === LEFT COLUMN === */
+.ctaColLeft {
   display: flex;
   flex-direction: column;
-  padding-right: 56px;
+  justify-content: space-between;
+  overflow: hidden;
 }
 
-.ctaDivider {
-  width: 1px;
-  background: var(--light-08, rgba(240, 235, 226, 0.08));
-}
-
-.ctaColAction {
+.ctaColLeftTop {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding-left: 56px;
-  text-align: center;
 }
 
 .ctaEyebrow {
@@ -757,54 +750,110 @@
 }
 
 /* QR block */
-.qrBlock {
+/* === QR area (middle of left col) === */
+.qrArea {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  margin: 32px 0;
+}
+
+.qrBox {
+  width: 160px;
+  height: 160px;
+  background: white;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.qrInfo {
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 14px;
-  margin-bottom: 28px;
 }
 
-.qrImage {
-  width: 132px;
-  height: 132px;
-  border-radius: 4px;
-  display: block;
-  object-fit: cover;
+.qrEyebrow {
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 10px;
+  letter-spacing: 0.28em;
+  color: var(--ember, #d97757);
+  text-transform: uppercase;
 }
 
-.qrLabel {
-  font-family: 'Noto Serif SC', 'Newsreader', serif;
-  font-size: 14px;
-  color: var(--light, #f0ebe2);
-  font-weight: 400;
-  text-align: center;
+.qrHeadline {
+  font-family: var(--serif, 'Noto Serif SC', 'Newsreader', serif);
+  font-size: 17px;
   line-height: 1.5;
-  max-width: 260px;
+  color: var(--light-90, rgba(240, 235, 226, 0.92));
+  font-weight: 400;
 }
 
 .qrArrow {
   color: var(--ember, #d97757);
-  margin-left: 6px;
-  font-family: var(--mono, 'JetBrains Mono', monospace);
 }
 
-.ctaSecondary {
+.shareBtn {
+  margin-top: 4px;
+  align-self: flex-start;
+  border: 1px solid var(--light-20, rgba(240, 235, 226, 0.20));
+  border-radius: 999px;
+  padding: 8px 18px;
   background: transparent;
-  border: 1px solid var(--light-15, rgba(240, 235, 226, 0.15));
-  color: var(--light-50, rgba(240, 235, 226, 0.5));
-  padding: 11px 22px;
+  color: var(--light-90, rgba(240, 235, 226, 0.92));
   font-family: var(--mono, 'JetBrains Mono', monospace);
   font-size: 11px;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
   cursor: pointer;
-  border-radius: 2px;
-  transition: border-color 200ms, color 200ms;
+  transition: all 0.2s;
 }
 
-.ctaSecondary:hover {
+.shareBtn:hover {
   border-color: var(--ember, #d97757);
   color: var(--ember, #d97757);
+}
+
+/* === Brand tagline at bottom of left col === */
+.brandTagline {
+  padding-top: 24px;
+  border-top: 1px solid var(--light-12, rgba(240, 235, 226, 0.12));
+}
+
+.brandTaglineCn {
+  font-family: var(--serif, 'Noto Serif SC', 'Newsreader', serif);
+  font-size: 17px;
+  color: var(--light-90, rgba(240, 235, 226, 0.92));
+  font-weight: 400;
+  letter-spacing: 0.02em;
+}
+
+.brandTaglineEn {
+  font-family: var(--serif, 'Noto Serif SC', 'Newsreader', serif);
+  font-style: italic;
+  font-size: 14px;
+  color: var(--light-50, rgba(240, 235, 226, 0.50));
+  margin-top: 4px;
+  letter-spacing: 0.02em;
+}
+
+/* === RIGHT COLUMN: Compare table only === */
+.ctaColRight {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-height: 0;
+}
+
+.compareEyebrow {
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  color: var(--light-50, rgba(240, 235, 226, 0.50));
+  text-transform: uppercase;
+  margin-bottom: 18px;
 }
 
 .ctaSignoff {
@@ -945,9 +994,24 @@
    ═══════════════════════════════════════════ */
 
 .compareTable {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
   border-top: 1px solid var(--light-20, rgba(240, 235, 226, 0.20));
   border-bottom: 1px solid var(--light-20, rgba(240, 235, 226, 0.20));
-  margin-bottom: 24px;
+}
+
+.compareTable::-webkit-scrollbar {
+  width: 4px;
+}
+
+.compareTable::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.compareTable::-webkit-scrollbar-thumb {
+  background: var(--light-20, rgba(240, 235, 226, 0.20));
+  border-radius: 2px;
 }
 
 .compareRow {
@@ -964,6 +1028,10 @@
 }
 
 .compareHeader {
+  position: sticky;
+  top: 0;
+  background: var(--ink, #1a1a1a);
+  z-index: 1;
   border-bottom: 1px solid var(--light-20, rgba(240, 235, 226, 0.20));
   padding-bottom: 12px;
   margin-bottom: 4px;
@@ -1057,19 +1125,3 @@
 
 /* P.09 · CTA Slogan */
 
-.ctaSlogan {
-  margin-top: 28px;
-  font-family: 'Noto Serif SC', 'Newsreader', serif;
-  font-size: 17px;
-  line-height: 1.7;
-  color: var(--light-90, rgba(240, 235, 226, 0.92));
-}
-
-.ctaSloganLine1 {
-  font-weight: 400;
-}
-
-.ctaSloganLine2 {
-  color: var(--light-65, rgba(240, 235, 226, 0.65));
-  font-size: 15px;
-}

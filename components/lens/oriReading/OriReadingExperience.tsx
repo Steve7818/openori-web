@@ -383,18 +383,51 @@ function SlideContent({ slide, idx, totalSlides, panels, oriReading, status, bra
 
         <div className={styles.content}>
           <div className={styles.ctaGrid}>
-            <div className={styles.ctaColText}>
-              <div className={styles.ctaEyebrow}>由 Ori 呈现</div>
+            {/* LEFT: Hero + QR + Tagline */}
+            <div className={styles.ctaColLeft}>
+              <div className={styles.ctaColLeftTop}>
+                <div className={styles.ctaEyebrow}>由 Ori 呈现</div>
+                <h2 className={styles.ctaTitle}>
+                  Lite 报告已完成。<br/>
+                  下一步 — Ori 调度全球顶尖 <span className={styles.em}>AI 架构</span>,<br/>
+                  和您进军本时代最大的品牌战场。
+                </h2>
+              </div>
 
-              <h2 className={styles.ctaTitle}>
-                Lite 报告已完成。<br/>
-                下一步 — Ori 调度全球顶尖 <span className={styles.em}>AI 架构</span>,<br/>
-                和您进军本时代最大的品牌战场。
-              </h2>
+              <div className={styles.qrArea}>
+                <div className={styles.qrBox}>
+                  <Image
+                    src="/wechat-qr.jpg"
+                    alt="OpenOri 团队企业微信"
+                    width={160}
+                    height={160}
+                  />
+                </div>
+                <div className={styles.qrInfo}>
+                  <div className={styles.qrEyebrow}>扫码联系</div>
+                  <div className={styles.qrHeadline}>
+                    添加 OpenOri 团队<br/>
+                    让 AI 为您说话 <span className={styles.qrArrow}>→</span>
+                  </div>
+                  <button type="button" className={styles.shareBtn} onClick={onShareLink}>
+                    分享本次 Ori 诊断报告
+                  </button>
+                </div>
+              </div>
+
+              <div className={styles.brandTagline}>
+                <div className={styles.brandTaglineCn}>成为答案的答案</div>
+                <div className={styles.brandTaglineEn}>The answer behind the answers</div>
+              </div>
+            </div>
+
+            {/* RIGHT: Compare table */}
+            <div className={styles.ctaColRight}>
+              <div className={styles.compareEyebrow}>交付清单 · LITE vs PRO</div>
 
               <div className={styles.compareTable}>
                 <div className={`${styles.compareRow} ${styles.compareHeader}`}>
-                  <div className={styles.compareLabel}>交付清单</div>
+                  <div></div>
                   <div className={`${styles.compareCol} ${styles.compareColLite}`}>
                     LITE
                     <span className={styles.compareColSub}>初步报告</span>
@@ -497,33 +530,6 @@ function SlideContent({ slide, idx, totalSlides, panels, oriReading, status, bra
                   <div className={`${styles.compareCellValue} ${styles.compareCheck}`}>✓</div>
                 </div>
               </div>
-
-              <div className={styles.ctaSlogan}>
-                <div className={styles.ctaSloganLine1}>别家交付 dashboard。OpenOri 交付判断。</div>
-                <div className={styles.ctaSloganLine2}>AI 持续进化,您的品牌持续受益。</div>
-              </div>
-            </div>
-
-            <div className={styles.ctaDivider} />
-
-            <div className={styles.ctaColAction}>
-              <div className={styles.qrBlock}>
-                <Image
-                  src="/wechat-qr.jpg"
-                  alt="OpenOri 团队企业微信"
-                  width={132}
-                  height={132}
-                  className={styles.qrImage}
-                />
-                <span className={styles.qrLabel}>
-                  扫码添加 OpenOri 团队<br/>
-                  让 AI 为您说话 <span className={styles.qrArrow}>→</span>
-                </span>
-              </div>
-
-              <button className={styles.ctaSecondary} onClick={onShareLink}>
-                分享本次 Ori 诊断报告
-              </button>
             </div>
           </div>
         </div>
