@@ -36,7 +36,7 @@ export const SECTION_NAMES: Record<number, string> = {
   6: '06 AI 平台 · 05',
   7: '06 AI 平台 · 06',
   8: 'FINAL READ · BY ORI',
-  9: '下一步',
+  9: 'BY ORI · 下一步',
 };
 
 export const PLATFORM_SLIDES: Array<Omit<PlatformSlide, 'type'>> = [
