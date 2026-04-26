@@ -22,10 +22,9 @@ interface OriReadingExperienceProps {
   initialPage?: number;
 }
 
-function splitOriReading(text: string | null): { paragraphs: string[] } {
-  if (!text) return { paragraphs: [] };
-  const paragraphs = text.split(/\n\n+/).map(p => p.trim()).filter(Boolean);
-  return { paragraphs };
+function getOriParagraphs(text: string | null): string[] {
+  if (!text) return [];
+  return text.split(/\n\n+/).map(p => p.trim()).filter(Boolean);
 }
 
 
@@ -124,6 +123,7 @@ export default function OriReadingExperience({
                   brand={brand}
                   onOpenQR={onOpenQR}
                   onShareLink={handleShareLink}
+                  onClose={onClose}
                 />
               </div>
             </div>
@@ -187,12 +187,11 @@ interface SlideContentProps {
   brand: string;
   onOpenQR: () => void;
   onShareLink: () => void;
+  onClose: () => void;
 }
 
-/** Uniform top bar: left=page#, center=section, right=date */
-function TopBar({ idx, totalSlides }: { idx: number; totalSlides: number }) {
-  const pageNum = String(idx + 1).padStart(2, '0');
-  const total = String(totalSlides).padStart(2, '0');
+/** Uniform top bar: left=brand, center=section, right=date + close button */
+function TopBar({ idx, totalSlides, onClose }: { idx: number; totalSlides: number; onClose: () => void }) {
   const sectionName = SECTION_NAMES[idx + 1] || '';
   const currentDate = new Date().toLocaleDateString('en-US', {
     month: '2-digit', day: '2-digit', year: 'numeric'
@@ -202,34 +201,38 @@ function TopBar({ idx, totalSlides }: { idx: number; totalSlides: number }) {
     <div className={styles.topbar}>
       <BrandLockup />
       <span className={styles.topbarCenter}>{sectionName}</span>
-      <span className={styles.topbarDate}>{currentDate}</span>
+      <div className={styles.topbarRight}>
+        <span className={styles.topbarDate}>{currentDate}</span>
+        <button
+          className={styles.topbarClose}
+          onClick={onClose}
+          aria-label="关闭"
+        >×</button>
+      </div>
     </div>
   );
 }
 
-/** Uniform bottom bar: left=brand stamp text, center=deck id, right=date+page */
+/** Uniform bottom bar: left=page#, right=brand stamp */
 function BottomBar({ idx, totalSlides, brand }: { idx: number; totalSlides: number; brand: string }) {
   const pageNum = String(idx + 1).padStart(2, '0');
   const total = String(totalSlides).padStart(2, '0');
-  const currentDate = new Date().toLocaleDateString('en-US', {
-    month: '2-digit', day: '2-digit', year: 'numeric'
-  }).replace(/\//g, ' / ');
   const brandUpper = brand.toUpperCase();
 
   return (
     <div className={styles.bottombar}>
+      <span className={styles.bottombarPage}>P. {pageNum} / {total}</span>
       <span>LITE SCAN · {brandUpper}</span>
-      <span>P. {pageNum} / {total}</span>
     </div>
   );
 }
 
-function SlideContent({ slide, idx, totalSlides, panels, oriReading, status, brand, onOpenQR, onShareLink }: SlideContentProps) {
+function SlideContent({ slide, idx, totalSlides, panels, oriReading, status, brand, onOpenQR, onShareLink, onClose }: SlideContentProps) {
   /* ──── P.01 COVER ──── */
   if (slide.type === 'cover') {
     return (
       <>
-        <TopBar idx={idx} totalSlides={totalSlides} />
+        <TopBar idx={idx} totalSlides={totalSlides} onClose={onClose} />
 
         <div className={styles.content}>
           <div className={styles.coverGrid}>
@@ -261,7 +264,7 @@ function SlideContent({ slide, idx, totalSlides, panels, oriReading, status, bra
 
     return (
       <>
-        <TopBar idx={idx} totalSlides={totalSlides} />
+        <TopBar idx={idx} totalSlides={totalSlides} onClose={onClose} />
 
         <div className={styles.content}>
           <div className={styles.platformContent}>
@@ -326,23 +329,20 @@ function SlideContent({ slide, idx, totalSlides, panels, oriReading, status, bra
 
   /* ──── P.08 ORI FINALE ──── */
   if (slide.type === 'ori') {
-    const { paragraphs } = splitOriReading(oriReading);
+    const paragraphs = getOriParagraphs(oriReading);
 
     return (
       <>
-        <TopBar idx={idx} totalSlides={totalSlides} />
+        <TopBar idx={idx} totalSlides={totalSlides} onClose={onClose} />
 
         <div className={styles.content}>
           {oriReading && paragraphs.length > 0 ? (
             <div className={styles.oriContent}>
-              <div className={styles.oriEyebrow}>Ori 给你的 read</div>
+              <div className={styles.oriMemoHead}>By Ori · GEO Analyst</div>
 
               <div className={styles.oriBody}>
                 {paragraphs.map((para, i) => (
-                  <p
-                    key={i}
-                    className={i === 0 ? styles.oriOpening : styles.oriBodyPara}
-                  >
+                  <p key={i} className={styles.oriBodyPara}>
                     <ReactMarkdown
                       remarkPlugins={[remarkGfm]}
                       components={{
@@ -356,15 +356,9 @@ function SlideContent({ slide, idx, totalSlides, panels, oriReading, status, bra
                   </p>
                 ))}
               </div>
-
-              <div className={styles.oriSignoff}>
-                <span className={styles.oriSignoffCn}>成为答案的答案</span>
-                <span className={styles.oriSignoffSep}>·</span>
-                <span className={styles.oriSignoffEn}>The answer behind the answers</span>
-              </div>
             </div>
           ) : (
-            <div className={styles.oriWaiting}>Ori 正在整理她的观察</div>
+            <div className={styles.oriWaiting}>Ori 正在生成 Lite 全量报告</div>
           )}
         </div>
 
@@ -377,7 +371,7 @@ function SlideContent({ slide, idx, totalSlides, panels, oriReading, status, bra
   if (slide.type === 'cta') {
     return (
       <>
-        <TopBar idx={idx} totalSlides={totalSlides} />
+        <TopBar idx={idx} totalSlides={totalSlides} onClose={onClose} />
 
         <div className={styles.content}>
           <div className={styles.ctaGrid}>
@@ -389,10 +383,6 @@ function SlideContent({ slide, idx, totalSlides, panels, oriReading, status, bra
                 下一步 — Ori 调度全球顶尖 <span className={styles.em}>AI 架构</span>,<br/>
                 和您进军本时代最大的品牌战场。
               </h2>
-
-              <p className={styles.ctaBody}>
-                您刚看到的 Lite Scan，Ori 直接调了 6 大平台的 API。但 AI 在 APP 和 Web 上呈现的版本不一样，用户在 ChatGPT App 看到的、豆包 Web 看到的、小红书 AI 看到的，差异巨大。
-              </p>
 
               <div className={styles.ctaDeliverableLabel}>— 全量报告会展开</div>
 

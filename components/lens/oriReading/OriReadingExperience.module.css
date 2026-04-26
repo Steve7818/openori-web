@@ -67,7 +67,7 @@
    Top bar — unified 3-column schema
    ═══════════════════════════════════════════ */
 .topbar {
-  padding: 18px 130px 18px 24px;
+  padding: 14px 24px;
   border-bottom: 1px solid var(--light-08, rgba(240, 235, 226, 0.08));
   display: flex;
   justify-content: space-between;
@@ -91,6 +91,51 @@
 
 .topbarDate {
   text-transform: uppercase;
+}
+
+.topbarRight {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.topbarClose {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--light-20, rgba(240, 235, 226, 0.2));
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  color: var(--light-70, rgba(240, 235, 226, 0.7));
+  cursor: pointer;
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 16px;
+  padding: 0;
+  line-height: 1;
+  transition: border-color 200ms, color 200ms;
+}
+
+.topbarClose:hover {
+  border-color: var(--light-50, rgba(240, 235, 226, 0.5));
+  color: var(--light, #f0ebe2);
+}
+
+.bottombarPage {
+  color: var(--light-65, rgba(240, 235, 226, 0.65));
+}
+
+.oriMemoHead {
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  color: var(--ember, #d97757);
+  text-transform: uppercase;
+  margin-bottom: 22px;
+  max-width: 720px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .brandStamp {
@@ -144,6 +189,7 @@
    ═══════════════════════════════════════════ */
 .content {
   flex: 1;
+  min-height: 0;
   padding: 56px 48px;
   position: relative;
   z-index: 5;

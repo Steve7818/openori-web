@@ -81,10 +81,6 @@ export default function LensModal({
       onClick={handleBackdropClick}
     >
       <div className={styles.modal}>
-        <button className={styles.close} onClick={onClose}>
-          ×
-        </button>
-
         {streamError && (
           <div className={styles.errorBanner}>
             <div className={styles.errorIcon}>!</div>
