@@ -148,7 +148,7 @@
 .platformsRow {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   font-family: var(--mono, 'JetBrains Mono', monospace);
   font-size: 10px;
   letter-spacing: 0.18em;
@@ -160,11 +160,12 @@
 
 .scanLabel {
   color: var(--ember, #d97757);
+  white-space: nowrap;
 }
 
 .platformLogos {
   display: flex;
-  gap: 10px;
+  gap: 6px;
   flex-shrink: 0;
 }
 
