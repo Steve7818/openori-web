@@ -35,13 +35,11 @@
   max-height: 32px;
   height: auto;
   width: auto;
-  filter: grayscale(1) brightness(2.5);
   opacity: 0.85;
-  transition: filter 300ms ease, opacity 300ms ease;
+  transition: opacity 300ms ease;
 }
 
 .logo:hover {
-  filter: grayscale(0) brightness(1);
   opacity: 1;
 }
 
