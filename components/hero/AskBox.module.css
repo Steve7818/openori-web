@@ -162,50 +162,32 @@
 
 .platformLogos {
   display: flex;
-  gap: 8px;
+  gap: 14px;
 }
 
 .platformLogo {
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  background: var(--ink, #1a1a1a);
-  border: 1px solid var(--light-12, rgba(240, 235, 226, 0.12));
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  overflow: hidden;
   animation: scanRotate 4.8s infinite;
 }
 
 .platformLogo img {
-  max-width: 14px;
-  max-height: 14px;
+  height: 24px;
+  width: auto;
   object-fit: contain;
-  animation: scanLogoBright 4.8s infinite;
   animation-delay: inherit;
 }
 
 @keyframes scanRotate {
   0%, 13.33% {
-    border-color: var(--ember, #d97757);
-    box-shadow: 0 0 8px rgba(217, 119, 87, 0.4);
+    transform: scale(1.15);
+    filter: drop-shadow(0 0 6px rgba(217, 119, 87, 0.5));
   }
   16.67%, 100% {
-    border-color: var(--light-12, rgba(240, 235, 226, 0.12));
-    box-shadow: none;
-  }
-}
-
-@keyframes scanLogoBright {
-  0%, 13.33% {
-    filter: grayscale(0);
-    opacity: 1;
-  }
-  16.67%, 100% {
-    filter: grayscale(1);
-    opacity: 0.6;
+    transform: scale(1);
+    filter: drop-shadow(0 0 0 transparent);
   }
 }
 
