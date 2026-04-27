@@ -81,16 +81,17 @@ export default function AskBox({ onSubmit, isLoading }: AskBoxProps) {
           <div className={styles.askboxFooter}>
             <div className={styles.platformsRow}>
               <span className={styles.scanLabel}>扫描 6 大平台</span>
-              <div className={styles.platformLogos}>
-                {PLATFORM_SLIDES.map((p, i) => (
-                  <div
-                    key={p.platformId}
-                    className={styles.platformLogo}
-                    style={{ animationDelay: `${i * 0.8}s` }}
-                  >
-                    <img src={p.logo} alt={p.brand} />
-                  </div>
-                ))}
+              <div className={styles.platformMarquee}>
+                <div className={styles.platformTrack}>
+                  {/* Set 1 */}
+                  {PLATFORM_SLIDES.map((p) => (
+                    <img key={`a-${p.platformId}`} src={p.logo} alt={p.brand} className={styles.platformLogoImg} />
+                  ))}
+                  {/* Set 2 mirror for seamless loop */}
+                  {PLATFORM_SLIDES.map((p) => (
+                    <img key={`b-${p.platformId}`} src={p.logo} alt={p.brand} className={styles.platformLogoImg} />
+                  ))}
+                </div>
               </div>
             </div>
             <button type="submit" className={styles.submitBtn} disabled={!canSubmit}>

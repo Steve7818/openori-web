@@ -161,38 +161,44 @@
 .scanLabel {
   color: var(--ember, #d97757);
   white-space: nowrap;
-}
-
-.platformLogos {
-  display: flex;
-  gap: 6px;
   flex-shrink: 0;
 }
 
-.platformLogo {
+.platformMarquee {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  position: relative;
+  height: 24px;
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 14%, black 86%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, black 14%, black 86%, transparent 100%);
+}
+
+.platformTrack {
   display: flex;
+  gap: 28px;
   align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  animation: scanRotate 4.8s infinite;
+  width: max-content;
+  height: 24px;
+  animation: platformMarquee 28s linear infinite;
 }
 
-.platformLogo img {
+.platformLogoImg {
   height: 20px;
   width: auto;
-  object-fit: contain;
-  animation-delay: inherit;
+  filter: grayscale(1) brightness(2.5);
+  opacity: 0.85;
+  transition: filter 300ms ease, opacity 300ms ease;
 }
 
-@keyframes scanRotate {
-  0%, 13.33% {
-    transform: scale(1.15);
-    filter: drop-shadow(0 0 6px rgba(217, 119, 87, 0.5));
-  }
-  16.67%, 100% {
-    transform: scale(1);
-    filter: drop-shadow(0 0 0 transparent);
-  }
+.platformLogoImg:hover {
+  filter: grayscale(0) brightness(1);
+  opacity: 1;
+}
+
+@keyframes platformMarquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
 }
 
 .submitBtn {
