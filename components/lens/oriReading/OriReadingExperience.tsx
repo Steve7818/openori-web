@@ -6,7 +6,7 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import BrandLockup from '@/components/hero/BrandLockup';
 import styles from './OriReadingExperience.module.css';
-import { PLATFORM_SLIDES, SECTION_NAMES, type Slide } from './slides';
+import { PLATFORM_SLIDES, type Slide } from './slides';
 import type { PanelsState } from '../useLensStream';
 
 interface OriReadingExperienceProps {
@@ -192,7 +192,6 @@ interface SlideContentProps {
 
 /** Uniform top bar: left=brand, center=section, right=date + close button */
 function TopBar({ idx, totalSlides, onClose }: { idx: number; totalSlides: number; onClose: () => void }) {
-  const sectionName = SECTION_NAMES[idx + 1] || '';
   const currentDate = new Date().toLocaleDateString('en-US', {
     month: '2-digit', day: '2-digit', year: 'numeric'
   }).replace(/\//g, ' / ');
@@ -200,7 +199,11 @@ function TopBar({ idx, totalSlides, onClose }: { idx: number; totalSlides: numbe
   return (
     <div className={styles.topbar}>
       <BrandLockup />
-      <span className={styles.topbarCenter}>{sectionName}</span>
+      <span className={styles.topbarCenter}>
+        <span className={styles.topbarPagerCurrent}>{idx + 1}</span>
+        <span className={styles.topbarPagerSep}> / </span>
+        <span>{totalSlides}</span>
+      </span>
       <div className={styles.topbarRight}>
         <span className={styles.topbarDate}>{currentDate}</span>
         <button

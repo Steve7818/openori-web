@@ -14,6 +14,7 @@
 
 /* ─── Ambient layer: armillary logo anchored at center ─── */
 .ambientLayer {
+  display: none;
   position: absolute;
   top: 0;
   left: 0;
@@ -85,8 +86,21 @@
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
+  font-family: var(--mono);
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  color: var(--light-65, rgba(240, 235, 226, 0.65));
+  font-variant-numeric: tabular-nums;
+}
+
+.topbarPagerCurrent {
+  color: var(--light, #f0ebe2);
+  font-size: 14px;
+}
+
+.topbarPagerSep {
   color: var(--light-30, rgba(240, 235, 226, 0.3));
-  text-transform: uppercase;
+  margin: 0 4px;
 }
 
 .topbarDate {
@@ -394,6 +408,8 @@
   flex: 1;
   overflow-y: auto;
   max-width: 720px;
+  margin: 0 auto;
+  width: 100%;
   font-family: 'Noto Serif SC', 'Newsreader', serif;
   font-size: 16px;
   line-height: 1.75;

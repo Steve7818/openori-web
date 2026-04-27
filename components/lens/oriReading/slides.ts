@@ -26,19 +26,6 @@ export interface CtaSlide {
 
 export type Slide = CoverSlide | PlatformSlide | OriSlide | CtaSlide;
 
-/** Section names for top bar center label (1-indexed by page number) */
-export const SECTION_NAMES: Record<number, string> = {
-  1: 'COVER',
-  2: '06 AI 平台 · 01',
-  3: '06 AI 平台 · 02',
-  4: '06 AI 平台 · 03',
-  5: '06 AI 平台 · 04',
-  6: '06 AI 平台 · 05',
-  7: '06 AI 平台 · 06',
-  8: 'FINAL READ · BY ORI',
-  9: 'BY ORI · 下一步',
-};
-
 export const PLATFORM_SLIDES: Array<Omit<PlatformSlide, 'type'>> = [
   { platformId: 'kimi',     brand: 'Kimi',        parent: '月之暗面',     logo: '/logos/kimi.png',     source: 'kimi.ai' },
   { platformId: 'deepseek', brand: 'DeepSeek',    parent: '幻方量化',     logo: '/logos/deepseek.png', source: 'deepseek.com' },

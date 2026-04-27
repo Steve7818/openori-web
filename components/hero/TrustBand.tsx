@@ -1,7 +1,5 @@
 import styles from './TrustBand.module.css';
 
-const LOGOS = ['蚂蚁集团', '蚂蚁金服', '哈啰出行', '宁德时代'];
-
 export default function TrustBand() {
   return (
     <div className={styles.trust}>
@@ -9,17 +7,15 @@ export default function TrustBand() {
       <div className={styles.marquee}>
         <div className={styles.track}>
           {/* Set 1 */}
-          {LOGOS.map((logo, idx) => (
-            <span key={`set1-${idx}`} className={styles.logo}>
-              {logo}
-            </span>
-          ))}
-          {/* Set 2 (mirror for seamless loop) */}
-          {LOGOS.map((logo, idx) => (
-            <span key={`set2-${idx}`} className={styles.logo}>
-              {logo}
-            </span>
-          ))}
+          <img src="/logos/partners/ant-group.png" alt="蚂蚁集团" className={styles.logo} />
+          <img src="/logos/partners/ant-financial.png" alt="蚂蚁金服" className={styles.logo} />
+          <img src="/logos/partners/hello.png" alt="哈啰出行" className={styles.logo} />
+          <img src="/logos/partners/catl.png" alt="宁德时代" className={styles.logo} />
+          {/* Set 2 mirror for seamless loop */}
+          <img src="/logos/partners/ant-group.png" alt="蚂蚁集团" className={styles.logo} />
+          <img src="/logos/partners/ant-financial.png" alt="蚂蚁金服" className={styles.logo} />
+          <img src="/logos/partners/hello.png" alt="哈啰出行" className={styles.logo} />
+          <img src="/logos/partners/catl.png" alt="宁德时代" className={styles.logo} />
         </div>
       </div>
     </div>

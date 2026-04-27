@@ -32,16 +32,14 @@
 }
 
 .logo {
-  font-family: var(--font-noto-serif-sc), var(--font-newsreader), serif;
-  font-size: 15px;
-  color: var(--light);
-  opacity: 0.85;
-  padding: 8px 18px;
-  border: 1px solid var(--light-15);
-  border-radius: 2px;
-  letter-spacing: 0.02em;
-  white-space: nowrap;
-  filter: grayscale(1);
+  height: 32px;
+  width: auto;
+  opacity: 0.7;
+  transition: opacity 200ms;
+}
+
+.logo:hover {
+  opacity: 1;
 }
 
 @keyframes marquee {

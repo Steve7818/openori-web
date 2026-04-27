@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { PLATFORM_SLIDES } from '@/components/lens/oriReading/slides';
 import styles from './AskBox.module.css';
 
 interface AskBoxProps {
@@ -80,9 +81,15 @@ export default function AskBox({ onSubmit, isLoading }: AskBoxProps) {
           <div className={styles.askboxFooter}>
             <div className={styles.platformsRow}>
               <span className={styles.scanLabel}>扫描 6 大平台</span>
-              <div className={styles.platformDots}>
-                {[...Array(6)].map((_, i) => (
-                  <span key={i} className={`${styles.platformDot} ${styles.active}`} />
+              <div className={styles.platformLogos}>
+                {PLATFORM_SLIDES.map((p, i) => (
+                  <div
+                    key={p.platformId}
+                    className={styles.platformLogo}
+                    style={{ animationDelay: `${i * 0.8}s` }}
+                  >
+                    <img src={p.logo} alt={p.brand} />
+                  </div>
                 ))}
               </div>
             </div>
