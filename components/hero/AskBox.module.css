@@ -162,7 +162,7 @@
 
 .platformLogos {
   display: flex;
-  gap: 14px;
+  gap: 12px;
 }
 
 .platformLogo {
@@ -174,7 +174,7 @@
 }
 
 .platformLogo img {
-  height: 24px;
+  height: 20px;
   width: auto;
   object-fit: contain;
   animation-delay: inherit;

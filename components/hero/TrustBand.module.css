@@ -32,7 +32,8 @@
 }
 
 .logo {
-  height: 32px;
+  max-height: 32px;
+  height: auto;
   width: auto;
   opacity: 0.7;
   transition: opacity 200ms;
