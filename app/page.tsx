@@ -1,4 +1,5 @@
 import HeroSection from "@/components/HeroSection";
+import Section3Capability from "@/components/sections/Section3Capability";
 
 interface PageProps {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
@@ -16,6 +17,7 @@ export default async function Home({ searchParams }: PageProps) {
         initialLensDebug={lensDebug}
         initialPage={initialPage}
       />
+      <Section3Capability />
     </main>
   );
 }

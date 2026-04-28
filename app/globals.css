@@ -45,6 +45,20 @@
   --ember: #d97757;
   --ember-soft: rgba(217, 119, 87, 0.15);
   --ember-faint: rgba(217, 119, 87, 0.15);
+
+  /* Archival Ember tokens (Section 3) */
+  --bg-primary: #0A0A0A;
+  --text-primary: #F2E6D3;
+  --text-secondary: #C8BFAE;
+  --text-tertiary: #8B8275;
+  --text-quaternary: #5A5448;
+  --border-faint: #1F1B16;
+  --border-soft: #2A2620;
+  --border-medium: #3A342B;
+  --ember-glow: rgba(217, 119, 87, 0.15);
+  --ember-line: rgba(217, 119, 87, 0.4);
+  --light-65: rgba(240, 235, 226, 0.65);
+  --light-12: rgba(240, 235, 226, 0.12);
 }
 
 /* Global reset */
