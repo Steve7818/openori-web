@@ -124,7 +124,7 @@ export default function Section3Capability() {
   ];
 
   return (
-    <section className={styles.section3}>
+    <section className={styles.section3} id="section3-capability">
       {/* Header */}
       <div className={styles.header}>
         <div className={styles.eyebrow}>// 03 // capability</div>
