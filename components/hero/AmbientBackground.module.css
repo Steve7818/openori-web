@@ -1,15 +1,16 @@
 .ambient {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 90vw;
-  height: 90vw;
-  max-width: 1200px;
-  max-height: 1200px;
-  transform: translate(-50%, -50%);
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
   pointer-events: none;
   opacity: 0.09;
   z-index: 0;
+  transition: opacity 800ms ease;
+}
+
+.ambient.isFaded {
+  opacity: 0;
 }
 
 .ecliptic {
