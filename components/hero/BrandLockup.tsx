@@ -21,6 +21,8 @@ export default function BrandLockup() {
         </span>
         <div className={styles.tagline}>
           <span className={styles.cn}>成为答案的答案</span>
+          <span className={styles.sep}>·</span>
+          <span className={styles.en}>The answer behind the answers</span>
         </div>
       </div>
     </div>
