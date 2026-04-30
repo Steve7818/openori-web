@@ -46,8 +46,9 @@
   --ember-soft: rgba(217, 119, 87, 0.15);
   --ember-faint: rgba(217, 119, 87, 0.15);
 
-  /* Archival Ember tokens (Section 3) */
+  /* Archival Ember tokens (Section 3+4) */
   --bg-primary: #0A0A0A;
+  --bg-card: #141414;
   --text-primary: #F2E6D3;
   --text-secondary: #C8BFAE;
   --text-tertiary: #8B8275;
