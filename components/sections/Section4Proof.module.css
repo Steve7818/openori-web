@@ -139,14 +139,14 @@
 
 /* Target band */
 .targetBandBg {
-  fill: rgba(217, 119, 87, 0.12);
+  fill: rgba(217, 119, 87, 0.18);
 }
 
 .targetBandLine {
   stroke: var(--ember);
-  stroke-width: 0.5;
+  stroke-width: 0.7;
   stroke-dasharray: 4 3;
-  opacity: 0.6;
+  opacity: 0.85;
 }
 
 .targetBandLabel {

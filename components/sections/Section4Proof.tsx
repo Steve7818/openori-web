@@ -104,7 +104,7 @@ export default function Section4Proof() {
               className={styles.targetBandBg}
             />
             <line x1={xLeft} y1={targetMaxY} x2={xRight} y2={targetMaxY} className={styles.targetBandLine} />
-            <text x={xRight - 8} y={targetMaxY - 6} textAnchor="end" className={styles.targetBandLabel}>
+            <text x={xRight + 10} y={targetMaxY + 14} textAnchor="start" className={styles.targetBandLabel}>
               {EDU.targetBand.label}
             </text>
           </g>
@@ -227,9 +227,9 @@ export default function Section4Proof() {
             const devY = deviationToY(EDU.deviations[last.dayIndex]);
             return (
               <g className={styles.phaseStrip}>
-                <rect x={x - 52} y={devY + 12} width={104} height={18} rx={3}
+                <rect x={x + 16} y={devY - 9} width={104} height={18} rx={3}
                   className={styles.achievementBadge} />
-                <text x={x} y={devY + 24} textAnchor="middle" className={styles.achievementText}>
+                <text x={x + 68} y={devY + 3} textAnchor="middle" className={styles.achievementText}>
                   TARGET ACHIEVED
                 </text>
               </g>
